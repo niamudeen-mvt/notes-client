@@ -1,6 +1,6 @@
 import axios from "axios";
 import { refreshToken } from "../services/api/user";
-import { getToken } from "./helper";
+import { getAccessToken, getRefreshToken, storeAccessTokenLS } from "./helper";
 
 const BASE_URL = "http://localhost:5000/api/v1";
 
@@ -14,7 +14,7 @@ const api = axios.create({
 api.interceptors.request.use(
   async function (config) {
     if (config.url !== "/auth/login" && config.url !== "/auth/register") {
-      config.headers["Authorization"] = `Bearer ${getToken()}`;
+      config.headers["Authorization"] = `Bearer ${getAccessToken()}`;
     }
     return config;
   },
@@ -35,15 +35,21 @@ api.interceptors.response.use(
     if (error.response && error.response.status === 401 && !isRefreshing) {
       isRefreshing = true;
       try {
-        const refresh_token = localStorage.getItem("refresh_token");
         const res = await refreshToken({
-          refresh_token,
+          refresh_token: getRefreshToken(),
         });
 
         if (res?.status === 200) {
-          localStorage.setItem("access_token", res.data.access_token);
+
+          // storeing access token in localstorage
+          storeAccessTokenLS(res?.data?.access_token)
+
+
+          // sending access token in headers
           originalRequest.headers["Authorization"] =
             "Bearer " + res.data.access_token;
+
+
           return axios(originalRequest);
         }
       } catch (refreshError) {

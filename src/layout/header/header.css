@@ -1,13 +1,13 @@
 .link {
   text-decoration: none;
-  color: black;
+  color: white;
   font-size: 15px;
   padding: 0;
 }
 
 .active {
   text-decoration: none;
-  color: black;
+  color: white;
   font-weight: bolder;
   font-size: 15px;
   padding: 0;

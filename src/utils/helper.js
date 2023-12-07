@@ -1,4 +1,73 @@
 import { jwtDecode } from "jwt-decode";
+import { config } from "../config";
+
+
+
+// access token
+
+export const storeAccessTokenLS = (accessToken) => {
+  return localStorage.setItem(config.ACCESS_TOKEN_KEY, accessToken)
+}
+
+export const getAccessToken = () => {
+  return localStorage.getItem(config.ACCESS_TOKEN_KEY);
+};
+
+export const removeAccessToken = () => {
+  return localStorage.removeItem(config.ACCESS_TOKEN_KEY);
+};
+
+export const isTokenExpired = (token) => {
+  if (!token) {
+    // If the token is not provided, consider it as expired
+    return true;
+  }
+
+  try {
+    const decodedToken = jwtDecode(token);
+    const expirationTime = decodedToken.exp * 1000;
+
+    const currentTime = Date.now();
+
+    return currentTime >= expirationTime;
+  } catch (error) {
+    // Handle decoding errors, consider the token as expired
+    console.error("Error decoding token:", error);
+    return true;
+  }
+};
+
+
+// Refresh token
+
+export const storeRefreshTokenLS = (refreshToken) => {
+  return localStorage.setItem(config.REFRESH_TOKEN_KEY, refreshToken)
+}
+export const getRefreshToken = () => {
+  return localStorage.getItem(config.REFRESH_TOKEN_KEY);
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 export const validateForm = (obj) => {
   let error = {};
@@ -301,30 +370,3 @@ export const errorListtoObj = (errorsList) => {
   }
 };
 
-export const getToken = () => {
-  return localStorage.getItem("access_token");
-};
-
-export const removeToken = () => {
-  return localStorage.removeItem("access_token");
-};
-
-export const isTokenExpired = (token) => {
-  if (!token) {
-    // If the token is not provided, consider it as expired
-    return true;
-  }
-
-  try {
-    const decodedToken = jwtDecode(token);
-    const expirationTime = decodedToken.exp * 1000;
-
-    const currentTime = Date.now();
-
-    return currentTime >= expirationTime;
-  } catch (error) {
-    // Handle decoding errors, consider the token as expired
-    console.error("Error decoding token:", error);
-    return true;
-  }
-};

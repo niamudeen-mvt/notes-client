@@ -1,5 +1,5 @@
 import api from "../../utils/axios";
-import { LOGIN_USER, REFRESH_TOKEN, REGISTER_USER, USER_DETAILS } from "../url";
+import { EDIT_USER_DETAILS, LOGIN_USER, REFRESH_TOKEN, REGISTER_USER, USER_DETAILS } from "../url";
 
 export const registerUser = async (body) => {
   try {
@@ -21,6 +21,16 @@ export const loginUser = async (body) => {
 export const getUserDetails = async () => {
   try {
     const response = await api.get(USER_DETAILS);
+    return response;
+  } catch (error) {
+    return error;
+  }
+};
+
+
+export const editUserDetials = async (body) => {
+  try {
+    const response = await api.patch(EDIT_USER_DETAILS, body);
     return response;
   } catch (error) {
     return error;

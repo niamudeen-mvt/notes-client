@@ -1,13 +1,23 @@
 import { useEffect, useState } from "react";
 import { getUserDetails } from "../services/api/user";
 import { useAuth } from "../context/authContext";
+import { Container } from "react-bootstrap";
+import { BiSolidMessageSquareEdit } from "react-icons/bi";
+import { editUserDetials } from "../services/api/user";
+import { FaCheck } from "react-icons/fa6";
+import { sendNotification } from "../utils/notifications";
+
 
 const Profile = () => {
-  const [currentUser, setCurrentUser] = useState(null);
+  const [currentUser, setCurrentUser] = useState({
+    username: "",
+    email: "",
+    phone: ""
+  });
+  const [isEdit, setIsEdit] = useState(false)
 
   const { isLoggedIn } = useAuth();
 
-  console.log(isLoggedIn);
   useEffect(() => {
     const fetchCurrentUser = async () => {
       try {
@@ -23,18 +33,92 @@ const Profile = () => {
 
     fetchCurrentUser();
   }, [isLoggedIn]);
-  return (
-    <div className="text-center my-5">
-      {isLoggedIn ? (
-        <>
-          <h1>User is Logged In</h1>
 
-          <p>Name: {currentUser?.username}</p>
-        </>
-      ) : (
-        <h1>User is Logout</h1>
-      )}
-    </div>
+
+  const handleEdit = () => {
+    setIsEdit(!isEdit)
+  }
+
+
+
+  const handleEditUser = async () => {
+    if (currentUser) {
+      let res = await editUserDetials(currentUser)
+      if (res?.status === 200) {
+        setCurrentUser(res?.data?.user)
+        setIsEdit(true)
+        sendNotification("success", res?.data?.message);
+      } else {
+        // sendNotification("warning", res?.response?.data?.message);
+      }
+
+    }
+  }
+
+  const handleChange = (e) => {
+    setCurrentUser({
+      ...currentUser,
+      [e.target.name]: e.target.value
+    })
+  }
+  return (
+    <div className="common_container flex_center">
+      <Container className="py-5 box_shadow flex_center position-relative">
+        {
+          isLoggedIn ?
+            <div className="">
+              <div className="mb-3" >
+                <label className="text-left">
+                  Name
+                </label>
+                <br />
+                <input type="text" disabled={isEdit} value={currentUser?.username}
+                  onChange={handleChange}
+                  name="username"
+                  className="px-3 text-capitalize" />
+              </div>
+              <div className="mb-3" >
+                <label className="text-left">
+                  Email
+                </label>
+                <br />
+                <input type="text" disabled={isEdit} value={currentUser?.email}
+                  onChange={handleChange}
+                  name="email"
+                  className="px-3 text-capitalize" />
+              </div>
+              <div className="mb-3" >
+                <label className="text-left">
+                  Phone
+                </label>
+                <br />
+                <input type="text" disabled={isEdit} value={currentUser?.phone}
+                  onChange={handleChange}
+                  name="phone"
+                  className="px-3 text-capitalize" />
+              </div>
+
+
+              <BiSolidMessageSquareEdit color="#0d6efd" fontSize={'25px'} className="cursor" style={{
+                position: 'absolute',
+                top: '20px',
+                right: '20px'
+              }}
+                onClick={handleEdit} />
+
+              <FaCheck color="green" fontSize={'25px'} onClick={() => handleEditUser()} className="cursor"
+                style={{
+                  position: 'absolute',
+                  top: '20px',
+                  right: '80px'
+                }}
+              />
+            </div>
+            :
+            null
+        }
+      </Container >
+    </div >
   );
 };
 

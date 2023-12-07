@@ -57,3 +57,61 @@ img {
   color: black;
   padding: 10px 30px;
 }
+
+/* dec 7 */
+
+.common_container {
+  height: 100vh;
+  width: 100%;
+}
+
+.flex_center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* textarea:focus-visible {
+  border-color: transparent !important;
+  outline-color: transparent !important;
+} */
+
+.messge_field {
+  border-color: transparent !important;
+  outline-color: transparent !important;
+}
+.messge_field:focus-visible {
+  outline: none;
+}
+.ouline_none:focus-visible {
+  outline: none;
+}
+
+.soft_theme {
+  background-color: #e3f2fd;
+}
+
+.note_card {
+  position: relative;
+  height: 300px;
+  min-width: 300px;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}
+.note_card .icon_menu {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.flex_SB {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.box_shadow {
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}

@@ -1,21 +1,18 @@
 import React from "react";
-import { useAuth } from "../context/authContext";
+import { Button } from "react-bootstrap";
+import { Link } from "react-router-dom";
+import { config } from "../config";
 
 const Home = () => {
-  const { isLoggedIn } = useAuth();
   return (
-    <div className="text-center my-5">
-      <h1>Welcome !</h1>
-      <div className="text-center my-5">
-        {isLoggedIn ? (
-          <>
-            <h1>User is Logged In</h1>
-          </>
-        ) : (
-          <h1>User is Logout</h1>
-        )}
-      </div>
-    </div>
+    <main className="common_container flex_center">
+      <div className="text-uppercase text-center">
+        <h1 className="mb-3">Welcome to {config.PROJECT_NAME}</h1>
+        <Link to="/login">
+          <Button className="py-3 px-5 text-uppercase">Signin</Button>
+        </Link>
+      </div >
+    </main >
   );
 };
 

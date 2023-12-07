@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Container } from "react-bootstrap";
-import { errorListtoObj } from "../../utils/helper";
+import { errorListtoObj, storeAccessTokenLS, storeRefreshTokenLS } from "../../utils/helper";
 import { sendNotification } from "../../utils/notifications";
 import { Link, useNavigate } from "react-router-dom";
 import { loginUser } from "../../services/api/user";
@@ -9,11 +9,11 @@ import { useAuth } from "../../context/authContext";
 const LoginForm = () => {
   const navigate = useNavigate();
 
-  const { storeTokenInLs } = useAuth();
+  const { setToken } = useAuth();
 
   const [user, setUser] = useState({
-    email: "test@gmail.com",
-    password: "123",
+    email: "",
+    password: "",
   });
   const [errors, setErrors] = useState({});
 
@@ -30,8 +30,15 @@ const LoginForm = () => {
 
     if (res?.status === 200) {
       localStorage.setItem("userId", res?.data?.userId);
-      storeTokenInLs(res?.data?.access_token);
-      localStorage.setItem("refresh_token", res?.data?.refresh_token);
+
+
+      // storing tokens in localstorage
+      storeAccessTokenLS(res?.data?.access_token);
+      setToken(res?.data?.access_token)
+      storeRefreshTokenLS(res?.data?.refresh_token)
+
+
+
       sendNotification("success", res?.data?.message);
       navigate("/profile");
     } else {

@@ -1,7 +1,5 @@
 import React, { createContext, useState, useContext, useEffect } from "react";
-import { getToken, removeToken } from "../utils/helper";
-import { refreshToken } from "../services/api/user";
-import axios from "axios";
+import { getAccessToken, removeAccessToken } from "../utils/helper";
 
 const AuthContext = createContext();
 
@@ -10,23 +8,23 @@ export const useAuth = () => {
 };
 
 export const AuthProvider = ({ children }) => {
-  const [token, setToken] = useState(getToken());
+  const [token, setToken] = useState(getAccessToken());
 
   const isLoggedIn = !!token;
 
-  const storeTokenInLs = (serverToken) => {
-    localStorage.setItem("access_token", serverToken);
-    setToken(serverToken);
-  };
+  // const storeTokenInLs = (serverToken) => {
+  //   localStorage.setItem("access_token", serverToken);
+  //   setToken(serverToken);
+  // };
 
   const userLogout = () => {
     setToken("");
-    removeToken();
+    removeAccessToken();
   };
 
   useEffect(() => {
     const updateTokenFromLocalStorage = () => {
-      const newToken = getToken();
+      const newToken = getAccessToken();
       setToken(newToken);
     };
 
@@ -37,25 +35,9 @@ export const AuthProvider = ({ children }) => {
     };
   }, []);
 
-  // useEffect(() => {
-  //   const tokenRefreshInterval = setInterval(async () => {
-  //     const refresh_token = localStorage.getItem("refresh_token");
-  //     const res = await refreshToken({ refresh_token });
-  //     if (res?.status === 200) {
-  //       storeTokenInLs(res.data.access_token);
-
-  //       axios.defaults.headers.common["Authorization"] =
-  //         "Bearer " + res.data.access_token;
-  //     }
-  //   }, 2000);
-  //   return () => {
-  //     clearInterval(tokenRefreshInterval);
-  //   };
-  // }, []);
-
   return (
     <AuthContext.Provider
-      value={{ isLoggedIn, userLogout, storeTokenInLs, token }}
+      value={{ isLoggedIn, userLogout, token, setToken }}
     >
       {children}
     </AuthContext.Provider>
