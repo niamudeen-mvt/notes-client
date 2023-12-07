@@ -1,8 +1,7 @@
 import axios from "axios";
 import { refreshToken } from "../services/api/user";
 import { getAccessToken, getRefreshToken, storeAccessTokenLS } from "./helper";
-
-const BASE_URL = "http://localhost:5000/api/v1";
+import { BASE_URL } from "../config";
 
 const api = axios.create({
   baseURL: BASE_URL,
@@ -40,15 +39,12 @@ api.interceptors.response.use(
         });
 
         if (res?.status === 200) {
-
           // storeing access token in localstorage
-          storeAccessTokenLS(res?.data?.access_token)
-
+          storeAccessTokenLS(res?.data?.access_token);
 
           // sending access token in headers
           originalRequest.headers["Authorization"] =
             "Bearer " + res.data.access_token;
-
 
           return axios(originalRequest);
         }
