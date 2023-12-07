@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Container } from "react-bootstrap";
-import { errorListtoObj } from "../../utils/helper";
+import { checkIfobjEmpty, errorListtoObj } from "../../utils/helper";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { sendNotification } from "../../utils/notifications";
@@ -29,13 +29,18 @@ const SignupForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    let res = await registerUser(user);
+    const isEmpty = checkIfobjEmpty(user);
+    if (!isEmpty) {
+      let res = await registerUser(user);
 
-    if (res?.status === 201) {
-      sendNotification("success", res?.data?.message);
-      navigate("/login");
+      if (res?.status === 201) {
+        sendNotification("success", res?.data?.message);
+        navigate("/login");
+      } else {
+        setErrors(errorListtoObj(res?.response?.data?.errors));
+      }
     } else {
-      setErrors(errorListtoObj(res?.response?.data?.errors));
+      sendNotification("warning", "Fields are required");
     }
   };
 

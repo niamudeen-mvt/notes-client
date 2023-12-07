@@ -12,11 +12,6 @@ export const AuthProvider = ({ children }) => {
 
   const isLoggedIn = !!token;
 
-  // const storeTokenInLs = (serverToken) => {
-  //   localStorage.setItem("access_token", serverToken);
-  //   setToken(serverToken);
-  // };
-
   const userLogout = () => {
     setToken("");
     removeAccessToken();
@@ -36,9 +31,7 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   return (
-    <AuthContext.Provider
-      value={{ isLoggedIn, userLogout, token, setToken }}
-    >
+    <AuthContext.Provider value={{ isLoggedIn, userLogout, token, setToken }}>
       {children}
     </AuthContext.Provider>
   );

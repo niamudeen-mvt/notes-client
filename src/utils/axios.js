@@ -2,6 +2,7 @@ import axios from "axios";
 import { refreshToken } from "../services/api/user";
 import { getAccessToken, getRefreshToken, storeAccessTokenLS } from "./helper";
 import { BASE_URL } from "../config";
+import { sendNotification } from "./notifications";
 
 const api = axios.create({
   baseURL: BASE_URL,
@@ -33,19 +34,17 @@ api.interceptors.response.use(
 
     if (error.response && error.response.status === 401 && !isRefreshing) {
       isRefreshing = true;
+      sendNotification("warning", "token expire");
       try {
         const res = await refreshToken({
           refresh_token: getRefreshToken(),
         });
-
         if (res?.status === 200) {
           // storeing access token in localstorage
           storeAccessTokenLS(res?.data?.access_token);
-
           // sending access token in headers
           originalRequest.headers["Authorization"] =
             "Bearer " + res.data.access_token;
-
           return axios(originalRequest);
         }
       } catch (refreshError) {

@@ -1,6 +1,11 @@
 import React, { useState } from "react";
 import { Container } from "react-bootstrap";
-import { errorListtoObj, storeAccessTokenLS, storeRefreshTokenLS } from "../../utils/helper";
+import {
+  checkIfobjEmpty,
+  errorListtoObj,
+  storeAccessTokenLS,
+  storeRefreshTokenLS,
+} from "../../utils/helper";
 import { sendNotification } from "../../utils/notifications";
 import { Link, useNavigate } from "react-router-dom";
 import { loginUser } from "../../services/api/user";
@@ -28,21 +33,25 @@ const LoginForm = () => {
     e.preventDefault();
     let res = await loginUser(user);
 
-    if (res?.status === 200) {
-      localStorage.setItem("userId", res?.data?.userId);
+    const isEmpty = checkIfobjEmpty(user);
 
+    if (!isEmpty) {
+      if (res?.status === 200) {
+        localStorage.setItem("userId", res?.data?.userId);
 
-      // storing tokens in localstorage
-      storeAccessTokenLS(res?.data?.access_token);
-      setToken(res?.data?.access_token)
-      storeRefreshTokenLS(res?.data?.refresh_token)
+        // storing tokens in localstorage
+        storeAccessTokenLS(res?.data?.access_token);
+        setToken(res?.data?.access_token);
+        storeRefreshTokenLS(res?.data?.refresh_token);
 
-
-
-      sendNotification("success", res?.data?.message);
-      navigate("/profile");
+        sendNotification("success", res?.data?.message);
+        navigate("/profile");
+      } else {
+        sendNotification("warning", res?.response?.data?.message);
+        setErrors(errorListtoObj(res?.response?.data?.errors));
+      }
     } else {
-      setErrors(errorListtoObj(res?.response?.data?.errors));
+      sendNotification("warning", "Fields are required");
     }
   };
 
