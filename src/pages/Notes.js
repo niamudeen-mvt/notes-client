@@ -14,6 +14,7 @@ import CustomButton from "../components/shared/CustomButton";
 import CustomModal from "../components/shared/CustomModal";
 import { BiSolidMessageSquareEdit } from "react-icons/bi";
 import moment from "moment";
+import FileUploader from "../components/shared/FileUploader";
 
 const NotesPage = () => {
   const [notes, setNotes] = useState([]);
@@ -245,6 +246,8 @@ const NotesPage = () => {
                       }}
                       rows={8}
                     />
+
+                    {/* <FileUploader /> */}
                   </div>
                 </form>
               </div>
