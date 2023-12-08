@@ -1,23 +1,32 @@
-import React from 'react'
+import React from "react";
 
-const CustomInput = ({ mb = 0, label, type = "text", name, value, handleChange, errors }) => {
-  console.log(errors);
+const CustomInput = ({
+  mb = 0,
+  label,
+  type = "text",
+  name,
+  value,
+  handleChange,
+  errors,
+}) => {
   return (
     <>
       <div className={`mb-${mb}`}>
-        <label className='mb-3 common_grey text-capitalize'>{label}</label>
+        <label className="mb-3 common_grey text-capitalize">{label}</label>
         <br />
-        <input type={type} className='border-0 border-bottom'
+        <input
+          type={type}
+          className="border-0 border-bottom"
           name={name}
           value={value}
           onChange={handleChange}
           spellCheck="off"
-          autoComplete='off'
+          autoComplete="off"
         />
         <p className="text-danger mt-4">{errors[name] ? errors[name] : ""}</p>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default CustomInput
+export default CustomInput;

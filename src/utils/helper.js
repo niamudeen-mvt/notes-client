@@ -1,13 +1,11 @@
 import { jwtDecode } from "jwt-decode";
 import { config } from "../config";
 
-
-
 // access token
 
 export const storeAccessTokenLS = (accessToken) => {
-  return localStorage.setItem(config.ACCESS_TOKEN_KEY, accessToken)
-}
+  return localStorage.setItem(config.ACCESS_TOKEN_KEY, accessToken);
+};
 
 export const getAccessToken = () => {
   return localStorage.getItem(config.ACCESS_TOKEN_KEY);
@@ -37,37 +35,14 @@ export const isTokenExpired = (token) => {
   }
 };
 
-
 // Refresh token
 
 export const storeRefreshTokenLS = (refreshToken) => {
-  return localStorage.setItem(config.REFRESH_TOKEN_KEY, refreshToken)
-}
+  return localStorage.setItem(config.REFRESH_TOKEN_KEY, refreshToken);
+};
 export const getRefreshToken = () => {
   return localStorage.getItem(config.REFRESH_TOKEN_KEY);
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 export const validateForm = (obj) => {
   let error = {};
@@ -369,4 +344,3 @@ export const errorListtoObj = (errorsList) => {
     return combinedObject;
   }
 };
-

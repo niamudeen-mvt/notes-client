@@ -14,10 +14,8 @@ export const REFRESH_TOKEN = "/auth/refresh-token";
 export const USER_DETAILS = "/auth/user";
 export const EDIT_USER_DETAILS = "/auth/user/edit";
 
-
-
-export const ADD_NOTES = "/notes/add"
-export const FETCH_NOTES = "/notes"
-export const DELETE_NOTES = "/notes/delete/"
-export const EDIT_NOTES = "/notes/edit/"
-
+export const ADD_NOTES = "/notes/add";
+export const FETCH_NOTES = "/notes";
+export const DELETE_NOTES = "/notes/delete/";
+export const EDIT_NOTES = "/notes/edit/";
+export const IMGKIT_AUTH = "/notes/imagekit-auth";
