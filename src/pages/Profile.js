@@ -6,6 +6,7 @@ import { BiSolidMessageSquareEdit } from "react-icons/bi";
 import { editUserDetials } from "../services/api/user";
 import { FaCheck } from "react-icons/fa6";
 import { sendNotification } from "../utils/notifications";
+import CustomTooltip from "../components/CustomTooltip";
 
 const Profile = () => {
   const [currentUser, setCurrentUser] = useState({
@@ -58,7 +59,7 @@ const Profile = () => {
   };
   return (
     <div className="common_container flex_center">
-      <Container className="py-5 box_shadow flex_center position-relative">
+      <Container className="py-5 box_shadow flex_center position-relative flex-column">
         {isLoggedIn ? (
           <div className="">
             <div className="mb-3">
@@ -101,32 +102,33 @@ const Profile = () => {
               />
             </div>
 
+
+          </div>
+        ) : null}
+        <div className="w-100 d-flex justify-content-end gap-4">
+          <CustomTooltip msg="edit">
             <BiSolidMessageSquareEdit
               color="#0d6efd"
               fontSize={"25px"}
               className="cursor"
-              style={{
-                position: "absolute",
-                top: "20px",
-                right: "20px",
-              }}
               onClick={handleEdit}
             />
-            {isEdit ? (
+          </CustomTooltip>
+
+          {isEdit ? (
+            <CustomTooltip msg="submit" style={{
+              position: "absolute",
+              top: "20px",
+              right: "80px",
+            }}>
               <FaCheck
                 color="green"
                 fontSize={"25px"}
                 onClick={() => handleEditUser()}
                 className="cursor"
-                style={{
-                  position: "absolute",
-                  top: "20px",
-                  right: "80px",
-                }}
-              />
-            ) : null}
-          </div>
-        ) : null}
+              /></CustomTooltip>
+          ) : null}
+        </div>
       </Container>
     </div>
   );

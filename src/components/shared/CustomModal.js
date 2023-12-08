@@ -4,10 +4,9 @@ import Modal from 'react-bootstrap/Modal';
 const CustomModal = ({ showModal, setShowModal, modalHeading, children, handleSubmit, contentType }) => {
 
   const handleClose = () => setShowModal(false);
-
   return (
     <>
-      <Modal show={showModal} onHide={handleClose}>
+      <Modal show={showModal} onHide={handleClose} >
         <Modal.Header closeButton>
           <Modal.Title>{modalHeading}</Modal.Title>
         </Modal.Header>

@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { Col, Container, Row } from "react-bootstrap";
+import { Button, Col, Container, OverlayTrigger, Row, Tooltip } from "react-bootstrap";
 import {
   addNotes,
   deleteNotesById,
@@ -15,6 +15,9 @@ import CustomModal from "../components/shared/CustomModal";
 import { BiSolidMessageSquareEdit } from "react-icons/bi";
 import FileUploader from "../components/shared/FileUploader";
 import { CiImageOn } from "react-icons/ci";
+import ImagePreviewModal from "../components/modal/ImagePreviewModal";
+import CustomTooltip from "../components/CustomTooltip";
+import CustomLoader from "../components/shared/CustomLoader";
 
 const NotesPage = () => {
   const [notes, setNotes] = useState([]);
@@ -30,10 +33,12 @@ const NotesPage = () => {
     key: "ADD_NOTES",
     note: "",
   });
-  // const [images, setImages] = useState([]);
   const [images, setImages] = useState({});
+  const [showImgModal, setShowImgModal] = useState(false);
+  const [noteImgList, setNoteImgList] = useState([]);
 
-  console.log(images, "images");
+  console.log(notes);
+
 
   useEffect(() => {
     (async () => {
@@ -148,103 +153,110 @@ const NotesPage = () => {
           <h2>Notes</h2>
           <CustomButton text="ADD NOTES" onClick={handleOpenModal} />
         </div>
-        <Row>
-          {notes?.length ? (
-            notes.map((el, index) => {
-              return (
-                <Col className="flex_center mb-5" lg={3}>
-                  <div className="note_card px-5 py-5 border">
-                    <div className="mt-3">
-                      {isEdit?.edit && isEdit.index === index ? (
-                        <>
-                          <textarea
-                            type="text"
-                            className="px-2 py-3 border-0 w-100  messge_field"
-                            value={note.message.substring(0, 140)}
-                            onChange={(e) => handleChange(e)}
-                            placeholder="Enter new note .........."
-                            autoComplete="off"
-                            rows={6}
-                          />
-                          {note.message?.length > 150 ? (
-                            <span
+        {notes?.length > 0 ?
+          <Row >
+            {notes?.length > 0 ? (
+              notes.map((el, index) => {
+                return (
+                  <Col className="flex_center mb-5" lg={3}>
+                    <div className="note_card px-5 py-5">
+                      <div className="mt-3">
+                        {isEdit?.edit && isEdit.index === index ? (
+                          <>
+                            <textarea
+                              type="text"
+                              className="px-2 py-3 border-0 w-100  messge_field"
+                              value={note.message.substring(0, 140)}
+                              onChange={(e) => handleChange(e)}
+                              placeholder="Enter new note .........."
+                              autoComplete="off"
+                              rows={6}
+                            />
+                            {note.message?.length > 150 ? (
+                              <span
+                                className="cursor"
+                                onClick={() =>
+                                  handleOpenModal(note.message, "MORE")
+                                }
+                              >
+                                ...more
+                              </span>
+                            ) : null}
+                          </>
+                        ) : (
+                          <p>
+                            {el.message.substring(0, 200)}
+                            {el.message?.length > 200 ? (
+                              <span
+                                className="cursor"
+                                onClick={() =>
+                                  handleOpenModal(el.message, "MORE")
+                                }
+                              >
+                                ...more
+                              </span>
+                            ) : null}
+                          </p>
+                        )}
+                      </div>
+                      <div className="icon_menu">
+                        {" "}
+                        {isEdit?.edit && isEdit.index === index ? (
+                          <CustomTooltip msg="submit">
+                            <FaCheck
+                              color="green"
+                              fontSize={"25px"}
+                              onClick={() => handleEditNote(el._id, index)}
                               className="cursor"
-                              onClick={() =>
-                                handleOpenModal(note.message, "MORE")
-                              }
-                            >
-                              ...more
-                            </span>
-                          ) : null}
-                        </>
-                      ) : (
-                        <p>
-                          {el.message.substring(0, 200)}
-                          {el.message?.length > 200 ? (
-                            <span
-                              className="cursor"
-                              onClick={() =>
-                                handleOpenModal(el.message, "MORE")
-                              }
-                            >
-                              ...more
-                            </span>
-                          ) : null}
-                        </p>
-                      )}
-                    </div>
-                    <div className="icon_menu">
-                      {" "}
-                      {isEdit?.edit && isEdit.index === index ? (
-                        <FaCheck
-                          color="green"
-                          fontSize={"25px"}
-                          onClick={() => handleEditNote(el._id, index)}
-                          className="cursor"
-                        />
-                      ) : null}
-                      <BiSolidMessageSquareEdit
-                        color="#0d6efd"
-                        fontSize={"25px"}
-                        onClick={() => handleEdit(index)}
-                        className="cursor"
-                      />
-                      <MdDelete
-                        color="red"
-                        fontSize={"25px"}
-                        onClick={() => handleDelteNote(el._id)}
-                        className="cursor"
-                      />
-                    </div>
+                            />
+                          </CustomTooltip>
 
-                    <div className="mb-3">
-                      <CiImageOn size={25} className="cursor" onClick={() =>
-                        handleOpenModal(note.message, "MORE")
-                      } />
-                    </div>
-                    {/* {el?.images?.length ?
-                      el.images.map(({ image }) => {
-                        return (
-                          <CiImageOn />
-                        )
-                      }) : null
-                    } */}
-                    {/* <p
+                        ) : null}
+                        <CustomTooltip msg="edit">
+                          <Button variant="secondary" className="p-0 bg-light border-0">
+                            <BiSolidMessageSquareEdit
+                              color="#0d6efd"
+                              fontSize={"25px"}
+                              onClick={() => handleEdit(index)}
+                              className="cursor d-block"
+                            />
+                          </Button>
+                        </CustomTooltip>
+
+                        <CustomTooltip msg="delete">
+                          <MdDelete
+                            color="red"
+                            fontSize={"25px"}
+                            onClick={() => handleDelteNote(el._id)}
+                            className="cursor"
+                          />
+                        </CustomTooltip>
+                      </div>
+                      {
+                        el?.images?.length && isEdit?.edit && isEdit.index !== index ?
+                          <div className="mb-3">
+                            <CustomTooltip msg="images" placement="right">
+                              <CiImageOn size={25}
+                                color="green" className="cursor" onClick={() => {
+                                  setShowImgModal(true)
+                                  setNoteImgList(el.images)
+                                }
+                                } /></CustomTooltip>
+                          </div>
+                          : null
+                      }
+                      {/* <p
                       className="text-secondary position-absolute position-absolute bottom-0"
                       style={{ right: "20px" }}
                     >
                       {timeAgo}
                     </p> */}
-
-
-                  </div>
-                </Col>
-              );
-            })
-          ) : (
-            <div className="text-center">No Notes found</div>
-          )}
-        </Row>
+                    </div>
+                  </Col>
+                );
+              })
+            ) : <CustomLoader />}
+          </Row> : null}
       </Container>
 
       <CustomModal
@@ -288,7 +300,13 @@ const NotesPage = () => {
           </section>
         )}
       </CustomModal>
-    </section>
+
+      {
+        showImgModal ?
+          <ImagePreviewModal showImgModal={showImgModal} setShowImgModal={setShowImgModal} noteImgList={noteImgList} />
+          : null
+      }
+    </section >
   );
 };
 
