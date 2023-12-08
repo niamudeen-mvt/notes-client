@@ -13,9 +13,20 @@ const Header = () => {
   const route = useLocation().pathname;
 
   return (
-    <Navbar expand="lg" sticky="top" className="common_blue">
+    <Navbar expand="lg" sticky="top" className="custom_navbar  py-3">
       <Container>
-        <Navbar.Brand to="#home" className="text-white fw-bold"><span className="mx-2 x"><FiEdit /></span>{config.PROJECT_NAME}</Navbar.Brand>
+        {/* <h4 className="text-white fw-bold text-capitalize  p-0">
+          <span className="mx-2 ">
+            <FiEdit />
+          </span>
+          {config.PROJECT_NAME}
+        </h4> */}
+        <Navbar.Brand
+          to="#home"
+          className="text-white fw-bold text-capitalize  p-0"
+        >
+          {config.PROJECT_NAME}
+        </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="ms-auto  flexCenter">
@@ -23,20 +34,26 @@ const Header = () => {
               <>
                 <Link
                   to="/notes"
-                  className={`pt-2 mx-2 ${route === "/notes" ? "active" : "link"
-                    }`}
+                  className={`pt-2 mx-2 ${
+                    route === "/notes" ? "active" : "link"
+                  }`}
                 >
                   NOTES
                 </Link>
                 <Link
                   to="/profile"
-                  className={`pt-2 mx-2 ${route === "/profile" ? "active" : "link"
-                    }`}
+                  className={`pt-2 mx-2 ${
+                    route === "/profile" ? "active" : "link"
+                  }`}
                 >
                   PROFILE
                 </Link>
-                <Link to="/logout" className={` pt-2 mx-2 ${route === "/logout" ? "active" : "link"
-                  }`}>
+                <Link
+                  to="/logout"
+                  className={` pt-2 mx-2 ${
+                    route === "/logout" ? "active" : "link"
+                  }`}
+                >
                   LOGOUT
                 </Link>
               </>
@@ -44,22 +61,23 @@ const Header = () => {
               <>
                 <Link
                   to="/"
-                  className={` pt-2 mx-2 ${route === "/" ? "active" : "link"
-                    }`}
+                  className={` pt-2 mx-2 ${route === "/" ? "active" : "link"}`}
                 >
                   HOME
                 </Link>
                 <Link
                   to="/signup"
-                  className={` pt-2 mx-2 ${route === "/signup" ? "active" : "link"
-                    }`}
+                  className={` pt-2 mx-2 ${
+                    route === "/signup" ? "active" : "link"
+                  }`}
                 >
                   SIGNUP
                 </Link>
                 <Link
                   to="/login"
-                  className={` pt-2 mx-2 ${route === "/login" ? "active" : "link"
-                    }`}
+                  className={` pt-2 mx-2 ${
+                    route === "/login" ? "active" : "link"
+                  }`}
                 >
                   LOGIN
                 </Link>

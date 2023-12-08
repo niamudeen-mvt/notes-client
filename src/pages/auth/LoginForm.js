@@ -9,9 +9,9 @@ import { sendNotification } from "../../utils/notifications";
 import { Link, useNavigate } from "react-router-dom";
 import { loginUser } from "../../services/api/user";
 import { useAuth } from "../../context/authContext";
-import { Button, Col, Row } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import CustomInput from "../../components/shared/CustomInput";
-import { FiEdit } from "react-icons/fi";
+import { BasicFormLayout } from "../../components/shared/BasicFormLayout";
 
 const LoginForm = () => {
   const navigate = useNavigate();
@@ -19,8 +19,8 @@ const LoginForm = () => {
   const { setToken } = useAuth();
 
   const [user, setUser] = useState({
-    email: "test@gmail.com",
-    password: "123",
+    email: "",
+    password: "",
   });
   const [errors, setErrors] = useState({});
 
@@ -60,63 +60,43 @@ const LoginForm = () => {
   };
 
   return (
-    <section className="">
-      <div className="min-vh-100 flex_center form_container mx-auto">
-        <div className="w-100 box_shadow" style={{ height: "600px" }}>
-          <Row className="h-100">
-            <Col xs={12} md={6} className="h-100">
-              <div className="common_blue h-100  flex_center">
-                <h4 className="text-white fw-bold text-capitalize">
-                  <span className="mx-2">
-                    <FiEdit />
-                  </span>
-                  Notes
-                </h4>
-              </div>
-            </Col>
-            <Col xs={12} md={6} className="h-100">
-              <div className="w-100 h-100 flex_center flex-column">
-                <form className="h-75 p-5">
-                  <h2 className="fw-bold mb-5">LOGIN !</h2>
-                  <CustomInput
-                    mb={3}
-                    label="email address"
-                    name="email"
-                    handleChange={handleChange}
-                    value={user.email}
-                    errors={errors}
-                  />
-                  <CustomInput
-                    name="password"
-                    label="password"
-                    mb={5}
-                    type="text"
-                    value={user.password}
-                    handleChange={handleChange}
-                    errors={errors}
-                  />
-                  <Button
-                    type="submit"
-                    className="px-5 py-2 rounded-5 fw-bold box_shadow mb-4"
-                    onClick={handleSubmit}
-                  >
-                    Sign in
-                  </Button>
-                  <p className="common_grey">
-                    Dont't have an account ?{" "}
-                    <Link to="/signup">
-                      <span className="cursor" style={{ color: "#0d6efd" }}>
-                        Sign up
-                      </span>
-                    </Link>
-                  </p>
-                </form>
-              </div>
-            </Col>
-          </Row>
-        </div>
-      </div>
-    </section>
+    <BasicFormLayout>
+      <form className="h-75 p-5">
+        <h2 className="fw-bold mb-5">LOGIN !</h2>
+        <CustomInput
+          mb={3}
+          label="email address"
+          name="email"
+          handleChange={handleChange}
+          value={user.email}
+          errors={errors}
+        />
+        <CustomInput
+          name="password"
+          label="password"
+          mb={5}
+          type="text"
+          value={user.password}
+          handleChange={handleChange}
+          errors={errors}
+        />
+        <Button
+          type="submit"
+          className="px-5 py-2 rounded-5 fw-bold box_shadow mb-4"
+          onClick={handleSubmit}
+        >
+          Sign in
+        </Button>
+        <p className="common_grey">
+          Dont't have an account ?{" "}
+          <Link to="/signup">
+            <span className="cursor" style={{ color: "#0d6efd" }}>
+              Sign up
+            </span>
+          </Link>
+        </p>
+      </form>
+    </BasicFormLayout>
   );
 };
 

@@ -1,11 +1,5 @@
 import api from "../../utils/axios";
-import {
-  ADD_NOTES,
-  DELETE_NOTES,
-  EDIT_NOTES,
-  FETCH_NOTES,
-  IMGKIT_AUTH,
-} from "../url";
+import { ADD_NOTES, DELETE_NOTES, EDIT_NOTES, FETCH_NOTES } from "../url";
 
 export const addNotes = async (body) => {
   try {

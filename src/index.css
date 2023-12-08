@@ -19,7 +19,8 @@ img {
 }
 
 .common_blue {
-  background-color: #0d6efd !important;
+  background-color: #428bf8 !important;
+  /* background-color: #0d6efd !important; */
 }
 .common_grey {
   color: #b6b2b2;
@@ -156,4 +157,8 @@ input {
 input:focus-visible {
   outline: none;
   border-bottom: 1px solid black !important;
+}
+
+.custom_navbar {
+  background-color: transparent;
 }
