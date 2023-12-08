@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import {
   addNotes,
@@ -13,8 +13,8 @@ import { FaCheck } from "react-icons/fa6";
 import CustomButton from "../components/shared/CustomButton";
 import CustomModal from "../components/shared/CustomModal";
 import { BiSolidMessageSquareEdit } from "react-icons/bi";
-import moment from "moment";
 import FileUploader from "../components/shared/FileUploader";
+import { CiImageOn } from "react-icons/ci";
 
 const NotesPage = () => {
   const [notes, setNotes] = useState([]);
@@ -30,6 +30,10 @@ const NotesPage = () => {
     key: "ADD_NOTES",
     note: "",
   });
+  // const [images, setImages] = useState([]);
+  const [images, setImages] = useState({});
+
+  console.log(images, "images");
 
   useEffect(() => {
     (async () => {
@@ -42,7 +46,8 @@ const NotesPage = () => {
     })();
   }, [refresh]);
 
-  const handleOpenModal = (note, content_type) => {
+
+  const handleOpenModal = useCallback((note, content_type) => {
     if (content_type === "MORE") {
       setContentType({
         key: content_type,
@@ -55,13 +60,28 @@ const NotesPage = () => {
       setShowModal(true);
       setNote({ message: "" });
     }
-  };
+  }, [showModal])
+
+
 
   const handleAddNotes = async (e) => {
     e.preventDefault();
 
     if (note.message) {
-      const res = await addNotes(note);
+
+      const fd = new FormData()
+
+      fd.append("message", note.message)
+      // fd.append("images", images)
+
+      for (const key of Object.keys(images)) {
+        fd.append('images', images[key])
+      }
+      // LOGGING PAYLOAD ========================================
+      // for (var pair of fd.entries()) {
+      //   console.log(pair[0] + ", " + pair[1]);
+      // }
+      const res = await addNotes(fd);
 
       if (res?.status === 201) {
         sendNotification("success", res?.data?.message);
@@ -131,10 +151,9 @@ const NotesPage = () => {
         <Row>
           {notes?.length ? (
             notes.map((el, index) => {
-              const timeAgo = moment(el.createdAt).fromNow();
               return (
                 <Col className="flex_center mb-5" lg={3}>
-                  <div className="note_card p-5">
+                  <div className="note_card px-5 py-5 border">
                     <div className="mt-3">
                       {isEdit?.edit && isEdit.index === index ? (
                         <>
@@ -198,12 +217,26 @@ const NotesPage = () => {
                       />
                     </div>
 
-                    <p
+                    <div className="mb-3">
+                      <CiImageOn size={25} className="cursor" onClick={() =>
+                        handleOpenModal(note.message, "MORE")
+                      } />
+                    </div>
+                    {/* {el?.images?.length ?
+                      el.images.map(({ image }) => {
+                        return (
+                          <CiImageOn />
+                        )
+                      }) : null
+                    } */}
+                    {/* <p
                       className="text-secondary position-absolute position-absolute bottom-0"
                       style={{ right: "20px" }}
                     >
                       {timeAgo}
-                    </p>
+                    </p> */}
+
+
                   </div>
                 </Col>
               );
@@ -247,7 +280,7 @@ const NotesPage = () => {
                       rows={8}
                     />
 
-                    {/* <FileUploader /> */}
+                    <FileUploader images={images} setImages={setImages} />
                   </div>
                 </form>
               </div>

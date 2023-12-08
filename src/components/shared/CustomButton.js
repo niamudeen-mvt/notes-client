@@ -3,7 +3,6 @@ import { Button } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 
 const CustomButton = ({ text, url, onClick }) => {
-
   console.log("custom button is rendering")
   return (
     <Link to={url ? url : '#'}>
@@ -12,4 +11,4 @@ const CustomButton = ({ text, url, onClick }) => {
   )
 }
 
-export default CustomButton
+export default React.memo(CustomButton)

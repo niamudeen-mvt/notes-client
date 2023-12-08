@@ -11,6 +11,8 @@ const api = axios.create({
   },
 });
 
+
+
 api.interceptors.request.use(
   async function (config) {
     if (config.url !== "/auth/login" && config.url !== "/auth/register") {

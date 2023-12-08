@@ -1,30 +1,31 @@
-import React, { useState } from "react";
+import React from "react";
 
-const FileUploader = () => {
-  const [images, setImages] = useState([]);
+const FileUploader = ({ images, setImages }) => {
 
   const handleFileChange = (e) => {
-    const selectedFiles = Array.from(e.target.files);
-    setImages([...images, ...selectedFiles]);
+    setImages(e.target.files)
   };
 
-  const removeImage = (index) => {
-    const updatedImages = [...images];
-    updatedImages.splice(index, 1);
-    setImages(updatedImages);
-  };
+  // const removeImage = (index) => {
+  //   // const updatedImages = [...images];
+  //   // updatedImages.splice(index, 1);
+  //   // setImages(updatedImages);
+
+  // };
 
   return (
     <div>
-      {/* <label htmlFor="fileInput">
-        Choose Files ({images.length} {images.length === 1 ? "file" : "files"})
-      </label> */}
+      <label htmlFor="fileInput" className=" w-100 mt-3 p-3 text-center text-secondary cursor rounded border" >
+        Upload image (optional)
+        ({images.length} {images.length === 1 ? "file" : "files"})
+      </label>
       <input
         type="file"
         accept="image/*"
         multiple
         onChange={handleFileChange}
         id="fileInput"
+        hidden
       />
       {/* <div>
         {images.map((image, index) => (
