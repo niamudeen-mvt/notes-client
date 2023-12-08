@@ -5,6 +5,7 @@ import { Link, useLocation } from "react-router-dom";
 import "./header.css";
 import { useAuth } from "../../context/authContext";
 import { config } from "../../config";
+import { FiEdit } from "react-icons/fi";
 
 const Header = () => {
   const { isLoggedIn } = useAuth();
@@ -12,9 +13,9 @@ const Header = () => {
   const route = useLocation().pathname;
 
   return (
-    <Navbar expand="lg" bg="dark" data-bs-theme="dark" sticky="top">
+    <Navbar expand="lg" sticky="top" className="common_blue">
       <Container>
-        <Navbar.Brand to="#home">{config.PROJECT_NAME}</Navbar.Brand>
+        <Navbar.Brand to="#home" className="text-white fw-bold"><span className="mx-2 x"><FiEdit /></span>{config.PROJECT_NAME}</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="ms-auto  flexCenter">
