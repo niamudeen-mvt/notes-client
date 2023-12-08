@@ -292,7 +292,7 @@ const NotesPage = () => {
                       rows={8}
                     />
 
-                    <FileUploader images={images} setImages={setImages} />
+                    {/* <FileUploader images={images} setImages={setImages} /> */}
                   </div>
                 </form>
               </div>
