@@ -33,7 +33,7 @@ const CustomHeader = () => {
         <Container>
           <Navbar.Brand
             to="#home"
-            className={`p-0 fw-bold  text-capitalize`}
+            className={`p-0 fw-bold text-capitalize`}
             style={{
               color: "#3e64ff !important",
             }}

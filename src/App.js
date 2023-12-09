@@ -8,12 +8,12 @@ import Profile from "./pages/Profile";
 import Logout from "./pages/Logout";
 import NotesPage from "./pages/Notes";
 import NoteProvider from "./context/noteContext";
-import CustomHeader from "./layout/header/CustomHeader";
+// import CustomHeader from "./layout/header/CustomHeader";
 
 const App = () => {
   return (
     <BrowserRouter>
-      <CustomHeader />
+      {/* <CustomHeader /> */}
       <NoteProvider>
         <Routes>
           <Route path="/" element={<Home />} />

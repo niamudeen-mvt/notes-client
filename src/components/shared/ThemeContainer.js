@@ -1,6 +1,6 @@
 import React from "react";
 import { config } from "../../config";
-// import Header from "../../layout/header/Header";
+import Header from "../../layout/header/Header";
 
 const ThemeContainer = ({ children, center = false }) => {
   const themeObj = {
@@ -8,9 +8,9 @@ const ThemeContainer = ({ children, center = false }) => {
   };
   return (
     <>
-      {/* <header>
+      <header>
         <Header />
-      </header> */}
+      </header>
       <section className="w-100 position-absolute top-0" style={{ zIndex: -1 }}>
         <div
           className={`min-vh-100 h-auto py-5 ${center ? "flex_center" : ""}`}

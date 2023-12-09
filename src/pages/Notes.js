@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { Button, Col, Container, Row } from "react-bootstrap";
-import { CiImageOn } from "react-icons/ci";
-import { FaCheck } from "react-icons/fa6";
+import { Col, Container, Row } from "react-bootstrap";
+// import { CiImageOn } from "react-icons/ci";
 import { MdDelete } from "react-icons/md";
 import { BiSolidMessageSquareEdit } from "react-icons/bi";
 import {
@@ -19,7 +18,6 @@ import CustomModal from "../components/shared/CustomModal";
 import CustomTooltip from "../components/CustomTooltip";
 import CustomLoader from "../components/shared/CustomLoader";
 import { IoIosLink } from "react-icons/io";
-import { GoLinkExternal } from "react-icons/go";
 
 const NotesPage = () => {
   const [notes, setNotes] = useState([]);
@@ -41,9 +39,10 @@ const NotesPage = () => {
   const [selectedNote, setSelectedNote] = useState({});
   const [imgUrl, setImgUrl] = useState();
 
-  console.log("note", note);
+  console.log(note, "note");
   console.log(contentType, "contentType");
   console.log(selectedNote, "selectedNote");
+  console.log(notes, "notes");
 
   const fileInputRef = useRef();
 
@@ -175,6 +174,7 @@ const NotesPage = () => {
 
   const handleClose = () => {
     setShowModal(false);
+    setSelectedNote({});
     // Clear file input in FileUploader component
     if (fileInputRef.current) {
       fileInputRef.current.clearFileInput();
@@ -185,6 +185,7 @@ const NotesPage = () => {
     const note = notes?.filter((e, i) => i === index);
 
     setSelectedNote(note[0]);
+    setNote(note[0]);
 
     setShowModal(true);
     setContentType({
@@ -205,331 +206,243 @@ const NotesPage = () => {
 
   if (isLoading) return <CustomLoader />;
   return (
-    <section className="common_container  py-5">
-      <Container>
-        <div className="mb-5 shadow-sm p-3 flex_SB justify-content-end">
-          <CustomButton text="ADD NOTES" onClick={handleOpenModal} />
-        </div>
-        <Row>
-          {notes?.length
-            ? notes.map((el, index) => {
-                return (
-                  <Col
-                    className="flex_center justify-content-start mb-5 "
-                    lg={3}
-                  >
-                    <div
-                      style={noteSyles}
-                      className="p-5 rounded flex_center position-relative cursor note_card"
+    <>
+      <section className="py-5" style={{ minHeight: "75vh" }}>
+        <Container>
+          <Row>
+            {notes?.length
+              ? notes.map((el, index) => {
+                  return (
+                    <Col
+                      className="flex_center  mb-5"
+                      xs={12}
+                      sm={6}
+                      md={4}
+                      lg={3}
                     >
-                      Notes {index + 1}
-                      <div className="position-absolute top-0 w-100  h-100 note_card_overlay flex_center gap-3">
-                        <div></div>
-                        <CustomTooltip msg="Details">
-                          <IoIosLink
-                            fontSize={"25px"}
-                            onClick={() => handleSeeNoteDetails(index)}
-                          />
-                        </CustomTooltip>
-                        <CustomTooltip msg="edit">
-                          <BiSolidMessageSquareEdit
-                            fontSize={"25px"}
-                            onClick={() => handleEdit(index)}
-                            className="cursor d-block"
-                          />
-                        </CustomTooltip>
-                        <CustomTooltip msg="delete">
-                          <MdDelete
-                            fontSize={"25px"}
-                            onClick={() => handleDelteNote(el._id)}
-                            className="cursor"
-                          />
-                        </CustomTooltip>
-                      </div>
-                    </div>
-                    {/* <div className="note_card px-5 py-5">
-                      <div className="mt-3">
-                        {isEdit?.edit && isEdit.index === index ? (
-                          <>
-                            <textarea
-                              type="text"
-                              className="px-2 py-3 border-0 w-100  messge_field"
-                              value={note.message.substring(0, 140)}
-                              onChange={(e) => handleChange(e)}
-                              placeholder="Enter new note .........."
-                              autoComplete="off"
-                              rows={6}
-                            />
-                            {note.message?.length > 150 ? (
-                              <span
-                                className="cursor"
-                                onClick={() =>
-                                  handleOpenModal(note.message, "MORE")
-                                }
-                              >
-                                ...more
-                              </span>
-                            ) : null}
-                          </>
-                        ) : (
-                          <>
-                            <h2 className="text-captialize">
-                              {el?.title?.substring(0, 30)}
-                            </h2>
-                            <p>
-                              {el.message.substring(0, 200)}
-                              {el.message?.length > 200 ? (
-                                <span
-                                  className="cursor"
-                                  onClick={() =>
-                                    handleOpenModal(el.message, "MORE")
-                                  }
-                                >
-                                  ...more
-                                </span>
-                              ) : null}
-                            </p>
-                          </>
-                        )}
-                      </div>
-                      <div className="icon_menu">
-                        {" "}
-                        {isEdit?.edit && isEdit.index === index ? (
-                          <CustomTooltip msg="submit">
-                            <FaCheck
-                              color="green"
+                      <div
+                        style={noteSyles}
+                        className="p-5 rounded flex_center position-relative cursor note_card"
+                      >
+                        Notes {index + 1}
+                        <div className="position-absolute top-0 w-100  h-100 note_card_overlay flex_center gap-3">
+                          <CustomTooltip msg="Details">
+                            <IoIosLink
                               fontSize={"25px"}
-                              onClick={() => handleEditNote(el._id, index)}
-                              className="cursor"
+                              onClick={() => handleSeeNoteDetails(index)}
                             />
                           </CustomTooltip>
-                        ) : null}
-                        <CustomTooltip msg="edit">
-                          <Button
-                            variant="secondary"
-                            className="p-0 bg-light border-0"
-                          >
+                          <CustomTooltip msg="edit">
                             <BiSolidMessageSquareEdit
-                              color="#0d6efd"
                               fontSize={"25px"}
                               onClick={() => handleEdit(index)}
                               className="cursor d-block"
                             />
-                          </Button>
-                        </CustomTooltip>
-                        <CustomTooltip msg="delete">
-                          <MdDelete
-                            color="red"
-                            fontSize={"25px"}
-                            onClick={() => handleDelteNote(el._id)}
-                            className="cursor"
-                          />
-                        </CustomTooltip>
-                      </div>
-                      {el?.images?.length ? (
-                        <div className="mb-3">
-                          <CustomTooltip msg="images" placement="right">
-                            <CiImageOn
-                              size={25}
-                              color="green"
+                          </CustomTooltip>
+                          <CustomTooltip msg="delete">
+                            <MdDelete
+                              fontSize={"25px"}
+                              onClick={() => handleDelteNote(el._id)}
                               className="cursor"
-                              onClick={() => {
-                                setShowImgModal(true);
-                                setNoteImgList(el.images);
-                              }}
                             />
                           </CustomTooltip>
                         </div>
-                      ) : null}
-                    </div> */}
-                  </Col>
-                );
-              })
-            : null}
-        </Row>
-      </Container>
+                      </div>
+                    </Col>
+                  );
+                })
+              : null}
+          </Row>
+        </Container>
 
-      {/* ADD NOTES MODEL */}
-      <CustomModal
-        showModal={showModal}
-        setShowModal={setShowModal}
-        modalHeading={contentType.heading}
-        handleSubmit={
-          contentType.key === "NOTE"
-            ? handleAddNotes
-            : contentType.key === "EDIT_NOTE"
-            ? handleEditNote
-            : handleAddNotes
-        }
-        contentType={contentType.key}
-        handleClose={handleClose}
-        showFooter={contentType.key === "NOTE" ? false : true}
-      >
-        {/* add note form */}
+        {/* ADD NOTES MODEL */}
+        <CustomModal
+          showModal={showModal}
+          setShowModal={setShowModal}
+          modalHeading={contentType.heading}
+          handleSubmit={
+            contentType.key === "NOTE"
+              ? handleAddNotes
+              : contentType.key === "EDIT_NOTE"
+              ? handleEditNote
+              : handleAddNotes
+          }
+          contentType={contentType.key}
+          handleClose={handleClose}
+          showFooter={contentType.key === "NOTE" ? false : true}
+          showSpinner={isLoading}
+        >
+          {/* add note form */}
 
-        {contentType.key === "MORE" ? (
-          <p>{contentType.note}</p>
-        ) : contentType.key === "NOTE" ? (
-          <div className="mb-3">
-            <p className="fw-bold">{selectedNote.title}</p>
-            <p className="mb-5">{selectedNote.message}</p>
+          {contentType.key === "MORE" ? (
+            <p>{contentType.note}</p>
+          ) : contentType.key === "NOTE" ? (
+            <div className="mb-3">
+              <p className="fw-bold">{selectedNote.title}</p>
+              <p className="mb-5">{selectedNote.message}</p>
 
-            <Row>
-              {selectedNote?.images?.length
-                ? selectedNote.images.map((file) => {
-                    return (
-                      <Col xs={12} md={4}>
-                        <div
-                          className="h-75 cursor"
-                          onClick={() => {
-                            setImgUrl(file.image);
-                            setShowImgModal(true);
-                          }}
-                        >
-                          <img
-                            src={file.image}
-                            alt="note-img"
-                            className="w-full box_shadow cursor"
-                          />
-                        </div>
-                      </Col>
-                    );
-                  })
-                : null}
-            </Row>
-          </div>
-        ) : contentType.key === "EDIT_NOTE" ? (
-          <section className="common_section">
-            <Container>
-              <div>
-                <form>
-                  <div className="mb-3">
-                    <div>
-                      <label className="fw-bold">Title</label>
-                      <input
-                        type="text"
-                        name="title"
-                        className="px-2 py-3 border-0 w-100 ouline_none"
-                        placeholder="Title"
-                        autoComplete="off"
-                        spellCheck="off"
-                        value={note.title}
-                        onChange={(e) => handleChange(e)}
-                      />
-                    </div>
-
-                    {selectedNote?.message ? (
+              <Row>
+                {selectedNote?.images?.length
+                  ? selectedNote.images.map((file) => {
+                      return (
+                        <Col xs={12} md={4}>
+                          <div
+                            className="h-75 cursor"
+                            onClick={() => {
+                              setImgUrl(file.image);
+                              setShowImgModal(true);
+                            }}
+                          >
+                            <img
+                              src={file.image}
+                              alt="note-img"
+                              className="w-full box_shadow cursor"
+                            />
+                          </div>
+                        </Col>
+                      );
+                    })
+                  : null}
+              </Row>
+            </div>
+          ) : contentType.key === "EDIT_NOTE" ? (
+            <section className="common_section">
+              <Container>
+                <div>
+                  <form>
+                    <div className="mb-3">
                       <div>
-                        <label className="fw-bold">message</label>
-                        <textarea
+                        <label className="fw-bold">Title</label>
+                        <input
                           type="text"
-                          name="message"
+                          name="title"
                           className="px-2 py-3 border-0 w-100 ouline_none"
-                          placeholder="Start Typing .........."
+                          placeholder="Title"
                           autoComplete="off"
                           spellCheck="off"
-                          style={{
-                            // boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px",
-                            minHeight: "300px",
-                          }}
-                          rows={8}
-                          value={note.message}
+                          value={note.title}
                           onChange={(e) => handleChange(e)}
                         />
                       </div>
-                    ) : null}
 
-                    <Row>
-                      {selectedNote?.images?.length ? (
-                        selectedNote.images.map((file) => {
-                          return (
-                            <Col xs={12} md={4}>
-                              <div
-                                className="h-75 cursor"
-                                onClick={() => {
-                                  setImgUrl(file.image);
-                                  setShowImgModal(true);
-                                }}
-                              >
-                                <img
-                                  src={file.image}
-                                  alt="note-img"
-                                  className="w-full box_shadow cursor"
-                                />
-                              </div>
-                            </Col>
-                          );
-                        })
-                      ) : (
-                        <FileUploader
-                          images={images}
-                          setImages={setImages}
-                          ref={fileInputRef}
-                        />
-                      )}
-                    </Row>
-                  </div>
-                </form>
-              </div>
-            </Container>
-          </section>
-        ) : contentType.key === "ADD_NOTES" ? (
-          <section className="common_section">
-            <Container>
-              <div>
-                <form>
-                  <div className="mb-3">
-                    <label className="fw-bold px-2 mb-3">Title</label>
-                    <input
-                      type="text"
-                      name="title"
-                      className="px-2 py-3 border-0 w-100 mb-3 rounded"
-                      placeholder="Title"
-                      autoComplete="off"
-                      spellCheck="off"
-                      // style={{
-                      //   boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px",
-                      // }}
-                      value={note.title}
-                      onChange={(e) => handleChange(e)}
-                    />
-                    <label className="fw-bold px-2">Message</label>
-                    <textarea
-                      type="text"
-                      name="message"
-                      className="px-2 py-3 border-0 w-100 ouline_none"
-                      placeholder="Start Typing .........."
-                      autoComplete="off"
-                      spellCheck="false"
-                      // style={{
-                      //   maxHeight: "300px",
-                      // }}
-                      rows={8}
-                      value={note.message}
-                      onChange={(e) => handleChange(e)}
-                    />
-                    <FileUploader
-                      images={images}
-                      setImages={setImages}
-                      ref={fileInputRef}
-                    />
-                  </div>
-                </form>
-              </div>
-            </Container>
-          </section>
+                      {selectedNote?.message ? (
+                        <div>
+                          <label className="fw-bold">message</label>
+                          <textarea
+                            type="text"
+                            name="message"
+                            className="px-2 py-3 border-0 w-100 ouline_none"
+                            placeholder="Start Typing .........."
+                            autoComplete="off"
+                            spellCheck="off"
+                            style={{
+                              // boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px",
+                              minHeight: "300px",
+                            }}
+                            rows={8}
+                            value={note.message}
+                            onChange={(e) => handleChange(e)}
+                          />
+                        </div>
+                      ) : null}
+
+                      <Row>
+                        {selectedNote?.images?.length ? (
+                          selectedNote.images.map((file) => {
+                            return (
+                              <Col xs={12} md={4}>
+                                <div
+                                  className="h-75 cursor"
+                                  onClick={() => {
+                                    setImgUrl(file.image);
+                                    setShowImgModal(true);
+                                  }}
+                                >
+                                  <img
+                                    src={file.image}
+                                    alt="note-img"
+                                    className="w-full box_shadow cursor"
+                                  />
+                                </div>
+                              </Col>
+                            );
+                          })
+                        ) : (
+                          <FileUploader
+                            images={images}
+                            setImages={setImages}
+                            ref={fileInputRef}
+                          />
+                        )}
+                      </Row>
+                    </div>
+                  </form>
+                </div>
+              </Container>
+            </section>
+          ) : contentType.key === "ADD_NOTES" ? (
+            <section className="common_section">
+              <Container>
+                <div>
+                  <form>
+                    <div className="mb-3">
+                      <label className="fw-bold px-2 mb-3">Title</label>
+                      <input
+                        type="text"
+                        name="title"
+                        className="px-2 py-3 border-0 w-100 mb-3 rounded"
+                        placeholder="Title"
+                        autoComplete="off"
+                        spellCheck="off"
+                        // style={{
+                        //   boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px",
+                        // }}
+                        value={note.title}
+                        onChange={(e) => handleChange(e)}
+                      />
+                      <label className="fw-bold px-2">Message</label>
+                      <textarea
+                        type="text"
+                        name="message"
+                        className="px-2 py-3 border-0 w-100 ouline_none"
+                        placeholder="Start Typing .........."
+                        autoComplete="off"
+                        spellCheck="false"
+                        // style={{
+                        //   maxHeight: "300px",
+                        // }}
+                        rows={8}
+                        value={note.message}
+                        onChange={(e) => handleChange(e)}
+                      />
+                      <FileUploader
+                        images={images}
+                        setImages={setImages}
+                        ref={fileInputRef}
+                      />
+                    </div>
+                  </form>
+                </div>
+              </Container>
+            </section>
+          ) : null}
+        </CustomModal>
+
+        {/* IMAGE PREVIEW MODAL */}
+        {showImgModal ? (
+          <ImagePreviewModal
+            showImgModal={showImgModal}
+            setShowImgModal={setShowImgModal}
+            imgUrl={imgUrl}
+          />
         ) : null}
-      </CustomModal>
-
-      {/* IMAGE PREVIEW MODAL */}
-      {showImgModal ? (
-        <ImagePreviewModal
-          showImgModal={showImgModal}
-          setShowImgModal={setShowImgModal}
-          imgUrl={imgUrl}
-        />
-      ) : null}
-    </section>
+      </section>
+      <Container>
+        <div className="d-flex justify-content-end">
+          <CustomButton text="ADD NOTES" onClick={handleOpenModal} />
+        </div>
+      </Container>
+    </>
   );
 };
 
