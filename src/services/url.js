@@ -19,3 +19,4 @@ export const FETCH_NOTES = "/notes";
 export const DELETE_NOTES = "/notes/delete/";
 export const EDIT_NOTES = "/notes/edit/";
 export const IMGKIT_AUTH = "/notes/imagekit-auth";
+export const DELETE_NOTE_IMG = "/notes/delete-img";

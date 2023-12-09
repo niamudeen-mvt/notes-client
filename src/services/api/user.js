@@ -1,5 +1,11 @@
 import api from "../../utils/axios";
-import { EDIT_USER_DETAILS, LOGIN_USER, REFRESH_TOKEN, REGISTER_USER, USER_DETAILS } from "../url";
+import {
+  EDIT_USER_DETAILS,
+  LOGIN_USER,
+  REFRESH_TOKEN,
+  REGISTER_USER,
+  USER_DETAILS,
+} from "../url";
 
 export const registerUser = async (body) => {
   try {
@@ -26,7 +32,6 @@ export const getUserDetails = async () => {
     return error;
   }
 };
-
 
 export const editUserDetials = async (body) => {
   try {

@@ -7,7 +7,6 @@ import { useNavigate } from "react-router-dom";
 import { sendNotification } from "../../utils/notifications";
 import { registerUser } from "../../services/api/user";
 import { BasicFormLayout } from "../../components/shared/BasicFormLayout";
-import ThemeContainer from "../../components/shared/ThemeContainer";
 
 const SignupForm = () => {
   const navigate = useNavigate();
@@ -49,63 +48,61 @@ const SignupForm = () => {
   };
 
   return (
-    <ThemeContainer>
-      <BasicFormLayout>
-        <form className="h-75 p-5">
-          <h2 className="fw-bold mb-5">SIGNUP !</h2>
-          <CustomInput
-            mb={5}
-            label="Username"
-            name="username"
-            handleChange={handleChange}
-            value={user.username}
-            errors={errors}
-          />
-          <CustomInput
-            name="email"
-            label="Email"
-            mb={5}
-            type="text"
-            value={user.email}
-            handleChange={handleChange}
-            errors={errors}
-          />
-          <CustomInput
-            name="phone"
-            label="Phone"
-            mb={5}
-            type="text"
-            value={user.phone}
-            handleChange={handleChange}
-            errors={errors}
-          />
-          <CustomInput
-            name="password"
-            label="password"
-            mb={5}
-            type="text"
-            value={user.password}
-            handleChange={handleChange}
-            errors={errors}
-          />
-          <Button
-            type="submit"
-            className="px-5 py-2 rounded-5 fw-bold box_shadow mb-4"
-            onClick={handleSubmit}
-          >
-            Submit
-          </Button>
-          <p className="common_grey">
-            Already have and account ?{" "}
-            <Link to="/login">
-              <span className="cursor" style={{ color: "#0d6efd" }}>
-                Sign in
-              </span>
-            </Link>
-          </p>
-        </form>
-      </BasicFormLayout>
-    </ThemeContainer>
+    <BasicFormLayout>
+      <form className="h-75 p-5">
+        <h2 className="fw-bold mb-5">SIGNUP !</h2>
+        <CustomInput
+          mb={5}
+          label="Username"
+          name="username"
+          handleChange={handleChange}
+          value={user.username}
+          errors={errors}
+        />
+        <CustomInput
+          name="email"
+          label="Email"
+          mb={5}
+          type="text"
+          value={user.email}
+          handleChange={handleChange}
+          errors={errors}
+        />
+        <CustomInput
+          name="phone"
+          label="Phone"
+          mb={5}
+          type="text"
+          value={user.phone}
+          handleChange={handleChange}
+          errors={errors}
+        />
+        <CustomInput
+          name="password"
+          label="password"
+          mb={5}
+          type="text"
+          value={user.password}
+          handleChange={handleChange}
+          errors={errors}
+        />
+        <Button
+          type="submit"
+          className="px-5 py-2 rounded-5 fw-bold box_shadow mb-4"
+          onClick={handleSubmit}
+        >
+          Submit
+        </Button>
+        <p className="common_grey">
+          Already have and account ?{" "}
+          <Link to="/login">
+            <span className="cursor" style={{ color: "#0d6efd" }}>
+              Sign in
+            </span>
+          </Link>
+        </p>
+      </form>
+    </BasicFormLayout>
   );
 };
 

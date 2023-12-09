@@ -1,11 +1,16 @@
 import React from "react";
 import { config } from "../../config";
 import Header from "../../layout/header/Header";
+import { useAuth } from "../../context/authContext";
 
 const ThemeContainer = ({ children, center = false }) => {
+  const { isLoggedIn } = useAuth();
   const themeObj = {
-    background: `linear-gradient(to right,${config.theme.main_clr} 50% , white 50%)`,
+    background: isLoggedIn
+      ? "transparent"
+      : `linear-gradient(to right,${config.theme.main_clr} 50% , white 50%)`,
   };
+
   return (
     <>
       <header>

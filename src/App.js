@@ -8,23 +8,24 @@ import Profile from "./pages/Profile";
 import Logout from "./pages/Logout";
 import NotesPage from "./pages/Notes";
 import NoteProvider from "./context/noteContext";
-// import CustomHeader from "./layout/header/CustomHeader";
+import ThemeContainer from "./components/shared/ThemeContainer";
 
 const App = () => {
   return (
     <BrowserRouter>
-      {/* <CustomHeader /> */}
-      <NoteProvider>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/signup" element={<SignupForm />} />
-          <Route path="/login" element={<LoginForm />} />
-          <Route path="/logout" element={<Logout />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/notes" element={<NotesPage />} />
-          <Route path="*" element={<Home />} />
-        </Routes>
-      </NoteProvider>
+      <ThemeContainer>
+        <NoteProvider>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/signup" element={<SignupForm />} />
+            <Route path="/login" element={<LoginForm />} />
+            <Route path="/logout" element={<Logout />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/notes" element={<NotesPage />} />
+            <Route path="*" element={<Home />} />
+          </Routes>
+        </NoteProvider>
+      </ThemeContainer>
       <ToastContainerNotification />
     </BrowserRouter>
   );

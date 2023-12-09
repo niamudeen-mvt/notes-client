@@ -26,13 +26,19 @@ const Header = () => {
     maxWidth: "1140px",
     zIndex: 1000,
   };
+
+  const brandStyles = {
+    color: isLoggedIn ? config.theme.main_light_clr : "white",
+  };
+
   return (
     <div className="mx-auto py-3" style={containerStyles}>
       <Navbar expand="lg">
         <Container>
           <Navbar.Brand
             to="#home"
-            className="text-white fw-bold text-capitalize  p-0"
+            className={`fw-bold text-capitalize p-0`}
+            style={brandStyles}
           >
             {config.PROJECT_NAME}
           </Navbar.Brand>

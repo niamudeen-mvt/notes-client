@@ -1,5 +1,11 @@
 import api from "../../utils/axios";
-import { ADD_NOTES, DELETE_NOTES, EDIT_NOTES, FETCH_NOTES } from "../url";
+import {
+  ADD_NOTES,
+  DELETE_NOTES,
+  DELETE_NOTE_IMG,
+  EDIT_NOTES,
+  FETCH_NOTES,
+} from "../url";
 
 export const addNotes = async (body) => {
   try {
@@ -36,6 +42,15 @@ export const deleteNotesById = async (id) => {
 export const editNotesById = async (id, body) => {
   try {
     let response = await api.patch(EDIT_NOTES + id, body);
+    return response;
+  } catch (error) {
+    return error;
+  }
+};
+
+export const deleteImgById = async (body) => {
+  try {
+    let response = await api.patch(DELETE_NOTE_IMG, body);
     return response;
   } catch (error) {
     return error;

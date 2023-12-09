@@ -5,6 +5,7 @@ import { MdDelete } from "react-icons/md";
 import { BiSolidMessageSquareEdit } from "react-icons/bi";
 import {
   addNotes,
+  deleteImgById,
   deleteNotesById,
   editNotesById,
   getNotes,
@@ -196,6 +197,24 @@ const NotesPage = () => {
     setNote({ message: "" });
   };
 
+  const handleRemoveImg = async (event, imgId) => {
+    event.preventDefault();
+    event.stopPropagation();
+
+    setSelectedNote(selectedNote.images.filter((file) => file._id !== imgId));
+    if (selectedNote?._id && imgId) {
+      let res = await deleteImgById({
+        noteId: selectedNote._id,
+        imgId: imgId,
+      });
+      if (res?.status === 200) {
+        sendNotification("success", res?.data?.message);
+      } else {
+        sendNotification("warning", res?.response?.data?.message);
+      }
+    }
+  };
+
   // CSS
 
   const noteSyles = {
@@ -352,7 +371,7 @@ const NotesPage = () => {
                             return (
                               <Col xs={12} md={4}>
                                 <div
-                                  className="h-75 cursor"
+                                  className="h-75 cursor position-relative"
                                   onClick={() => {
                                     setImgUrl(file.image);
                                     setShowImgModal(true);
@@ -363,6 +382,18 @@ const NotesPage = () => {
                                     alt="note-img"
                                     className="w-full box_shadow cursor"
                                   />
+                                  <p className="position-absolute top-0 end-0">
+                                    <CustomTooltip msg="delete">
+                                      <MdDelete
+                                        fontSize={"25px"}
+                                        onClick={(event) =>
+                                          handleRemoveImg(event, file._id)
+                                        }
+                                        className="cursor"
+                                        color="red"
+                                      />
+                                    </CustomTooltip>
+                                  </p>
                                 </div>
                               </Col>
                             );
