@@ -1,46 +1,93 @@
-import React from "react";
+import React, {
+  forwardRef,
+  useImperativeHandle,
+  useRef,
+  useState,
+} from "react";
 
-const FileUploader = ({ images, setImages }) => {
+const FileUploader = ({ images, setImages }, ref) => {
+  const [imgList, setImgList] = useState([]);
+
+  console.log(imgList, "imgList");
+  console.log(images, "images");
+  const fileInputRef = useRef();
 
   const handleFileChange = (e) => {
-    setImages(e.target.files)
+    const uploadedFiles = e.target.files;
+    setImages(uploadedFiles);
+
+    const newImages = Array.from(uploadedFiles).map((file) =>
+      URL.createObjectURL(file)
+    );
+
+    setImgList([...imgList, ...newImages]);
   };
 
-  // const removeImage = (index) => {
-  //   // const updatedImages = [...images];
-  //   // updatedImages.splice(index, 1);
-  //   // setImages(updatedImages);
+  // Function to clear file input value
+  const clearFileInput = () => {
+    setImgList([]); // Clear the image list
+    if (fileInputRef.current) {
+      fileInputRef.current.value = ""; // Clear the file input value
+    }
+  };
 
-  // };
+  const removeImage = (event, index) => {
+    event.preventDefault();
+
+    const updatedImages = [...imgList];
+    updatedImages.splice(index, 1);
+    setImgList(updatedImages);
+
+    const temp = [...images];
+    temp.splice(index, 1);
+    setImages(temp);
+    // clearFileInput();
+  };
+
+  useImperativeHandle(ref, () => ({
+    clearFileInput,
+  }));
 
   return (
     <div>
-      <label htmlFor="fileInput" className=" w-100 mt-3 p-3 text-center text-secondary cursor rounded border" >
-        Upload image (optional)
-        ({images.length} {images.length === 1 ? "file" : "files"})
+      <label
+        htmlFor="fileInput"
+        className=" w-100 mt-3 p-3 text-center text-secondary cursor rounded border"
+      >
+        Upload images
       </label>
       <input
+        id="fileInput"
         type="file"
+        ref={fileInputRef}
         accept="image/*"
         multiple
-        onChange={handleFileChange}
-        id="fileInput"
         hidden
+        onChange={handleFileChange}
       />
-      {/* <div>
-        {images.map((image, index) => (
+      <div>
+        {imgList?.map((image, index) => (
           <div key={index}>
             <img
-              src={URL.createObjectURL(image)}
+              src={image}
               alt={`uploaded ${index}`}
-              style={{ width: "100px", height: "100px", objectFit: "cover" }}
+              style={{
+                width: "100px",
+                height: "100px",
+                objectFit: "cover",
+              }}
             />
-            <button onClick={() => removeImage(index)}>Remove</button>
+            <button
+              type="button"
+              onClick={(event) => removeImage(event, index)}
+            >
+              Remove
+            </button>
           </div>
         ))}
-      </div> */}
+      </div>
     </div>
   );
 };
 
-export default FileUploader;
+export default forwardRef(FileUploader);

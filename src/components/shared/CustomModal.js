@@ -1,12 +1,17 @@
-import Button from 'react-bootstrap/Button';
-import Modal from 'react-bootstrap/Modal';
+import Button from "react-bootstrap/Button";
+import Modal from "react-bootstrap/Modal";
 
-const CustomModal = ({ showModal, setShowModal, modalHeading, children, handleSubmit, contentType }) => {
-
-  const handleClose = () => setShowModal(false);
+const CustomModal = ({
+  showModal,
+  modalHeading,
+  children,
+  handleSubmit,
+  contentType,
+  handleClose,
+}) => {
   return (
     <>
-      <Modal show={showModal} onHide={handleClose} >
+      <Modal show={showModal} onHide={handleClose} size="lg">
         <Modal.Header closeButton>
           <Modal.Title>{modalHeading}</Modal.Title>
         </Modal.Header>
@@ -15,18 +20,15 @@ const CustomModal = ({ showModal, setShowModal, modalHeading, children, handleSu
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          {
-            contentType === "MORE" ?
-              null :
-              <Button variant="primary" onClick={handleSubmit}>
-                Save Changes
-              </Button>
-
-          }
+          {contentType === "MORE" ? null : (
+            <Button variant="primary" onClick={handleSubmit}>
+              Save Changes
+            </Button>
+          )}
         </Modal.Footer>
       </Modal>
     </>
   );
-}
+};
 
 export default CustomModal;

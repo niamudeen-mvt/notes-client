@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Button, Col, Container, Row } from "react-bootstrap";
 import { CiImageOn } from "react-icons/ci";
 import { FaCheck } from "react-icons/fa6";
@@ -37,6 +37,8 @@ const NotesPage = () => {
   const [showImgModal, setShowImgModal] = useState(false);
   const [noteImgList, setNoteImgList] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+
+  const fileInputRef = useRef();
 
   useEffect(() => {
     (async () => {
@@ -143,6 +145,12 @@ const NotesPage = () => {
         index: index,
       });
     }
+  };
+
+  const handleClose = () => {
+    setShowModal(false);
+    // Clear file input in FileUploader component
+    fileInputRef.current.clearFileInput();
   };
 
   if (isLoading) return <CustomLoader />;
@@ -283,6 +291,7 @@ const NotesPage = () => {
         }
         handleSubmit={handleAddNotes}
         contentType={contentType.key}
+        handleClose={handleClose}
       >
         {/* add note form */}
 
@@ -307,7 +316,11 @@ const NotesPage = () => {
                       }}
                       rows={8}
                     />
-                    <FileUploader images={images} setImages={setImages} />
+                    <FileUploader
+                      images={images}
+                      setImages={setImages}
+                      ref={fileInputRef}
+                    />
                   </div>
                 </form>
               </div>
