@@ -153,13 +153,13 @@ a {
     max-width: 90%;
   }
 }
-input {
+/* input {
   background-color: transparent !important;
 }
 input:focus-visible {
   outline: none;
   border-bottom: 1px solid black !important;
-}
+} */
 
 .custom_navbar {
   background-color: transparent;

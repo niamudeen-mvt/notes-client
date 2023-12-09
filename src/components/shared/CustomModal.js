@@ -8,6 +8,7 @@ const CustomModal = ({
   handleSubmit,
   contentType,
   handleClose,
+  showFooter,
 }) => {
   return (
     <>
@@ -16,16 +17,18 @@ const CustomModal = ({
           <Modal.Title>{modalHeading}</Modal.Title>
         </Modal.Header>
         <Modal.Body>{children}</Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            Close
-          </Button>
-          {contentType === "MORE" ? null : (
-            <Button variant="primary" onClick={handleSubmit}>
-              Save Changes
+        {showFooter ? (
+          <Modal.Footer>
+            <Button variant="secondary" onClick={handleClose}>
+              Close
             </Button>
-          )}
-        </Modal.Footer>
+            {contentType === "MORE" ? null : (
+              <Button variant="primary" onClick={handleSubmit}>
+                Save Changes
+              </Button>
+            )}
+          </Modal.Footer>
+        ) : null}
       </Modal>
     </>
   );

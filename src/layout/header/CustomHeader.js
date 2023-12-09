@@ -28,7 +28,7 @@ const CustomHeader = () => {
     zIndex: 1000,
   };
   return (
-    <div className="mx-auto" style={containerStyles}>
+    <div className="mx-auto mb-3" style={containerStyles}>
       <Navbar expand="lg" className="bg-white">
         <Container>
           <Navbar.Brand
