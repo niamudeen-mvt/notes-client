@@ -1,40 +1,21 @@
 import React from "react";
-import { Button, Col, Row } from "react-bootstrap";
-import { Link } from "react-router-dom";
-import { config } from "../config";
-import { FiEdit } from "react-icons/fi";
+import ThemeContainer from "../components/shared/ThemeContainer";
 
 const Home = () => {
   return (
-    <main className="w-100">
+    <ThemeContainer>
       <div
-        className="min-vh-100 flex_center"
-        style={{
-          background: `linear-gradient(to right,${config.theme.main_clr} 50% , white 50%)`,
-          position: "absolute",
-          inset: "0",
-        }}
+        className="text-center p-5 flex_center flex-column"
+        style={{ minHeight: "90vh" }}
       >
-        <Row className="w-100">
-          <Col className="p-0 flex_center">
-            {/* <h4 className="text-white fw-bold text-capitalize">
-              <span className="mx-2">
-                <FiEdit />
-              </span>
-              Notes
-            </h4> */}
-          </Col>
-          <Col className="p-0">
-            <div className="text-uppercase text-center    p-5">
-              <h1 className="mb-3">Welcome to {config.PROJECT_NAME}</h1>
-              <Link to="/login">
-                <Button className="py-3 px-5 text-uppercase">Signin</Button>
-              </Link>
-            </div>
-          </Col>
-        </Row>
+        <h1
+          className="mb-3 fw-bolder text-capitalize d-flex  gap-4"
+          style={{ fontSize: "60px", position: "relative", left: "-10px" }}
+        >
+          <span className="text-white">Welcome</span>to Notes
+        </h1>
       </div>
-    </main>
+    </ThemeContainer>
   );
 };
 

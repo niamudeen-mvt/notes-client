@@ -150,7 +150,9 @@ const NotesPage = () => {
   const handleClose = () => {
     setShowModal(false);
     // Clear file input in FileUploader component
-    fileInputRef.current.clearFileInput();
+    if (fileInputRef.current) {
+      fileInputRef.current.clearFileInput();
+    }
   };
 
   if (isLoading) return <CustomLoader />;
@@ -191,19 +193,24 @@ const NotesPage = () => {
                             ) : null}
                           </>
                         ) : (
-                          <p>
-                            {el.message.substring(0, 200)}
-                            {el.message?.length > 200 ? (
-                              <span
-                                className="cursor"
-                                onClick={() =>
-                                  handleOpenModal(el.message, "MORE")
-                                }
-                              >
-                                ...more
-                              </span>
-                            ) : null}
-                          </p>
+                          <>
+                            <h2 className="text-captialize">
+                              {el?.title?.substring(0, 30)}
+                            </h2>
+                            <p>
+                              {el.message.substring(0, 200)}
+                              {el.message?.length > 200 ? (
+                                <span
+                                  className="cursor"
+                                  onClick={() =>
+                                    handleOpenModal(el.message, "MORE")
+                                  }
+                                >
+                                  ...more
+                                </span>
+                              ) : null}
+                            </p>
+                          </>
                         )}
                       </div>
                       <div className="icon_menu">
@@ -283,6 +290,7 @@ const NotesPage = () => {
         </Row>
       </Container>
 
+      {/* ADD NOTES MODEL */}
       <CustomModal
         showModal={showModal}
         setShowModal={setShowModal}
@@ -303,18 +311,33 @@ const NotesPage = () => {
               <div>
                 <form>
                   <div className="mb-3">
+                    <input
+                      type="text"
+                      name="title"
+                      className="px-2 py-3 border-0 w-100 mb-3"
+                      placeholder="Title"
+                      autoComplete="off"
+                      spellCheck="off"
+                      // style={{
+                      //   boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px",
+                      // }}
+                      value={note.title}
+                      onChange={(e) => handleChange(e)}
+                    />
                     <textarea
                       type="text"
+                      name="message"
                       className="px-2 py-3 border-0 w-100 ouline_none"
-                      value={note.message}
-                      onChange={(e) => handleChange(e)}
-                      placeholder="Enter Message .........."
+                      placeholder="Start Typing .........."
                       autoComplete="off"
+                      spellCheck="off"
                       style={{
-                        boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px",
+                        // boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px",
                         minHeight: "300px",
                       }}
                       rows={8}
+                      value={note.message}
+                      onChange={(e) => handleChange(e)}
                     />
                     <FileUploader
                       images={images}
@@ -329,6 +352,7 @@ const NotesPage = () => {
         )}
       </CustomModal>
 
+      {/* IMAGE PREVIEW MODAL */}
       {showImgModal ? (
         <ImagePreviewModal
           showImgModal={showImgModal}

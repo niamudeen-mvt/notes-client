@@ -17,22 +17,25 @@ const CommonLink = ({ text, route, url }) => {
   );
 };
 
-const Header = () => {
+const CustomHeader = () => {
   const { isLoggedIn } = useAuth();
 
   const route = useLocation().pathname;
 
   const containerStyles = {
-    maxWidth: "1140px",
+    // maxWidth: "1140px",
+    width: "100%",
     zIndex: 1000,
   };
   return (
-    <div className="mx-auto py-3" style={containerStyles}>
-      <Navbar expand="lg">
+    <div className="mx-auto" style={containerStyles}>
+      <Navbar expand="lg" className="bg-white">
         <Container>
           <Navbar.Brand
             to="#home"
-            className="text-white fw-bold text-capitalize  p-0"
+            className={`${
+              isLoggedIn ? "text-black" : "text-white"
+            } p-0 fw-bold  text-capitalize`}
           >
             {config.PROJECT_NAME}
           </Navbar.Brand>
@@ -60,4 +63,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default CustomHeader;

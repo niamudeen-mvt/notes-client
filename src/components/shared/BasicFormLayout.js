@@ -1,24 +1,32 @@
 import React from "react";
 import { Col, Row } from "react-bootstrap";
-import { FiEdit } from "react-icons/fi";
 import { config } from "../../config";
+import { Link } from "react-router-dom";
+import { FiEdit2 } from "react-icons/fi";
 
 export const BasicFormLayout = ({ children }) => {
   return (
-    <div className="min-vh-100 flex_center form_container mx-auto">
-      <div className="w-100 box_shadow">
+    <div className="min-vh-100 flex_center form_container mx-auto z-5">
+      <div
+        className="w-100"
+        style={{
+          boxShadow: "rgba(0, 0, 0, 0.35) -5px 5px 15px",
+        }}
+      >
         <Row className="h-100 " style={{ minHeight: "600px" }}>
           <Col xs={12} md={6} className="p-0">
             <div
               className="flex_center  h-100"
               style={{ backgroundColor: config.theme.main_clr }}
             >
-              <h4 className="text-white fw-bold text-capitalize">
-                <span className="mx-2">
-                  <FiEdit />
-                </span>
-                Notes
-              </h4>
+              <Link to="/">
+                <h4 className="text-white fw-bold text-capitalize">
+                  <span className="mx-2">
+                    <FiEdit2 />
+                  </span>
+                  Notes
+                </h4>
+              </Link>
             </div>
           </Col>
           <Col xs={12} md={6} className="h-100">

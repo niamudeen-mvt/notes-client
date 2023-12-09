@@ -1,14 +1,35 @@
-.link {
-  text-decoration: none;
-  color: black;
-  font-size: 15px;
-  padding: 0;
+.active_nav_link,
+.nav_link {
+  font-size: 16px;
+  padding-top: 0.7rem;
+  padding-bottom: 0.7rem;
+  padding-left: 20px;
+  padding-right: 20px;
+  color: #000000;
+  font-weight: 400;
+  opacity: 1 !important;
+  position: relative;
+  text-decoration: none; /* Remove default underline */
 }
 
-.active {
-  text-decoration: none;
-  color: black;
-  font-weight: bolder;
-  font-size: 15px;
-  padding: 0;
+.active_nav_link::before,
+.nav_link::before {
+  content: "";
+  position: absolute;
+  bottom: 5px;
+  left: 50%; /* Start from the center */
+  transform: translateX(-50%); /* Center the element */
+  width: 0;
+  height: 2px;
+  background: #3e64ff;
+  transition: all 0.3s ease-in-out;
+}
+
+.active_nav_link:hover::before,
+.nav_link:hover::before {
+  width: 80%;
+}
+
+.active_nav_link {
+  color: #3e64ff;
 }

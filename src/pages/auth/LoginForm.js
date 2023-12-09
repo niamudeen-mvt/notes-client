@@ -12,6 +12,8 @@ import { useAuth } from "../../context/authContext";
 import { Button } from "react-bootstrap";
 import CustomInput from "../../components/shared/CustomInput";
 import { BasicFormLayout } from "../../components/shared/BasicFormLayout";
+import ThemeContainer from "../../components/shared/ThemeContainer";
+import Header from "../../layout/header/Header";
 
 const LoginForm = () => {
   const navigate = useNavigate();
@@ -60,43 +62,45 @@ const LoginForm = () => {
   };
 
   return (
-    <BasicFormLayout>
-      <form className="h-75 p-5">
-        <h2 className="fw-bold mb-5">LOGIN !</h2>
-        <CustomInput
-          mb={3}
-          label="email address"
-          name="email"
-          handleChange={handleChange}
-          value={user.email}
-          errors={errors}
-        />
-        <CustomInput
-          name="password"
-          label="password"
-          mb={5}
-          type="text"
-          value={user.password}
-          handleChange={handleChange}
-          errors={errors}
-        />
-        <Button
-          type="submit"
-          className="px-5 py-2 rounded-5 fw-bold box_shadow mb-4"
-          onClick={handleSubmit}
-        >
-          Sign in
-        </Button>
-        <p className="common_grey">
-          Dont't have an account ?{" "}
-          <Link to="/signup">
-            <span className="cursor" style={{ color: "#0d6efd" }}>
-              Sign up
-            </span>
-          </Link>
-        </p>
-      </form>
-    </BasicFormLayout>
+    <ThemeContainer>
+      <BasicFormLayout>
+        <form className="h-75 p-5">
+          <h2 className="fw-bold mb-5">LOGIN !</h2>
+          <CustomInput
+            mb={3}
+            label="email address"
+            name="email"
+            handleChange={handleChange}
+            value={user.email}
+            errors={errors}
+          />
+          <CustomInput
+            name="password"
+            label="password"
+            mb={5}
+            type="text"
+            value={user.password}
+            handleChange={handleChange}
+            errors={errors}
+          />
+          <Button
+            type="submit"
+            className="px-5 py-2 rounded-5 fw-bold box_shadow mb-4"
+            onClick={handleSubmit}
+          >
+            Sign in
+          </Button>
+          <p className="common_grey">
+            Dont't have an account ?{" "}
+            <Link to="/signup">
+              <span className="cursor" style={{ color: "#0d6efd" }}>
+                Sign up
+              </span>
+            </Link>
+          </p>
+        </form>
+      </BasicFormLayout>
+    </ThemeContainer>
   );
 };
 

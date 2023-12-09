@@ -1,7 +1,6 @@
 import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Home from "./pages/Home";
-import Header from "./layout/header/Header";
 import SignupForm from "./pages/auth/SignupForm";
 import LoginForm from "./pages/auth/LoginForm";
 import { ToastContainerNotification } from "./utils/notifications";
@@ -9,11 +8,12 @@ import Profile from "./pages/Profile";
 import Logout from "./pages/Logout";
 import NotesPage from "./pages/Notes";
 import NoteProvider from "./context/noteContext";
+import CustomHeader from "./layout/header/CustomHeader";
 
 const App = () => {
   return (
     <BrowserRouter>
-      <Header />
+      <CustomHeader />
       <NoteProvider>
         <Routes>
           <Route path="/" element={<Home />} />

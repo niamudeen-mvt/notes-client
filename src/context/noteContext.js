@@ -1,4 +1,4 @@
-import React, { createContext, useState, useContext, } from "react";
+import React, { createContext, useState, useContext } from "react";
 
 const NoteContext = createContext();
 
@@ -8,18 +8,19 @@ export const useNotes = () => {
 
 export const NoteProvider = ({ children }) => {
   const [note, setNote] = useState({
-    message: ""
+    title: "",
+    message: "",
   });
   const handleChange = (e) => {
-    setNote({ message: e.target.value });
+    const { name, value } = e.target;
+    setNote({
+      ...note,
+      [name]: value,
+    });
   };
 
-
-
   return (
-    <NoteContext.Provider
-      value={{ note, handleChange, setNote }}
-    >
+    <NoteContext.Provider value={{ note, handleChange, setNote }}>
       {children}
     </NoteContext.Provider>
   );
