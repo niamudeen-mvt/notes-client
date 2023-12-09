@@ -24,18 +24,12 @@ a {
   text-decoration: none !important;
 }
 
-/* ------------flex classes end------------ */
-
-/* -----------utility classes ------------ */
-
-.common_section {
-  margin: 50px 0;
+input {
+  background-color: transparent !important;
 }
-
-.flex_center {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+input:focus-visible {
+  outline: none;
+  /* border-bottom: 1px solid black !important; */
 }
 
 /* textarea:focus-visible {
@@ -52,6 +46,16 @@ a {
 }
 .ouline_none:focus-visible {
   outline: none;
+}
+
+.common_section {
+  margin: 50px 0;
+}
+
+.flex_center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .flex_SB {
@@ -82,13 +86,6 @@ a {
     max-width: 90%;
   }
 }
-input {
-  background-color: transparent !important;
-}
-input:focus-visible {
-  outline: none;
-  /* border-bottom: 1px solid black !important; */
-}
 
 .custom_navbar {
   background-color: transparent;
@@ -106,4 +103,9 @@ input:focus-visible {
 .note_card:hover .note_card_overlay {
   opacity: 1;
   right: 0%; /* Move the overlay to the left on hover */
+}
+
+.common_container {
+  height: 100vh;
+  width: 100%;
 }

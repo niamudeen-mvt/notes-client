@@ -19,6 +19,8 @@ import CustomModal from "../components/shared/CustomModal";
 import CustomTooltip from "../components/CustomTooltip";
 import CustomLoader from "../components/shared/CustomLoader";
 import { IoIosLink } from "react-icons/io";
+import { config } from "../config";
+import { FaPlus } from "react-icons/fa6";
 
 const NotesPage = () => {
   const [notes, setNotes] = useState([]);
@@ -246,10 +248,28 @@ const NotesPage = () => {
 
   // CSS
 
-  const noteSyles = {
-    boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px",
-    width: "250px",
-    minHeight: "150px",
+  // const notesColors = ["#e1f5fe", "#fff9c4", "#ffcdd2", "#ff8a80"];
+
+  // const generateRandomColors = () => {
+  //   return notesColors[Math.floor(Math.random() * notesColors.length)];
+  // };
+
+  const formattedDate = (dateTime) => {
+    const dateFormatter = new Intl.DateTimeFormat("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+    return dateFormatter.format(dateTime);
+  };
+
+  const formattedTime = (dateTime) => {
+    const timeFormatter = new Intl.DateTimeFormat("en-US", {
+      hour: "numeric",
+      minute: "numeric",
+      hour12: true,
+    });
+    return timeFormatter.format(dateTime);
   };
 
   if (isLoading) return <CustomLoader />;
@@ -259,20 +279,31 @@ const NotesPage = () => {
         <Container>
           <Row>
             {notes?.length
-              ? notes.map((el, index) => {
+              ? notes.map((note, index) => {
+                  const dateTime = new Date(note.updatedAt);
                   return (
                     <Col
                       className="flex_center  mb-5"
                       xs={12}
-                      sm={6}
-                      md={4}
-                      lg={3}
+                      md={6}
+                      lg={4}
+                      xl={3}
                     >
                       <div
-                        style={noteSyles}
-                        className="p-5 rounded flex_center position-relative cursor note_card"
+                        style={{
+                          width: "300px",
+                          height: "470px",
+                          boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px",
+                          // backgroundColor: generateRandomColors(),
+                        }}
+                        className="p-5 rounded-5 position-relative cursor note_card flex-column"
                       >
-                        Notes {index + 1}
+                        <p className="">{formattedDate(dateTime)}</p>
+                        <h4 className="fw-medium">{note.title}</h4>
+                        <hr />
+                        <p className="mb-5">{note.message.substring(0, 200)}</p>
+                        <p className="">{formattedTime(dateTime)}</p>
+
                         <div className="position-absolute top-0 w-100  h-100 note_card_overlay flex_center gap-3">
                           <CustomTooltip msg="Details">
                             <IoIosLink
@@ -290,7 +321,7 @@ const NotesPage = () => {
                           <CustomTooltip msg="delete">
                             <MdDelete
                               fontSize={"25px"}
-                              onClick={() => handleDelteNote(el._id)}
+                              onClick={() => handleDelteNote(note._id)}
                               className="cursor"
                             />
                           </CustomTooltip>
@@ -495,7 +526,12 @@ const NotesPage = () => {
       </section>
       <Container>
         <div className="d-flex justify-content-end">
-          <CustomButton text="ADD NOTES" onClick={handleOpenModal} />
+          <div
+            className="rounded-circle bg-primary p-4"
+            style={{ cursor: "pointer" }}
+          >
+            <FaPlus size={24} color="white" onClick={handleOpenModal} />
+          </div>
         </div>
       </Container>
     </>
