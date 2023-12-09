@@ -11,12 +11,12 @@ import { MdDelete } from "react-icons/md";
 const FileUploader = ({ images, setImages }, ref) => {
   const [imgList, setImgList] = useState([]);
 
-  console.log(imgList, "imgList");
   console.log(images, "images");
   const fileInputRef = useRef();
 
   const handleFileChange = (e) => {
     const uploadedFiles = e.target.files;
+    // setImages([...images, ...uploadedFiles]);
     setImages(uploadedFiles);
 
     const newImages = Array.from(uploadedFiles).map((file) =>

@@ -7,15 +7,29 @@ import {
   FETCH_NOTES,
 } from "../url";
 
-export const addNotes = async (body) => {
+export const addNotes = async (body, queryObj) => {
   try {
-    let response = await api.post(ADD_NOTES, body, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-        Accept: "application/json",
-      },
-    });
-    return response;
+    if (queryObj?.type === "edit") {
+      let response = await api.post(
+        ADD_NOTES + `?type=${queryObj.type}&noteId=${queryObj.noteId}`,
+        body,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Accept: "application/json",
+          },
+        }
+      );
+      return response;
+    } else {
+      let response = await api.post(ADD_NOTES, body, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Accept: "application/json",
+        },
+      });
+      return response;
+    }
   } catch (error) {
     return error;
   }

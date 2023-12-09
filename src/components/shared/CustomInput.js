@@ -20,7 +20,8 @@ const CustomInput = ({
           name={name}
           value={value}
           onChange={handleChange}
-          spellCheck="off"
+          spellCheck={false}
+          autoCorrect="off" // Add autoCorrect attribute
           autoComplete="off"
         />
         <p className="text-danger mt-4">{errors[name] ? errors[name] : ""}</p>

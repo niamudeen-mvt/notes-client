@@ -44,6 +44,7 @@ const NotesPage = () => {
   console.log(contentType, "contentType");
   console.log(selectedNote, "selectedNote");
   console.log(notes, "notes");
+  console.log(selectedNote?.images?.length, "selectedNote?.images?.length");
 
   const fileInputRef = useRef();
 
@@ -85,7 +86,7 @@ const NotesPage = () => {
   const handleAddNotes = async (e) => {
     e.preventDefault();
 
-    if (note.message) {
+    if (note.message && note.title) {
       const fd = new FormData();
 
       fd.append("title", note.title);
@@ -149,20 +150,39 @@ const NotesPage = () => {
   const handleEditNote = async (index) => {
     const id = note?._id;
     if (id && note.message) {
-      let res = await editNotesById(id, note);
-      if (res?.status === 200) {
-        setNotes(res?.data?.user?.notes);
-        sendNotification("success", res?.data?.message);
-        setRefresh(!refresh);
-        setNote({ message: "" });
-        setIsEdit({
-          edit: !isEdit.edit,
-          disabled: !isEdit.disabled,
-          index: index,
-        });
-        setShowModal(false);
+      if (note.message && note.title) {
+        const fd = new FormData();
+
+        fd.append("title", note.title);
+        fd.append("message", note.message);
+
+        for (const key of Object.keys(images)) {
+          fd.append("images", images[key]);
+        }
+        const queryObj = {
+          type: "edit",
+          noteId: id,
+        };
+
+        const res = await addNotes(fd, queryObj);
+
+        if (res?.status === 200) {
+          sendNotification("success", res?.data?.message);
+          setShowModal(false);
+          setNote({ message: "" });
+          setRefresh(!refresh);
+          setIsEdit({
+            edit: !isEdit.edit,
+            disabled: !isEdit.disabled,
+            index: index,
+          });
+        } else {
+          sendNotification("warning", res?.response?.data?.message);
+          setShowModal(false);
+          setNote({ message: "" });
+        }
       } else {
-        sendNotification("warning", res?.response?.data?.message);
+        sendNotification("warning", "Please enter your note");
       }
     } else {
       setIsEdit({
@@ -201,13 +221,22 @@ const NotesPage = () => {
     event.preventDefault();
     event.stopPropagation();
 
-    setSelectedNote(selectedNote.images.filter((file) => file._id !== imgId));
     if (selectedNote?._id && imgId) {
       let res = await deleteImgById({
         noteId: selectedNote._id,
         imgId: imgId,
       });
       if (res?.status === 200) {
+        // setRefresh(!refresh);
+        // setShowModal(true);
+        const tempList = selectedNote.images.filter(
+          (file) => file._id !== imgId
+        );
+        console.log(tempList, "tempList");
+        setSelectedNote({
+          ...selectedNote,
+          images: tempList,
+        });
         sendNotification("success", res?.data?.message);
       } else {
         sendNotification("warning", res?.response?.data?.message);
@@ -423,13 +452,11 @@ const NotesPage = () => {
                         name="title"
                         className="px-2 py-3 border-0 w-100 mb-3 rounded"
                         placeholder="Title"
-                        autoComplete="off"
-                        spellCheck="off"
-                        // style={{
-                        //   boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px",
-                        // }}
                         value={note.title}
                         onChange={(e) => handleChange(e)}
+                        spellCheck={false}
+                        autoCorrect="off"
+                        autoComplete="off"
                       />
                       <label className="fw-bold px-2">Message</label>
                       <textarea
@@ -437,14 +464,12 @@ const NotesPage = () => {
                         name="message"
                         className="px-2 py-3 border-0 w-100 ouline_none"
                         placeholder="Start Typing .........."
-                        autoComplete="off"
-                        spellCheck="false"
-                        // style={{
-                        //   maxHeight: "300px",
-                        // }}
                         rows={8}
                         value={note.message}
                         onChange={(e) => handleChange(e)}
+                        spellCheck={false}
+                        autoCorrect="off"
+                        autoComplete="off"
                       />
                       <FileUploader
                         images={images}

@@ -19,7 +19,6 @@ const SignupForm = () => {
   });
 
   const [errors, setErrors] = useState({});
-  console.log(errors);
 
   const handleChange = (e) => {
     setUser({
@@ -28,7 +27,7 @@ const SignupForm = () => {
     });
   };
 
-  console.log(errors, "errors");
+  // console.log(errors, "errors");
   const handleSubmit = async (e) => {
     e.preventDefault();
 

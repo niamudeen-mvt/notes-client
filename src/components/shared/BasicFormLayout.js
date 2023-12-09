@@ -10,7 +10,7 @@ export const BasicFormLayout = ({ children }) => {
       <div
         className="w-100"
         style={{
-          boxShadow: "rgba(0, 0, 0, 0.35) -5px 5px 15px",
+          boxShadow: config.theme.form_box_shadow,
         }}
       >
         <Row className="h-100 " style={{ minHeight: "600px" }}>
