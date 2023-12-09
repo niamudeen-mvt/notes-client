@@ -8,8 +8,13 @@ const ImagePreviewModal = ({ showImgModal, setShowImgModal, imgUrl }) => {
       <Modal show={showImgModal} onHide={handleClose} size="lg">
         <Modal.Body>
           <div className="max-vh-100">
-            <div className="border " style={{ height: "450px" }}>
-              <img src={imgUrl} alt="note-img" />
+            <div style={{ height: "450px" }}>
+              <img
+                src={imgUrl}
+                alt="note-img"
+                style={{ objectFit: "cover" }}
+                loading="lazy"
+              />
             </div>
           </div>
         </Modal.Body>

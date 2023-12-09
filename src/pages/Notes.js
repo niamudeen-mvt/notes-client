@@ -73,7 +73,7 @@ const NotesPage = () => {
         setContentType({
           key: "ADD_NOTES",
           note,
-          heading: "ADD_NOTES",
+          heading: "ADD NOTES",
         });
         setShowModal(true);
         setNote({ message: "" });
@@ -203,15 +203,6 @@ const NotesPage = () => {
     minHeight: "150px",
   };
 
-  const noteGoToIconStyles = {
-    position: "absolute",
-    top: "10px",
-    right: "10px",
-    cursor: "pointer",
-    display: "flex",
-    gap: "10px",
-  };
-
   if (isLoading) return <CustomLoader />;
   return (
     <section className="common_container  py-5">
@@ -229,46 +220,32 @@ const NotesPage = () => {
                   >
                     <div
                       style={noteSyles}
-                      className="p-5 rounded flex_center position-relative cursor"
+                      className="p-5 rounded flex_center position-relative cursor note_card"
                     >
                       Notes {index + 1}
-                      <IoIosLink
-                        style={noteGoToIconStyles}
-                        onClick={() => handleSeeNoteDetails(index)}
-                      />
-                      <div>
-                        {/* {isEdit?.edit && isEdit.index === index ? (
-                          <CustomTooltip msg="submit">
-                            <FaCheck
-                              color="green"
-                              fontSize={"25px"}
-                              onClick={() => handleEditNote(el._id, index)}
-                              className="cursor"
-                            />
-                          </CustomTooltip>
-                        ) : null} */}
+                      <div className="position-absolute top-0 w-100  h-100 note_card_overlay flex_center gap-3">
+                        <div></div>
+                        <CustomTooltip msg="Details">
+                          <IoIosLink
+                            fontSize={"25px"}
+                            onClick={() => handleSeeNoteDetails(index)}
+                          />
+                        </CustomTooltip>
                         <CustomTooltip msg="edit">
-                          <Button
-                            variant="secondary"
-                            className="p-0 bg-light border-0"
-                          >
-                            <BiSolidMessageSquareEdit
-                              color="#0d6efd"
-                              fontSize={"25px"}
-                              onClick={() => handleEdit(index)}
-                              className="cursor d-block"
-                            />
-                          </Button>
+                          <BiSolidMessageSquareEdit
+                            fontSize={"25px"}
+                            onClick={() => handleEdit(index)}
+                            className="cursor d-block"
+                          />
+                        </CustomTooltip>
+                        <CustomTooltip msg="delete">
+                          <MdDelete
+                            fontSize={"25px"}
+                            onClick={() => handleDelteNote(el._id)}
+                            className="cursor"
+                          />
                         </CustomTooltip>
                       </div>
-                      {/* <CustomTooltip msg="delete">
-                        <MdDelete
-                          color="red"
-                          fontSize={"25px"}
-                          onClick={() => handleDelteNote(el._id)}
-                          className="cursor"
-                        />
-                      </CustomTooltip> */}
                     </div>
                     {/* <div className="note_card px-5 py-5">
                       <div className="mt-3">
@@ -436,9 +413,6 @@ const NotesPage = () => {
                         placeholder="Title"
                         autoComplete="off"
                         spellCheck="off"
-                        // style={{
-                        //   boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px",
-                        // }}
                         value={note.title}
                         onChange={(e) => handleChange(e)}
                       />
@@ -505,10 +479,11 @@ const NotesPage = () => {
               <div>
                 <form>
                   <div className="mb-3">
+                    <label className="fw-bold px-2 mb-3">Title</label>
                     <input
                       type="text"
                       name="title"
-                      className="px-2 py-3 border-0 w-100 mb-3"
+                      className="px-2 py-3 border-0 w-100 mb-3 rounded"
                       placeholder="Title"
                       autoComplete="off"
                       spellCheck="off"
@@ -518,17 +493,17 @@ const NotesPage = () => {
                       value={note.title}
                       onChange={(e) => handleChange(e)}
                     />
+                    <label className="fw-bold px-2">Message</label>
                     <textarea
                       type="text"
                       name="message"
                       className="px-2 py-3 border-0 w-100 ouline_none"
                       placeholder="Start Typing .........."
                       autoComplete="off"
-                      spellCheck="off"
-                      style={{
-                        // boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px",
-                        minHeight: "300px",
-                      }}
+                      spellCheck="false"
+                      // style={{
+                      //   maxHeight: "300px",
+                      // }}
                       rows={8}
                       value={note.message}
                       onChange={(e) => handleChange(e)}

@@ -4,6 +4,9 @@ import React, {
   useRef,
   useState,
 } from "react";
+import { Col, Row } from "react-bootstrap";
+import CustomTooltip from "../CustomTooltip";
+import { MdDelete } from "react-icons/md";
 
 const FileUploader = ({ images, setImages }, ref) => {
   const [imgList, setImgList] = useState([]);
@@ -52,7 +55,7 @@ const FileUploader = ({ images, setImages }, ref) => {
     <div>
       <label
         htmlFor="fileInput"
-        className=" w-100 mt-3 p-3 text-center text-secondary cursor rounded border"
+        className=" w-100 mt-3 p-3 text-center text-secondary cursor rounded border mb-5"
       >
         Upload images
       </label>
@@ -65,26 +68,40 @@ const FileUploader = ({ images, setImages }, ref) => {
         hidden
         onChange={handleFileChange}
       />
+
       <div>
-        {imgList?.map((image, index) => (
-          <div key={index}>
-            <img
-              src={image}
-              alt={`uploaded ${index}`}
-              style={{
-                width: "100px",
-                height: "100px",
-                objectFit: "cover",
-              }}
-            />
-            <button
-              type="button"
-              onClick={(event) => removeImage(event, index)}
-            >
-              Remove
-            </button>
-          </div>
-        ))}
+        <Row>
+          {imgList?.length
+            ? imgList.map((image, index) => {
+                return (
+                  <Col xs={12} md={4} className="">
+                    <div className="position-relative">
+                      <img
+                        src={image}
+                        alt="note-img"
+                        className="box_shadow cursor"
+                        style={{
+                          height: "100px",
+                        }}
+                        loading="lazy"
+                      />
+
+                      <p className="position-absolute top-0 end-0">
+                        <CustomTooltip msg="delete">
+                          <MdDelete
+                            fontSize={"25px"}
+                            onClick={(event) => removeImage(event, index)}
+                            className="cursor"
+                            color="red"
+                          />
+                        </CustomTooltip>
+                      </p>
+                    </div>
+                  </Col>
+                );
+              })
+            : null}
+        </Row>
       </div>
     </div>
   );

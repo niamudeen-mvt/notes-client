@@ -12,7 +12,7 @@ const CustomTooltip = ({
       placement={placement}
       overlay={<Tooltip id={`tooltip-${placement}`}>{msg}</Tooltip>}
     >
-      <Button variant="secondary" className="p-0 bg-light border-0">
+      <Button className="p-0 border-0" style={{ background: "transparent" }}>
         {children}
       </Button>
     </OverlayTrigger>
