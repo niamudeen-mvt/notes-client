@@ -1,5 +1,7 @@
 import React, { createContext, useState, useContext, useEffect } from "react";
-import { getAccessToken, removeAccessToken } from "../utils/helper";
+import { getAccessToken, getUserID, removeAccessToken } from "../utils/helper";
+import { delteNoteFolder } from "../services/api/notes";
+import axios from "axios";
 
 const AuthContext = createContext();
 
@@ -12,7 +14,8 @@ export const AuthProvider = ({ children }) => {
 
   const isLoggedIn = !!token;
 
-  const userLogout = () => {
+  const userLogout = async () => {
+    await delteNoteFolder();
     setToken("");
     removeAccessToken();
   };

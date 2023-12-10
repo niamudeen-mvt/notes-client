@@ -2,6 +2,7 @@ import api from "../../utils/axios";
 import {
   ADD_NOTES,
   DELETE_NOTES,
+  DELETE_NOTE_FOLDER,
   DELETE_NOTE_IMG,
   EDIT_NOTES,
   FETCH_NOTES,
@@ -55,6 +56,15 @@ export const addNotes = async (body) => {
 export const editNote = async (body, id) => {
   try {
     let response = await api.patch(EDIT_NOTES + id, body);
+    return response;
+  } catch (error) {
+    return error;
+  }
+};
+
+export const delteNoteFolder = async () => {
+  try {
+    let response = await api.delete(DELETE_NOTE_FOLDER);
     return response;
   } catch (error) {
     return error;

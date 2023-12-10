@@ -1,6 +1,10 @@
 import { config } from "../config";
 import { daysOfWeek } from "./constants";
 
+export const getUserID = () => {
+  return localStorage.getItem("userId");
+};
+
 // access token
 
 export const storeAccessTokenLS = (accessToken) => {

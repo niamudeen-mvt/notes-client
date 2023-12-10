@@ -23,6 +23,7 @@ import { AiOutlineDelete } from "react-icons/ai";
 import { formattedDate, formattedTime } from "../utils/helper";
 import useWindowSize from "../hooks/useWindowSize";
 import { config } from "../config";
+import axios from "axios";
 
 const NotesPage = () => {
   const [notes, setNotes] = useState([]);
@@ -47,6 +48,9 @@ const NotesPage = () => {
   const windowSize = useWindowSize();
 
   const fileInputRef = useRef();
+
+  console.log(selectedNote, "selectedNote");
+  console.log(images, "images");
 
   useEffect(() => {
     (async () => {
@@ -94,7 +98,8 @@ const NotesPage = () => {
       const res = await addNotes(payload);
 
       if (res?.status === 201) {
-        sendNotification("success", res?.data?.message);
+        sendNotification("success", "Note created successfully");
+        // sendNotification("success", res?.data?.message);
         setShowModal(false);
         setNote({ message: "" });
         setRefresh(!refresh);
@@ -145,17 +150,20 @@ const NotesPage = () => {
   };
 
   const handleEditNote = async (index) => {
+    const prev_imgages = selectedNote?.images;
+    const new_images = images;
+    console.log(prev_imgages, "prev_imgages");
+    console.log(new_images, "new_images");
     setIsLoading(true);
     const id = note?._id;
     if (id && note.message) {
       const payload = {
         title: note.title,
         message: note.message,
-        images: images ? images : selectedNote?.images,
+        prev_imgages: prev_imgages,
+        new_images: new_images,
       };
-
       const res = await editNote(payload, id);
-
       if (res?.status === 200) {
         sendNotification("success", res?.data?.message);
         setShowModal(false);
@@ -193,11 +201,9 @@ const NotesPage = () => {
     setShowModal(true);
   };
 
-  const handleRemoveImg = async (event, imgId) => {
+  const handleRemoveImg = async (event, imgId, fileId) => {
     event.preventDefault();
     event.stopPropagation();
-
-    setIsLoading(true);
 
     if (selectedNote?._id && imgId) {
       let res = await deleteImgById({
@@ -205,7 +211,7 @@ const NotesPage = () => {
         imgId: imgId,
       });
       if (res?.status === 200) {
-        setRefresh(!refresh);
+        // setRefresh(!refresh);
         const tempList = selectedNote.images.filter(
           (file) => file._id !== imgId
         );
@@ -218,8 +224,6 @@ const NotesPage = () => {
         sendNotification("warning", res?.response?.data?.message);
       }
     }
-
-    setIsLoading(false);
   };
 
   const iconStyles = {
@@ -425,50 +429,54 @@ const NotesPage = () => {
                       ) : null}
 
                       <Row>
-                        {selectedNote?.images?.length ? (
-                          selectedNote.images.map((file) => {
-                            return (
-                              <Col xs={12} md={4}>
-                                <div
-                                  className="h-75 cursor position-relative"
-                                  onClick={() => {
-                                    setImgUrl(file.image);
-                                    setShowImgModal(true);
-                                  }}
-                                >
-                                  <img
-                                    src={file.image}
-                                    alt="note-img"
-                                    className="w-full  cursor"
-                                    style={{
-                                      boxShadow:
-                                        config.theme.form_btn_box_shadow,
+                        {selectedNote?.images?.length
+                          ? selectedNote.images.map((file) => {
+                              return (
+                                <Col xs={12} md={4}>
+                                  <div
+                                    className="h-75 cursor position-relative"
+                                    onClick={() => {
+                                      setImgUrl(file.image);
+                                      setShowImgModal(true);
                                     }}
-                                  />
-                                  <p className="position-absolute top-0 end-0">
-                                    <CustomTooltip msg="delete">
-                                      <MdDelete
-                                        fontSize={"25px"}
-                                        onClick={(event) =>
-                                          handleRemoveImg(event, file._id)
-                                        }
-                                        className="cursor"
-                                        color="red"
-                                      />
-                                    </CustomTooltip>
-                                  </p>
-                                </div>
-                              </Col>
-                            );
-                          })
-                        ) : (
-                          <FileUploader
-                            images={images}
-                            setImages={setImages}
-                            ref={fileInputRef}
-                          />
-                        )}
+                                  >
+                                    <img
+                                      src={file.image}
+                                      alt="note-img"
+                                      className="w-full  cursor"
+                                      style={{
+                                        boxShadow:
+                                          config.theme.form_btn_box_shadow,
+                                      }}
+                                    />
+                                    <p className="position-absolute top-0 end-0">
+                                      <CustomTooltip msg="delete">
+                                        <MdDelete
+                                          fontSize={"25px"}
+                                          onClick={(event) =>
+                                            handleRemoveImg(
+                                              event,
+                                              file._id,
+                                              file.fileId
+                                            )
+                                          }
+                                          className="cursor"
+                                          color="red"
+                                        />
+                                      </CustomTooltip>
+                                    </p>
+                                  </div>
+                                </Col>
+                              );
+                            })
+                          : null}
                       </Row>
+
+                      <FileUploader
+                        images={images}
+                        setImages={setImages}
+                        ref={fileInputRef}
+                      />
                     </div>
                   </form>
                 </div>
