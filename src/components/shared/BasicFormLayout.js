@@ -31,7 +31,7 @@ export const BasicFormLayout = ({
             <div className="flex_center h-100 flex-column position-relative">
               {showEditIcon ? (
                 <Form
-                  className="mb-5 text-white position-absolute"
+                  className="mb-5 text-white position-absolute cursor"
                   style={{ top: "48px", left: "48px" }}
                 >
                   <Form.Check // prettier-ignore
@@ -40,6 +40,7 @@ export const BasicFormLayout = ({
                     label="Edit Profile"
                     checked={checked}
                     onChange={handleChange}
+                    style={{ cursor: "pointer" }}
                   />
                 </Form>
               ) : null}

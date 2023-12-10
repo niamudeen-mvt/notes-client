@@ -23,21 +23,10 @@ const Header = () => {
 
   const route = useLocation().pathname;
 
-  // const containerStyles = {
-  //   maxWidth: "1140px",
-  //   zIndex: 1000,
-  // };
-
-  // const brandStyles = {
-  //   color: isLoggedIn ? config.theme.main_light_clr : "white",
-  // };
-
   const themeObj = {
     background: `linear-gradient(to right,${config.theme.main_clr} 50% , white 50%)`,
   };
-
   return (
-    // <div className="mx-auto py-3 border mb-5" style={containerStyles}>
     <Navbar expand="lg" className="" sticky="top" style={themeObj}>
       <Container>
         <Navbar.Brand
@@ -69,7 +58,6 @@ const Header = () => {
         </Navbar.Collapse>
       </Container>
     </Navbar>
-    // </div>
   );
 };
 

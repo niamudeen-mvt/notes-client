@@ -9,7 +9,7 @@ import { sendNotification } from "../../utils/notifications";
 import { Link, useNavigate } from "react-router-dom";
 import { loginUser } from "../../services/api/user";
 import { useAuth } from "../../context/authContext";
-import { Button, Container } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import CustomInput from "../../components/shared/CustomInput";
 import { BasicFormLayout } from "../../components/shared/BasicFormLayout";
 
@@ -19,8 +19,8 @@ const LoginForm = () => {
   const { setToken } = useAuth();
 
   const [user, setUser] = useState({
-    email: "test@gmail.com",
-    password: "123",
+    email: "",
+    password: "",
   });
   const [errors, setErrors] = useState({});
 
@@ -75,7 +75,7 @@ const LoginForm = () => {
           name="password"
           label="password"
           mb={5}
-          type="text"
+          type="password"
           value={user.password}
           handleChange={handleChange}
           errors={errors}

@@ -80,7 +80,7 @@ const SignupForm = () => {
           name="password"
           label="password"
           mb={5}
-          type="text"
+          type="password"
           value={user.password}
           handleChange={handleChange}
           errors={errors}

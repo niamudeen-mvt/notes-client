@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
-import { Button, Form, Spinner } from "react-bootstrap";
+import { Button, Spinner } from "react-bootstrap";
 import { getUserDetails, editUserDetials } from "../services/api/user";
 import { useAuth } from "../context/authContext";
 import { sendNotification } from "../utils/notifications";
 import { BasicFormLayout } from "../components/shared/BasicFormLayout";
 import CustomInput from "../components/shared/CustomInput";
 import { VscAccount } from "react-icons/vsc";
+import CustomLoader from "../components/shared/CustomLoader";
 
 const Profile = () => {
   const [currentUser, setCurrentUser] = useState({
@@ -22,6 +23,7 @@ const Profile = () => {
   useEffect(() => {
     const fetchCurrentUser = async () => {
       try {
+        setIsLoading(true);
         const res = await getUserDetails();
         if (res?.status === 200) {
           setCurrentUser(res?.data?.user);
@@ -29,6 +31,8 @@ const Profile = () => {
       } catch (error) {
         console.error("Error fetching user data:", error);
         setCurrentUser(null);
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -61,6 +65,8 @@ const Profile = () => {
     }
     setIsLoading(false);
   };
+
+  if (isLoading) return <CustomLoader />;
   return (
     <BasicFormLayout
       pageTitle="Profile"

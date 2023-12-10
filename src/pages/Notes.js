@@ -331,7 +331,12 @@ const NotesPage = () => {
                           <span>{`  `}...more</span>
                         ) : null}
                       </p>
-                      <p className="">{formattedTime(dateTime)}</p>
+                      <p
+                        className="position-absolute "
+                        style={{ bottom: "15px" }}
+                      >
+                        {formattedTime(dateTime)}
+                      </p>
                     </div>
                   </Col>
                 );
@@ -340,16 +345,18 @@ const NotesPage = () => {
         </Row>
 
         {/* ADD NOTES BUTTON */}
-        <div className="d-flex justify-content-end ">
-          <div
-            className="rounded-circle bg-primary p-4 "
-            style={{
-              cursor: "pointer",
-            }}
-            onClick={handleOpenModal}
-          >
-            <FaPlus size={24} color="white" />
-          </div>
+
+        <div
+          className="rounded-circle bg-primary p-4 "
+          style={{
+            cursor: "pointer",
+            position: "fixed",
+            right: "375px",
+            top: "80%",
+          }}
+          onClick={handleOpenModal}
+        >
+          <FaPlus size={24} color="white" />
         </div>
 
         {/* ADD NOTES MODEL */}
