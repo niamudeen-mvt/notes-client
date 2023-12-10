@@ -12,22 +12,26 @@ export const addNotes = async (body, queryObj) => {
     if (queryObj?.type === "edit") {
       let response = await api.post(
         ADD_NOTES + `?type=${queryObj.type}&noteId=${queryObj.noteId}`,
-        body,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-            Accept: "application/json",
-          },
-        }
+        body
+        // {
+        //   headers: {
+        //     "Content-Type": "multipart/form-data",
+        //     Accept: "application/json",
+        //   },
+        // }
       );
       return response;
     } else {
-      let response = await api.post(ADD_NOTES, body, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          Accept: "application/json",
-        },
-      });
+      let response = await api.post(
+        ADD_NOTES,
+        body
+        //   {
+        //   headers: {
+        //     "Content-Type": "multipart/form-data",
+        //     Accept: "application/json",
+        //   },
+        // }
+      );
       return response;
     }
   } catch (error) {

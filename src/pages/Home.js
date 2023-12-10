@@ -4,10 +4,7 @@ import useWindowSize from "../hooks/useWindowSize";
 const Home = () => {
   const windowSize = useWindowSize();
   return (
-    <div
-      className="text-center p-5 flex_center flex-column"
-      style={{ minHeight: "90vh" }}
-    >
+    <div className="text-center flex_center" style={{ minHeight: "70vh" }}>
       {windowSize.width > 768 ? (
         <h1
           className={`mb-3 fw-bolder text-capitalize  d-flex  gap-4 text-primary`}

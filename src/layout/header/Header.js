@@ -6,11 +6,17 @@ import { config } from "../../config";
 import { FiEdit2 } from "react-icons/fi";
 import useWindowSize from "../../hooks/useWindowSize";
 
-const CommonLink = ({ text, route, url }) => {
+const CommonLink = ({ text, route, url, width }) => {
   return (
     <Link
       to={url}
-      className={`${route === url ? "active_nav_link" : "nav_link"}`}
+      className={`position-relative py-3 ${
+        route === url
+          ? `active_nav_link  ${
+              width < 768 ? "text-white fw-bolder" : "text-primary"
+            }`
+          : "nav_link text-dark fw-normal opacity-100"
+      }`}
     >
       {text}
     </Link>
@@ -27,6 +33,7 @@ const Header = () => {
       windowObj.width > 768 ? "50%" : "100%"
     }, white 50%)`,
   };
+
   return (
     <Navbar expand="lg" className="" sticky="top" style={themeObj}>
       <Container>
@@ -47,17 +54,47 @@ const Header = () => {
             }`}
           >
             {isLoggedIn ? (
-              <>
-                <CommonLink text="Notes" url="/notes" route={route} />
-                <CommonLink text="Profile" url="/profile" route={route} />
-                <CommonLink text="Logout" url="/logout" route={route} />
-              </>
+              <div className="py-4 d-flex gap-4">
+                <CommonLink
+                  text="Notes"
+                  url="/notes"
+                  route={route}
+                  width={windowObj.width}
+                />
+                <CommonLink
+                  text="Profile"
+                  url="/profile"
+                  route={route}
+                  width={windowObj.width}
+                />
+                <CommonLink
+                  text="Logout"
+                  url="/logout"
+                  route={route}
+                  width={windowObj.width}
+                />
+              </div>
             ) : (
-              <>
-                <CommonLink text="Home" url="/" route={route} />
-                <CommonLink text="Signup" url="/signup" route={route} />
-                <CommonLink text="Login" url="/login" route={route} />
-              </>
+              <div className="py-4 d-flex gap-4">
+                <CommonLink
+                  text="Home"
+                  url="/"
+                  route={route}
+                  width={windowObj.width}
+                />
+                <CommonLink
+                  text="Signup"
+                  url="/signup"
+                  route={route}
+                  width={windowObj.width}
+                />
+                <CommonLink
+                  text="Login"
+                  url="/login"
+                  route={route}
+                  width={windowObj.width}
+                />
+              </div>
             )}
           </Nav>
         </Navbar.Collapse>

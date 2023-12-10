@@ -29,14 +29,13 @@ export const BasicFormLayout = ({
         ? "50%"
         : windowSize.width < 1200 && windowSize.width > 768
         ? "75%"
-        : "50%",
+        : "90%",
   };
 
+  console.log(windowSize);
+
   return (
-    <div
-      className="min-vh-100 flex_center  mx-auto z-5"
-      style={basicLayoutStyles}
-    >
+    <div className="mx-auto" style={basicLayoutStyles}>
       <div
         className="w-100"
         style={{

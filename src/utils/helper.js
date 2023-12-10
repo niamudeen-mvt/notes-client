@@ -88,6 +88,6 @@ export const formattedTime = (dateTime) => {
     minute: "numeric",
     hour12: true,
   });
-  console.log(timeFormatter.format(dateTime));
+
   return timeFormatter.format(dateTime) + "," + filterdDay;
 };

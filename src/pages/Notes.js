@@ -93,16 +93,17 @@ const NotesPage = () => {
     setIsLoading(true);
 
     if (note.message && note.title) {
-      const fd = new FormData();
+      console.log(note);
+      // const fd = new FormData();
 
-      fd.append("title", note.title);
-      fd.append("message", note.message);
+      // fd.append("title", note.title);
+      // fd.append("message", note.message);
 
-      for (const key of Object.keys(images)) {
-        fd.append("images", images[key]);
-      }
+      // for (const key of Object.keys(images)) {
+      //   fd.append("images", images[key]);
+      // }
 
-      const res = await addNotes(fd);
+      const res = await addNotes({ title: note.title, message: note.message });
 
       if (res?.status === 201) {
         sendNotification("success", res?.data?.message);
@@ -162,18 +163,21 @@ const NotesPage = () => {
       if (note.message && note.title) {
         const fd = new FormData();
 
-        fd.append("title", note.title);
-        fd.append("message", note.message);
+        // fd.append("title", note.title);
+        // fd.append("message", note.message);
 
-        for (const key of Object.keys(images)) {
-          fd.append("images", images[key]);
-        }
+        // for (const key of Object.keys(images)) {
+        //   fd.append("images", images[key]);
+        // }
         const queryObj = {
           type: "edit",
           noteId: id,
         };
 
-        const res = await addNotes(fd, queryObj);
+        const res = await addNotes(
+          { title: note.title, message: note.message },
+          queryObj
+        );
 
         if (res?.status === 200) {
           sendNotification("success", res?.data?.message);
@@ -283,7 +287,7 @@ const NotesPage = () => {
                       <p className="">{formattedDate(dateTime)}</p>
                       <div className="d-flex justify-content-between align-items-center">
                         <h5 className="fw-medium">
-                          {note.title.substring(0, 15)}
+                          {note?.title?.substring(0, 15)}
                         </h5>
                         <Dropdown>
                           <Dropdown.Toggle
@@ -329,8 +333,8 @@ const NotesPage = () => {
                       </div>
                       <hr />
                       <p className="mb-3">
-                        {note.message.substring(0, 180)}
-                        {note.message.length > 180 ? (
+                        {note?.message?.substring(0, 180)}
+                        {note?.message?.length > 180 ? (
                           <span>{`  `}...more</span>
                         ) : null}
                       </p>
@@ -393,7 +397,7 @@ const NotesPage = () => {
               <p className="fw-bold">{selectedNote.title}</p>
               <p className="mb-5">{selectedNote.message}</p>
 
-              <Row>
+              {/* <Row>
                 {selectedNote?.images?.length
                   ? selectedNote.images.map((file) => {
                       return (
@@ -418,7 +422,7 @@ const NotesPage = () => {
                       );
                     })
                   : null}
-              </Row>
+              </Row> */}
             </div>
           ) : contentType.key === "EDIT_NOTE" ? (
             <section className="common_section">
@@ -461,7 +465,7 @@ const NotesPage = () => {
                         </div>
                       ) : null}
 
-                      <Row>
+                      {/* <Row>
                         {selectedNote?.images?.length ? (
                           selectedNote.images.map((file) => {
                             return (
@@ -505,7 +509,7 @@ const NotesPage = () => {
                             ref={fileInputRef}
                           />
                         )}
-                      </Row>
+                      </Row> */}
                     </div>
                   </form>
                 </div>
@@ -542,11 +546,11 @@ const NotesPage = () => {
                         autoCorrect="off"
                         autoComplete="off"
                       />
-                      <FileUploader
+                      {/* <FileUploader
                         images={images}
                         setImages={setImages}
                         ref={fileInputRef}
-                      />
+                      /> */}
                     </div>
                   </form>
                 </div>
