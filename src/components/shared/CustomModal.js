@@ -4,23 +4,23 @@ import Modal from "react-bootstrap/Modal";
 
 const CustomModal = ({
   showModal,
-  modalHeading,
   children,
   handleSubmit,
   contentType,
   handleClose,
   showFooter,
   showSpinner,
+  size = "md",
 }) => {
   return (
     <>
-      <Modal show={showModal} onHide={handleClose} size="lg">
-        <Modal.Header closeButton>
-          <Modal.Title>{modalHeading}</Modal.Title>
+      <Modal show={showModal} onHide={handleClose} size={size} centered>
+        <Modal.Header closeButton className="border-0">
+          {/* <Modal.Title>{modalHeading}</Modal.Title> */}
         </Modal.Header>
         <Modal.Body>{children}</Modal.Body>
         {showFooter ? (
-          <Modal.Footer>
+          <Modal.Footer className="border-0">
             <Button
               variant="secondary"
               onClick={handleClose}
@@ -45,7 +45,7 @@ const CustomModal = ({
               <Button
                 variant="primary"
                 onClick={handleSubmit}
-                className="px-5 py-3"
+                className="px-3 py-3"
               >
                 Save Changes
               </Button>

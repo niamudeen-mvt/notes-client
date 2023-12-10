@@ -63,9 +63,9 @@ const NotesPage = () => {
 
   const handleOpenModal = useCallback(() => {
     setContentType({
-      key: "ADD_NOTES",
+      key: "ADD_NOTE",
       note: {},
-      heading: "ADD NOTES",
+      heading: "ADD NOTE",
     });
     setShowModal(true);
     setImages([]);
@@ -227,7 +227,7 @@ const NotesPage = () => {
     cursor: "pointer",
     fontSize: "18px",
   };
-  // if (isLoading) return <CustomLoader />;
+  if (isLoading) return <CustomLoader />;
 
   return (
     <Container className=" min-vh-100 z-1">
@@ -329,7 +329,7 @@ const NotesPage = () => {
         >
           <FaPlus
             size={24}
-            color={`${windowSize.width < 768 ? "primary" : "white"}`}
+            color={`${windowSize.width < 768 ? "black" : "white"}`}
           />
         </div>
 
@@ -415,10 +415,9 @@ const NotesPage = () => {
                             autoComplete="off"
                             spellCheck="off"
                             style={{
-                              // boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px",
-                              minHeight: "300px",
+                              minHeight: "150px",
                             }}
-                            rows={8}
+                            rows={5}
                             value={note.message}
                             onChange={(e) => handleChange(e)}
                           />
@@ -475,13 +474,12 @@ const NotesPage = () => {
                 </div>
               </Container>
             </section>
-          ) : contentType.key === "ADD_NOTES" ? (
+          ) : contentType.key === "ADD_NOTE" ? (
             <section className="common_section">
               <Container>
                 <div>
                   <form>
                     <div className="mb-3">
-                      <label className="fw-bold px-2 ">Title</label>
                       <input
                         type="text"
                         name="title"
@@ -493,7 +491,6 @@ const NotesPage = () => {
                         autoCorrect="off"
                         autoComplete="off"
                       />
-                      <label className="fw-bold px-2">Message</label>
                       <textarea
                         type="text"
                         name="message"

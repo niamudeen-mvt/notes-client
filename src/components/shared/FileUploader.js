@@ -4,10 +4,9 @@ import React, {
   useRef,
   useState,
 } from "react";
-import { Col, Row } from "react-bootstrap";
 import CustomTooltip from "../CustomTooltip";
-import { MdDelete } from "react-icons/md";
-import { CiImageOn } from "react-icons/ci";
+import { sendNotification } from "../../utils/notifications";
+import { RxCross2 } from "react-icons/rx";
 
 const FileUploader = ({ images, setImages }, ref) => {
   const fileInputRef = useRef();
@@ -17,23 +16,31 @@ const FileUploader = ({ images, setImages }, ref) => {
     const uploadedFiles = e.target.files;
 
     Array.from(uploadedFiles).forEach((file) => {
-      const reader = new FileReader();
+      // Check if the file type is an image
+      if (file.type.startsWith("image/")) {
+        const reader = new FileReader();
 
-      reader.onload = function (event) {
-        const newImage = {
-          key: Date.now(), // Unique key using Date.now()
-          data: event.target.result, // File data (base64)
+        reader.onload = function (event) {
+          const newImage = {
+            key: Date.now(),
+            data: event.target.result,
+          };
+
+          setImages((prevImages) => [...prevImages, newImage]);
         };
 
-        setImages((prevImages) => [...prevImages, newImage]); // Update the image list with new object
-      };
-
-      reader.readAsDataURL(file); // Read the file as data URL
+        reader.readAsDataURL(file);
+      } else {
+        sendNotification(
+          "warning",
+          `File '${file.name}' is not an image and will be skipped.`
+        );
+      }
     });
 
-    const newImages = Array.from(uploadedFiles).map((file) =>
-      URL.createObjectURL(file)
-    );
+    const newImages = Array.from(uploadedFiles)
+      .filter((file) => file.type.startsWith("image/"))
+      .map((file) => URL.createObjectURL(file));
 
     setImgList([...imgList, ...newImages]);
   };
@@ -46,11 +53,14 @@ const FileUploader = ({ images, setImages }, ref) => {
     }
   };
 
-  const removeImage = (event, key) => {
+  const removeImage = (event, index) => {
     event.preventDefault();
 
-    const temp = images.filter((obj) => obj.key !== key);
+    const temp = images.filter((obj, i) => i !== index);
     setImages(temp);
+
+    const tempList = imgList.filter((obj, i) => i !== index);
+    setImgList(tempList);
   };
 
   useImperativeHandle(ref, () => ({
@@ -59,9 +69,9 @@ const FileUploader = ({ images, setImages }, ref) => {
 
   return (
     <div>
-      <Row>
+      {/* <Row>
         {images?.length
-          ? images.map((file, i) => {
+          ? images.map((file, index) => {
               return (
                 <Col xs={12} md={4}>
                   <div
@@ -74,7 +84,7 @@ const FileUploader = ({ images, setImages }, ref) => {
                       <CustomTooltip msg="delete">
                         <MdDelete
                           fontSize={"25px"}
-                          onClick={(event) => removeImage(event, file.key)}
+                          onClick={(event) => removeImage(event, index)}
                           className="cursor"
                           color="red"
                         />
@@ -85,12 +95,12 @@ const FileUploader = ({ images, setImages }, ref) => {
               );
             })
           : null}
-      </Row>
+      </Row> */}
       <label
         htmlFor="fileInput"
-        className=" w-100 mt-3 p-3 text-center text-secondary cursor rounded border mb-5"
+        className="w-100 mt-3 p-3 text-center text-secondary rounded-3 border mb-4 cursor"
       >
-        Upload images
+        Upload images (optional)
       </label>
       <input
         id="fileInput"
@@ -102,41 +112,37 @@ const FileUploader = ({ images, setImages }, ref) => {
         onChange={handleFileChange}
       />
 
-      {/* <div>
-        <Row>
-          {imgList?.length
-            ? imgList.map((image, index) => {
-                return (
-                  <Col xs={12} md={4} className="">
-                    <div className="position-relative">
-                      <img
-                        src={image}
-                        alt="note-img"
-                        loading="lazy"
-                        style={{
-                          height: "100px",
-                          boxShadow: config.theme.form_btn_box_shadow,
-                          cursor: "pointer",
-                        }}
-                      />
+      <div>
+        {imgList?.length
+          ? imgList.map((image, index) => {
+              return (
+                <div
+                  className="d-flex justify-content-between align-items-center h-25 rounded-3 px-3 mb-3 shadow-sm"
+                  style={{ height: "40px" }}
+                >
+                  <img
+                    src={image}
+                    alt="note-img"
+                    loading="lazy"
+                    style={{
+                      height: "50px",
+                      width: "50px",
+                    }}
+                  />
 
-                      <p className="position-absolute top-0 end-0">
-                        <CustomTooltip msg="delete">
-                          <MdDelete
-                            fontSize={"25px"}
-                            onClick={(event) => removeImage(event, index)}
-                            className="cursor"
-                            color="red"
-                          />
-                        </CustomTooltip>
-                      </p>
-                    </div>
-                  </Col>
-                );
-              })
-            : null}
-        </Row>
-      </div> */}
+                  <CustomTooltip msg="delete">
+                    <RxCross2
+                      fontSize={"22px"}
+                      onClick={(event) => removeImage(event, index)}
+                      className="cursor"
+                      color="black"
+                    />
+                  </CustomTooltip>
+                </div>
+              );
+            })
+          : null}
+      </div>
     </div>
   );
 };

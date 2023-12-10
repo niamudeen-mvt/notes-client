@@ -38,6 +38,10 @@ input:focus-visible {
   outline: none;
 }
 
+.cursor {
+  cursor: pointer !important;
+}
+
 /* =================  DROPDOWN TOGGLE NOTCH STYLING =============== */
 .dropdown-toggle::after {
   content: "";

@@ -6,27 +6,6 @@ import { config } from "../../config";
 import { FiEdit2 } from "react-icons/fi";
 import useWindowSize from "../../hooks/useWindowSize";
 
-const CommonLink = ({ text, route, url, width }) => {
-  return (
-    <Link
-      to={url}
-      className={`position-relative py-3 ${
-        route === url
-          ? `active_nav_link   ${
-              width > 768 && width < 1000
-                ? "text-black "
-                : width > 1000
-                ? "text-primary "
-                : "text-white "
-            }`
-          : "nav_link text-dark fw-normal opacity-100"
-      }`}
-    >
-      {text}
-    </Link>
-  );
-};
-
 const Header = () => {
   const { isLoggedIn } = useAuth();
   const windowObj = useWindowSize();
@@ -40,7 +19,7 @@ const Header = () => {
   console.log(windowObj.width > 768);
 
   return (
-    <Navbar expand="lg" className="" sticky="top" style={themeObj}>
+    <Navbar expand="lg" sticky="top" style={themeObj}>
       <Container>
         <Navbar.Brand
           to="/"
@@ -107,3 +86,24 @@ const Header = () => {
 };
 
 export default Header;
+
+const CommonLink = ({ text, route, url, width }) => {
+  return (
+    <Link
+      to={url}
+      className={`position-relative py-3 ${
+        route === url
+          ? `active_nav_link   ${
+              width > 768 && width < 1000
+                ? "text-black "
+                : width > 1000
+                ? "text-primary "
+                : "text-white "
+            }`
+          : "nav_link text-dark fw-normal opacity-100"
+      }`}
+    >
+      {text}
+    </Link>
+  );
+};
