@@ -12,8 +12,12 @@ const CommonLink = ({ text, route, url, width }) => {
       to={url}
       className={`position-relative py-3 ${
         route === url
-          ? `active_nav_link  ${
-              width < 768 ? "text-white fw-bolder" : "text-primary"
+          ? `active_nav_link   ${
+              width > 768 && width < 1000
+                ? "text-black "
+                : width > 1000
+                ? "text-primary "
+                : "text-white "
             }`
           : "nav_link text-dark fw-normal opacity-100"
       }`}
@@ -33,6 +37,7 @@ const Header = () => {
       windowObj.width > 768 ? "50%" : "100%"
     }, white 50%)`,
   };
+  console.log(windowObj.width > 768);
 
   return (
     <Navbar expand="lg" className="" sticky="top" style={themeObj}>
@@ -49,9 +54,7 @@ const Header = () => {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav
-            className={`${
-              windowObj.width > 768 ? "ms-auto" : "ms-auto flex_center mt-3"
-            }`}
+            className={` ${windowObj.width > 992 ? "ms-auto" : "flex_center"}`}
           >
             {isLoggedIn ? (
               <div className="py-4 d-flex gap-4">

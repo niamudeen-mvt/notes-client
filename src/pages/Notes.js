@@ -6,6 +6,7 @@ import {
   addNotes,
   deleteImgById,
   deleteNotesById,
+  editNote,
   getNotes,
 } from "../services/api/notes";
 import { sendNotification } from "../utils/notifications";
@@ -36,19 +37,14 @@ const NotesPage = () => {
   const [contentType, setContentType] = useState({
     key: "",
     note: "",
+    heading: "",
   });
-  const [images, setImages] = useState({});
+  const [images, setImages] = useState([]);
   const [showImgModal, setShowImgModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [selectedNote, setSelectedNote] = useState({});
   const [imgUrl, setImgUrl] = useState();
   const windowSize = useWindowSize();
-
-  // console.log(note, "note");
-  // console.log(contentType, "contentType");
-  // console.log(selectedNote, "selectedNote");
-  // console.log(notes, "notes");
-  // console.log(selectedNote?.images?.length, "selectedNote?.images?.length");
 
   const fileInputRef = useRef();
 
@@ -65,45 +61,37 @@ const NotesPage = () => {
     })();
   }, [refresh]);
 
-  const handleOpenModal = useCallback(
-    (note, content_type) => {
-      if (content_type === "MORE") {
-        setContentType({
-          key: content_type,
-          note,
-          heading: "NOTE",
-        });
-        setShowModal(true);
-      } else {
-        setContentType({
-          key: "ADD_NOTES",
-          note,
-          heading: "ADD NOTES",
-        });
-        setShowModal(true);
-        setNote({ message: "" });
-      }
-    },
-    [showModal]
-  );
+  const handleOpenModal = useCallback(() => {
+    setContentType({
+      key: "ADD_NOTES",
+      note: {},
+      heading: "ADD NOTES",
+    });
+    setShowModal(true);
+    setImages([]);
+    setNote({ message: "" });
+  }, [showModal]);
+
+  const handleClose = () => {
+    setShowModal(false);
+    setSelectedNote({});
+    // Clear file input in FileUploader component
+    if (fileInputRef.current) {
+      fileInputRef.current.clearFileInput();
+    }
+  };
 
   const handleAddNotes = async (e) => {
     e.preventDefault();
-
     setIsLoading(true);
-
     if (note.message && note.title) {
-      console.log(note);
-      // const fd = new FormData();
+      const payload = {
+        title: note.title,
+        message: note.message,
+        images: images,
+      };
 
-      // fd.append("title", note.title);
-      // fd.append("message", note.message);
-
-      // for (const key of Object.keys(images)) {
-      //   fd.append("images", images[key]);
-      // }
-
-      const res = await addNotes({ title: note.title, message: note.message });
+      const res = await addNotes(payload);
 
       if (res?.status === 201) {
         sendNotification("success", res?.data?.message);
@@ -114,11 +102,11 @@ const NotesPage = () => {
         sendNotification("warning", res?.response?.data?.message);
         setShowModal(false);
         setNote({ message: "" });
+        setRefresh(!refresh);
       }
     } else {
-      sendNotification("warning", "Please enter your note");
+      sendNotification("warning", "please enter note");
     }
-
     setIsLoading(false);
   };
 
@@ -136,8 +124,6 @@ const NotesPage = () => {
   };
 
   const handleEdit = async (index) => {
-    setShowModal(true);
-
     const note = notes?.filter((e, i) => i === index);
     console.log(index, note);
 
@@ -154,48 +140,32 @@ const NotesPage = () => {
       note,
       heading: "EDIT NOTE",
     });
+    setImages([]);
+    setShowModal(true);
   };
 
   const handleEditNote = async (index) => {
     setIsLoading(true);
     const id = note?._id;
     if (id && note.message) {
-      if (note.message && note.title) {
-        const fd = new FormData();
+      const payload = {
+        title: note.title,
+        message: note.message,
+        images: images ? images : selectedNote?.images,
+      };
 
-        // fd.append("title", note.title);
-        // fd.append("message", note.message);
+      const res = await editNote(payload, id);
 
-        // for (const key of Object.keys(images)) {
-        //   fd.append("images", images[key]);
-        // }
-        const queryObj = {
-          type: "edit",
-          noteId: id,
-        };
-
-        const res = await addNotes(
-          { title: note.title, message: note.message },
-          queryObj
-        );
-
-        if (res?.status === 200) {
-          sendNotification("success", res?.data?.message);
-          setShowModal(false);
-          setNote({ message: "" });
-          setRefresh(!refresh);
-          setIsEdit({
-            edit: !isEdit.edit,
-            disabled: !isEdit.disabled,
-            index: index,
-          });
-        } else {
-          sendNotification("warning", res?.response?.data?.message);
-          setShowModal(false);
-          setNote({ message: "" });
-        }
+      if (res?.status === 200) {
+        sendNotification("success", res?.data?.message);
+        setShowModal(false);
+        setNote({ message: "" });
+        setRefresh(!refresh);
       } else {
-        sendNotification("warning", "Please enter your note");
+        sendNotification("warning", res?.response?.data?.message);
+        setShowModal(false);
+        setNote({ message: "" });
+        setRefresh(!refresh);
       }
     } else {
       setIsEdit({
@@ -207,28 +177,20 @@ const NotesPage = () => {
     setIsLoading(false);
   };
 
-  const handleClose = () => {
-    setShowModal(false);
-    setSelectedNote({});
-    // Clear file input in FileUploader component
-    if (fileInputRef.current) {
-      fileInputRef.current.clearFileInput();
-    }
-  };
-
   const handleSeeNoteDetails = (index) => {
     const note = notes?.filter((e, i) => i === index);
 
     setSelectedNote(note[0]);
     setNote(note[0]);
 
-    setShowModal(true);
     setContentType({
       key: "NOTE",
       note,
       heading: "NOTE",
     });
+    setImages([]);
     setNote({ message: "" });
+    setShowModal(true);
   };
 
   const handleRemoveImg = async (event, imgId) => {
@@ -265,7 +227,8 @@ const NotesPage = () => {
     cursor: "pointer",
     fontSize: "18px",
   };
-  if (isLoading) return <CustomLoader />;
+  // if (isLoading) return <CustomLoader />;
+
   return (
     <Container className=" min-vh-100 z-1">
       <section>
@@ -280,7 +243,6 @@ const NotesPage = () => {
                         width: "300px",
                         height: "470px",
                         boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px",
-                        // backgroundColor: generateRandomColors(),
                       }}
                       className="p-5 rounded-5 position-relative cursor  flex-column bg-white"
                     >
@@ -390,14 +352,12 @@ const NotesPage = () => {
         >
           {/* add note form */}
 
-          {contentType.key === "MORE" ? (
-            <p>{contentType.note}</p>
-          ) : contentType.key === "NOTE" ? (
+          {contentType.key === "NOTE" ? (
             <div className="mb-3">
               <p className="fw-bold">{selectedNote.title}</p>
               <p className="mb-5">{selectedNote.message}</p>
 
-              {/* <Row>
+              <Row>
                 {selectedNote?.images?.length
                   ? selectedNote.images.map((file) => {
                       return (
@@ -422,7 +382,7 @@ const NotesPage = () => {
                       );
                     })
                   : null}
-              </Row> */}
+              </Row>
             </div>
           ) : contentType.key === "EDIT_NOTE" ? (
             <section className="common_section">
@@ -465,7 +425,7 @@ const NotesPage = () => {
                         </div>
                       ) : null}
 
-                      {/* <Row>
+                      <Row>
                         {selectedNote?.images?.length ? (
                           selectedNote.images.map((file) => {
                             return (
@@ -509,7 +469,7 @@ const NotesPage = () => {
                             ref={fileInputRef}
                           />
                         )}
-                      </Row> */}
+                      </Row>
                     </div>
                   </form>
                 </div>
@@ -546,11 +506,11 @@ const NotesPage = () => {
                         autoCorrect="off"
                         autoComplete="off"
                       />
-                      {/* <FileUploader
+                      <FileUploader
                         images={images}
                         setImages={setImages}
                         ref={fileInputRef}
-                      /> */}
+                      />
                     </div>
                   </form>
                 </div>

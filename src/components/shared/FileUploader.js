@@ -7,18 +7,29 @@ import React, {
 import { Col, Row } from "react-bootstrap";
 import CustomTooltip from "../CustomTooltip";
 import { MdDelete } from "react-icons/md";
-import { config } from "../../config";
+import { CiImageOn } from "react-icons/ci";
 
 const FileUploader = ({ images, setImages }, ref) => {
-  const [imgList, setImgList] = useState([]);
-
-  console.log(images, "images");
   const fileInputRef = useRef();
+  const [imgList, setImgList] = useState([]);
 
   const handleFileChange = (e) => {
     const uploadedFiles = e.target.files;
-    // setImages([...images, ...uploadedFiles]);
-    setImages(uploadedFiles);
+
+    Array.from(uploadedFiles).forEach((file) => {
+      const reader = new FileReader();
+
+      reader.onload = function (event) {
+        const newImage = {
+          key: Date.now(), // Unique key using Date.now()
+          data: event.target.result, // File data (base64)
+        };
+
+        setImages((prevImages) => [...prevImages, newImage]); // Update the image list with new object
+      };
+
+      reader.readAsDataURL(file); // Read the file as data URL
+    });
 
     const newImages = Array.from(uploadedFiles).map((file) =>
       URL.createObjectURL(file)
@@ -29,23 +40,17 @@ const FileUploader = ({ images, setImages }, ref) => {
 
   // Function to clear file input value
   const clearFileInput = () => {
-    setImgList([]); // Clear the image list
+    setImages([]); // Clear the image list
     if (fileInputRef.current) {
-      fileInputRef.current.value = ""; // Clear the file input value
+      fileInputRef.current.value = "";
     }
   };
 
-  const removeImage = (event, index) => {
+  const removeImage = (event, key) => {
     event.preventDefault();
 
-    const updatedImages = [...imgList];
-    updatedImages.splice(index, 1);
-    setImgList(updatedImages);
-
-    const temp = [...images];
-    temp.splice(index, 1);
+    const temp = images.filter((obj) => obj.key !== key);
     setImages(temp);
-    // clearFileInput();
   };
 
   useImperativeHandle(ref, () => ({
@@ -54,6 +59,33 @@ const FileUploader = ({ images, setImages }, ref) => {
 
   return (
     <div>
+      <Row>
+        {images?.length
+          ? images.map((file, i) => {
+              return (
+                <Col xs={12} md={4}>
+                  <div
+                    className={`position-relative  flex_center py-4 mb-3`}
+                    style={{ boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px" }}
+                  >
+                    <CiImageOn size={25} color="green" />
+
+                    <p className="position-absolute top-0 end-0">
+                      <CustomTooltip msg="delete">
+                        <MdDelete
+                          fontSize={"25px"}
+                          onClick={(event) => removeImage(event, file.key)}
+                          className="cursor"
+                          color="red"
+                        />
+                      </CustomTooltip>
+                    </p>
+                  </div>
+                </Col>
+              );
+            })
+          : null}
+      </Row>
       <label
         htmlFor="fileInput"
         className=" w-100 mt-3 p-3 text-center text-secondary cursor rounded border mb-5"
@@ -70,7 +102,7 @@ const FileUploader = ({ images, setImages }, ref) => {
         onChange={handleFileChange}
       />
 
-      <div>
+      {/* <div>
         <Row>
           {imgList?.length
             ? imgList.map((image, index) => {
@@ -104,7 +136,7 @@ const FileUploader = ({ images, setImages }, ref) => {
               })
             : null}
         </Row>
-      </div>
+      </div> */}
     </div>
   );
 };
