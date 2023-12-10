@@ -7,6 +7,7 @@ import { BasicFormLayout } from "../components/shared/BasicFormLayout";
 import CustomInput from "../components/shared/CustomInput";
 import { VscAccount } from "react-icons/vsc";
 import CustomLoader from "../components/shared/CustomLoader";
+import { config } from "../config";
 
 const Profile = () => {
   const [currentUser, setCurrentUser] = useState({
@@ -90,6 +91,7 @@ const Profile = () => {
               handleChange={handleChange}
               value={currentUser?.username}
               isDisable={isDisable}
+              textStyle={"capitalize"}
             />
             <CustomInput
               name="email"
@@ -113,7 +115,8 @@ const Profile = () => {
             {isDisable ? null : isLoading ? (
               <Button
                 variant="primary"
-                className="px-5 py-2 rounded-5 fw-bold box_shadow mb-4"
+                className="px-5 py-2 rounded-5 fw-bold  mb-4"
+                style={{ boxShadow: config.theme.form_btn_box_shadow }}
               >
                 <Spinner
                   variant="light"
@@ -125,7 +128,8 @@ const Profile = () => {
             ) : (
               <Button
                 type="submit"
-                className="px-5 py-2 rounded-5 fw-bold box_shadow mb-4"
+                className="px-5 py-2 rounded-5 fw-bold  mb-4"
+                style={{ boxShadow: config.theme.form_btn_box_shadow }}
                 onClick={handleEditUser}
               >
                 Save Changes

@@ -14,7 +14,7 @@ export const BasicFormLayout = ({
   handleEdit,
   showEditIcon = false,
 }) => {
-  const windowObj = useWindowSize();
+  const windowSize = useWindowSize();
 
   const handleChange = () => {
     setChecked(!checked);
@@ -22,10 +22,21 @@ export const BasicFormLayout = ({
   };
 
   const routeName = useLocation().pathname;
-  console.log(routeName);
+
+  const basicLayoutStyles = {
+    maxWidth:
+      windowSize.width > 1200
+        ? "50%"
+        : windowSize.width < 1200 && windowSize.width > 768
+        ? "75%"
+        : "50%",
+  };
 
   return (
-    <div className="min-vh-100 flex_center form_container mx-auto z-5">
+    <div
+      className="min-vh-100 flex_center  mx-auto z-5"
+      style={basicLayoutStyles}
+    >
       <div
         className="w-100"
         style={{
@@ -36,10 +47,10 @@ export const BasicFormLayout = ({
           className="h-100"
           style={{
             minHeight: "600px",
-            backgroundColor: windowObj.width > 768 ? "" : "white",
+            backgroundColor: windowSize.width > 768 ? "" : "white",
           }}
         >
-          {windowObj.width > 768 ? (
+          {windowSize.width > 768 ? (
             <Col xs={12} md={6} className="p-0">
               <div className="flex_center h-100 flex-column position-relative">
                 {showEditIcon ? (
@@ -72,7 +83,7 @@ export const BasicFormLayout = ({
             <div className="w-100 h-100 flex_center flex-column position-relative">
               {routeName === "/profile" &&
               showEditIcon &&
-              windowObj.width < 768 ? (
+              windowSize.width < 768 ? (
                 <div className="bg-primary w-100" style={{ height: "100px" }}>
                   <Form
                     className="text-white position-absolute cursor"

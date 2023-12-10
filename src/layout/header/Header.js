@@ -5,7 +5,6 @@ import { useAuth } from "../../context/authContext";
 import { config } from "../../config";
 import { FiEdit2 } from "react-icons/fi";
 import useWindowSize from "../../hooks/useWindowSize";
-import "./header.css";
 
 const CommonLink = ({ text, route, url }) => {
   return (

@@ -12,6 +12,7 @@ import { useAuth } from "../../context/authContext";
 import { Button, Spinner } from "react-bootstrap";
 import CustomInput from "../../components/shared/CustomInput";
 import { BasicFormLayout } from "../../components/shared/BasicFormLayout";
+import { config } from "../../config";
 
 const LoginForm = () => {
   const navigate = useNavigate();
@@ -86,7 +87,8 @@ const LoginForm = () => {
         {isLoading ? (
           <Button
             variant="primary"
-            className="px-5 py-2 rounded-5 fw-bold box_shadow mb-4"
+            className="px-5 py-2 rounded-5 fw-bold  mb-4"
+            style={{ boxShadow: config.theme.form_btn_box_shadow }}
           >
             <Spinner
               variant="light"
@@ -98,13 +100,14 @@ const LoginForm = () => {
         ) : (
           <Button
             type="submit"
-            className="px-5 py-2 rounded-5 fw-bold box_shadow mb-4"
+            className="px-5 py-2 rounded-5 fw-bold  mb-4"
+            style={{ boxShadow: config.theme.form_btn_box_shadow }}
             onClick={handleSubmit}
           >
             Sign in
           </Button>
         )}
-        <p className="common_grey">
+        <p style={{ color: config.theme.light_grey_clr }}>
           Dont't have an account ?{" "}
           <Link to="/signup">
             <span className="cursor" style={{ color: "#0d6efd" }}>

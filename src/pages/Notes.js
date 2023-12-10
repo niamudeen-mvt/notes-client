@@ -21,6 +21,7 @@ import { FiEdit, FiEye } from "react-icons/fi";
 import { AiOutlineDelete } from "react-icons/ai";
 import { formattedDate, formattedTime } from "../utils/helper";
 import useWindowSize from "../hooks/useWindowSize";
+import { config } from "../config";
 
 const NotesPage = () => {
   const [notes, setNotes] = useState([]);
@@ -407,7 +408,10 @@ const NotesPage = () => {
                             <img
                               src={file.image}
                               alt="note-img"
-                              className="w-full box_shadow cursor"
+                              className="w-full  cursor"
+                              style={{
+                                boxShadow: config.theme.form_btn_box_shadow,
+                              }}
                             />
                           </div>
                         </Col>
@@ -427,7 +431,7 @@ const NotesPage = () => {
                         <input
                           type="text"
                           name="title"
-                          className="px-2 py-3 border-0 w-100 ouline_none"
+                          className="px-2 py-3 border-0 w-100 input_focus_outline"
                           placeholder="Title"
                           autoComplete="off"
                           spellCheck="off"
@@ -442,7 +446,7 @@ const NotesPage = () => {
                           <textarea
                             type="text"
                             name="message"
-                            className="px-2 py-3 border-0 w-100 ouline_none"
+                            className="px-2 py-3 border-0 w-100 input_focus_outline"
                             placeholder="Start Typing .........."
                             autoComplete="off"
                             spellCheck="off"
@@ -472,7 +476,11 @@ const NotesPage = () => {
                                   <img
                                     src={file.image}
                                     alt="note-img"
-                                    className="w-full box_shadow cursor"
+                                    className="w-full  cursor"
+                                    style={{
+                                      boxShadow:
+                                        config.theme.form_btn_box_shadow,
+                                    }}
                                   />
                                   <p className="position-absolute top-0 end-0">
                                     <CustomTooltip msg="delete">
@@ -525,7 +533,7 @@ const NotesPage = () => {
                       <textarea
                         type="text"
                         name="message"
-                        className="px-2 py-3 border-0 w-100 ouline_none"
+                        className="px-2 py-3 border-0 w-100 input_focus_outline"
                         placeholder="Start Typing .........."
                         rows={8}
                         value={note.message}

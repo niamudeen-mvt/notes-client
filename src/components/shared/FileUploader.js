@@ -7,6 +7,7 @@ import React, {
 import { Col, Row } from "react-bootstrap";
 import CustomTooltip from "../CustomTooltip";
 import { MdDelete } from "react-icons/md";
+import { config } from "../../config";
 
 const FileUploader = ({ images, setImages }, ref) => {
   const [imgList, setImgList] = useState([]);
@@ -79,11 +80,12 @@ const FileUploader = ({ images, setImages }, ref) => {
                       <img
                         src={image}
                         alt="note-img"
-                        className="box_shadow cursor"
+                        loading="lazy"
                         style={{
                           height: "100px",
+                          boxShadow: config.theme.form_btn_box_shadow,
+                          cursor: "pointer",
                         }}
-                        loading="lazy"
                       />
 
                       <p className="position-absolute top-0 end-0">

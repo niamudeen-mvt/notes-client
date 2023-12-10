@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { sendNotification } from "../../utils/notifications";
 import { registerUser } from "../../services/api/user";
 import { BasicFormLayout } from "../../components/shared/BasicFormLayout";
+import { config } from "../../config";
 
 const SignupForm = () => {
   const navigate = useNavigate();
@@ -90,7 +91,8 @@ const SignupForm = () => {
         {isLoading ? (
           <Button
             variant="primary"
-            className="px-5 py-2 rounded-5 fw-bold box_shadow mb-4"
+            className="px-5 py-2 rounded-5 fw-bold  mb-4"
+            style={{ boxShadow: config.theme.form_btn_box_shadow }}
           >
             <Spinner
               variant="light"
@@ -102,14 +104,15 @@ const SignupForm = () => {
         ) : (
           <Button
             type="submit"
-            className="px-5 py-2 rounded-5 fw-bold box_shadow mb-4"
+            className="px-5 py-2 rounded-5 fw-bold  mb-4"
             onClick={handleSubmit}
+            style={{ boxShadow: config.theme.form_btn_box_shadow }}
           >
             Submit
           </Button>
         )}
 
-        <p className="common_grey">
+        <p style={{ color: config.theme.light_grey_clr }}>
           Already have and account ?{" "}
           <Link to="/login">
             <span className="cursor" style={{ color: "#0d6efd" }}>

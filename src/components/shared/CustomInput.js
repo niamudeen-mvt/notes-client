@@ -1,4 +1,5 @@
 import React from "react";
+import { config } from "../../config";
 
 const CustomInput = ({
   mb = 0,
@@ -9,15 +10,21 @@ const CustomInput = ({
   handleChange,
   errors,
   isDisable = false,
+  textStyle = "lowercase",
 }) => {
   return (
     <>
       <div className={`mb-${mb}`}>
-        <label className="mb-3 common_grey text-capitalize">{label}</label>
+        <label
+          className="mb-3  text-capitalize"
+          style={{ color: config.theme.light_grey_clr }}
+        >
+          {label}
+        </label>
         <br />
         <input
           type={type}
-          className="border-0 border-bottom"
+          className={`border-0 border-bottom text-${textStyle}`}
           name={name}
           value={value}
           onChange={handleChange}
