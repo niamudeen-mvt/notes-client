@@ -1,11 +1,11 @@
 import React from "react";
 import { Container, Nav, Navbar } from "react-bootstrap";
 import { Link, useLocation } from "react-router-dom";
-// import { FiLogOut } from "react-icons/fi";
-import "./header.css";
 import { useAuth } from "../../context/authContext";
 import { config } from "../../config";
 import { FiEdit2 } from "react-icons/fi";
+import useWindowSize from "../../hooks/useWindowSize";
+import "./header.css";
 
 const CommonLink = ({ text, route, url }) => {
   return (
@@ -20,11 +20,13 @@ const CommonLink = ({ text, route, url }) => {
 
 const Header = () => {
   const { isLoggedIn } = useAuth();
-
+  const windowObj = useWindowSize();
   const route = useLocation().pathname;
 
   const themeObj = {
-    background: `linear-gradient(to right,${config.theme.main_clr} 50% , white 50%)`,
+    background: `linear-gradient(to right,${config.theme.main_clr} ${
+      windowObj.width > 768 ? "50%" : "100%"
+    }, white 50%)`,
   };
   return (
     <Navbar expand="lg" className="" sticky="top" style={themeObj}>
@@ -40,7 +42,11 @@ const Header = () => {
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="ms-auto  flexCenter">
+          <Nav
+            className={`${
+              windowObj.width > 768 ? "ms-auto" : "ms-auto flex_center mt-3"
+            }`}
+          >
             {isLoggedIn ? (
               <>
                 <CommonLink text="Notes" url="/notes" route={route} />

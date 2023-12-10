@@ -33,3 +33,10 @@
 .active_nav_link {
   color: #3e64ff;
 }
+
+@media (max-width: 768px) {
+  .active_nav_link {
+    color: white;
+    font-weight: bold;
+  }
+}

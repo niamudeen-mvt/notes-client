@@ -9,13 +9,12 @@ import { sendNotification } from "../../utils/notifications";
 import { Link, useNavigate } from "react-router-dom";
 import { loginUser } from "../../services/api/user";
 import { useAuth } from "../../context/authContext";
-import { Button } from "react-bootstrap";
+import { Button, Spinner } from "react-bootstrap";
 import CustomInput from "../../components/shared/CustomInput";
 import { BasicFormLayout } from "../../components/shared/BasicFormLayout";
 
 const LoginForm = () => {
   const navigate = useNavigate();
-
   const { setToken } = useAuth();
 
   const [user, setUser] = useState({
@@ -23,6 +22,7 @@ const LoginForm = () => {
     password: "",
   });
   const [errors, setErrors] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleChange = (e) => {
     setUser({
@@ -33,6 +33,7 @@ const LoginForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
     let res = await loginUser(user);
 
     const isEmpty = checkIfobjEmpty(user);
@@ -51,12 +52,14 @@ const LoginForm = () => {
         sendNotification("success", res?.data?.message);
         navigate("/profile");
       } else {
+        console.log(res);
         sendNotification("warning", res?.response?.data?.message);
         setErrors(errorListtoObj(res?.response?.data?.errors));
       }
     } else {
       sendNotification("warning", "Fields are required");
     }
+    setIsLoading(false);
   };
 
   return (
@@ -80,13 +83,27 @@ const LoginForm = () => {
           handleChange={handleChange}
           errors={errors}
         />
-        <Button
-          type="submit"
-          className="px-5 py-2 rounded-5 fw-bold box_shadow mb-4"
-          onClick={handleSubmit}
-        >
-          Sign in
-        </Button>
+        {isLoading ? (
+          <Button
+            variant="primary"
+            className="px-5 py-2 rounded-5 fw-bold box_shadow mb-4"
+          >
+            <Spinner
+              variant="light"
+              animation="border"
+              role="status"
+              size="sm"
+            ></Spinner>
+          </Button>
+        ) : (
+          <Button
+            type="submit"
+            className="px-5 py-2 rounded-5 fw-bold box_shadow mb-4"
+            onClick={handleSubmit}
+          >
+            Sign in
+          </Button>
+        )}
         <p className="common_grey">
           Dont't have an account ?{" "}
           <Link to="/signup">

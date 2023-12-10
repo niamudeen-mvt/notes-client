@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button } from "react-bootstrap";
+import { Button, Spinner } from "react-bootstrap";
 import CustomInput from "../../components/shared/CustomInput";
 import { checkIfobjEmpty, errorListtoObj } from "../../utils/helper";
 import { Link } from "react-router-dom";
@@ -19,6 +19,7 @@ const SignupForm = () => {
   });
 
   const [errors, setErrors] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleChange = (e) => {
     setUser({
@@ -30,7 +31,7 @@ const SignupForm = () => {
   // console.log(errors, "errors");
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    setIsLoading(true);
     const isEmpty = checkIfobjEmpty(user);
     if (!isEmpty) {
       let res = await registerUser(user);
@@ -44,11 +45,12 @@ const SignupForm = () => {
     } else {
       sendNotification("warning", "Fields are required");
     }
+    setIsLoading(false);
   };
 
   return (
     <BasicFormLayout>
-      <form className="h-75 p-5">
+      <form className="h-75 p-5 w-100 overflow-hidden">
         <h2 className="fw-bold mb-5">SIGNUP !</h2>
         <CustomInput
           mb={5}
@@ -85,13 +87,28 @@ const SignupForm = () => {
           handleChange={handleChange}
           errors={errors}
         />
-        <Button
-          type="submit"
-          className="px-5 py-2 rounded-5 fw-bold box_shadow mb-4"
-          onClick={handleSubmit}
-        >
-          Submit
-        </Button>
+        {isLoading ? (
+          <Button
+            variant="primary"
+            className="px-5 py-2 rounded-5 fw-bold box_shadow mb-4"
+          >
+            <Spinner
+              variant="light"
+              animation="border"
+              role="status"
+              size="sm"
+            ></Spinner>
+          </Button>
+        ) : (
+          <Button
+            type="submit"
+            className="px-5 py-2 rounded-5 fw-bold box_shadow mb-4"
+            onClick={handleSubmit}
+          >
+            Submit
+          </Button>
+        )}
+
         <p className="common_grey">
           Already have and account ?{" "}
           <Link to="/login">

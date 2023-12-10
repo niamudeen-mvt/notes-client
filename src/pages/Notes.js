@@ -20,6 +20,7 @@ import { BsThreeDotsVertical } from "react-icons/bs";
 import { FiEdit, FiEye } from "react-icons/fi";
 import { AiOutlineDelete } from "react-icons/ai";
 import { formattedDate, formattedTime } from "../utils/helper";
+import useWindowSize from "../hooks/useWindowSize";
 
 const NotesPage = () => {
   const [notes, setNotes] = useState([]);
@@ -40,6 +41,7 @@ const NotesPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [selectedNote, setSelectedNote] = useState({});
   const [imgUrl, setImgUrl] = useState();
+  const windowSize = useWindowSize();
 
   // console.log(note, "note");
   // console.log(contentType, "contentType");
@@ -347,16 +349,21 @@ const NotesPage = () => {
         {/* ADD NOTES BUTTON */}
 
         <div
-          className="rounded-circle bg-primary p-4 "
+          className={`rounded-circle ${
+            windowSize.width < 768 ? "bg-white" : "bg-primary"
+          }  p-4`}
           style={{
             cursor: "pointer",
             position: "fixed",
-            right: "375px",
+            right: windowSize.width < 768 ? "10%" : "375px",
             top: "80%",
           }}
           onClick={handleOpenModal}
         >
-          <FaPlus size={24} color="white" />
+          <FaPlus
+            size={24}
+            color={`${windowSize.width < 768 ? "primary" : "white"}`}
+          />
         </div>
 
         {/* ADD NOTES MODEL */}
