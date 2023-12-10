@@ -8,6 +8,7 @@ const CustomInput = ({
   value,
   handleChange,
   errors,
+  isDisable = false,
 }) => {
   return (
     <>
@@ -23,8 +24,11 @@ const CustomInput = ({
           spellCheck={false}
           autoCorrect="off" // Add autoCorrect attribute
           autoComplete="off"
+          disabled={isDisable}
         />
-        <p className="text-danger mt-4">{errors[name] ? errors[name] : ""}</p>
+        {errors ? (
+          <p className="text-danger mt-4">{errors[name] ? errors[name] : ""}</p>
+        ) : null}
       </div>
     </>
   );

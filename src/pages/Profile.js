@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react";
-import { getUserDetails } from "../services/api/user";
+import { Button, Form, Spinner } from "react-bootstrap";
+import { getUserDetails, editUserDetials } from "../services/api/user";
 import { useAuth } from "../context/authContext";
-import { Container } from "react-bootstrap";
-import { BiSolidMessageSquareEdit } from "react-icons/bi";
-import { editUserDetials } from "../services/api/user";
-import { FaCheck } from "react-icons/fa6";
 import { sendNotification } from "../utils/notifications";
-import CustomTooltip from "../components/CustomTooltip";
+import { BasicFormLayout } from "../components/shared/BasicFormLayout";
+import CustomInput from "../components/shared/CustomInput";
+import { VscAccount } from "react-icons/vsc";
 
 const Profile = () => {
   const [currentUser, setCurrentUser] = useState({
@@ -14,6 +13,8 @@ const Profile = () => {
     email: "",
     phone: "",
   });
+  const [isDisable, setIsDisable] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
 
   const { isLoggedIn } = useAuth();
@@ -34,103 +35,100 @@ const Profile = () => {
     fetchCurrentUser();
   }, [isLoggedIn]);
 
-  const handleEdit = () => {
-    setIsEdit(!isEdit);
-  };
-
-  const handleEditUser = async () => {
-    if (currentUser) {
-      let res = await editUserDetials(currentUser);
-      if (res?.status === 200) {
-        setCurrentUser(res?.data?.user);
-        setIsEdit(false);
-        sendNotification("success", res?.data?.message);
-      } else {
-        // sendNotification("warning", res?.response?.data?.message);
-      }
-    }
-  };
-
   const handleChange = (e) => {
     setCurrentUser({
       ...currentUser,
       [e.target.name]: e.target.value,
     });
   };
+
+  const handleEdit = () => {
+    setIsDisable(!isDisable);
+  };
+
+  const handleEditUser = async () => {
+    setIsLoading(true);
+    if (currentUser) {
+      let res = await editUserDetials(currentUser);
+      if (res?.status === 200) {
+        setCurrentUser(res?.data?.user);
+        setIsEdit(false);
+        setIsDisable(true);
+        sendNotification("success", res?.data?.message);
+      } else {
+        // sendNotification("warning", res?.response?.data?.message);
+      }
+    }
+    setIsLoading(false);
+  };
   return (
-    <div className="common_container flex_center">
-      <Container className="py-5 box_shadow flex_center position-relative flex-column">
-        {isLoggedIn ? (
-          <div className="">
-            <div className="mb-3">
-              <label className="text-left">Name</label>
-              <br />
-              <input
-                type="text"
-                disabled={!isEdit}
-                value={currentUser?.username}
-                onChange={handleChange}
-                spellCheck="false"
-                name="username"
-                className="px-3 text-capitalize"
-              />
+    <BasicFormLayout
+      pageTitle="Profile"
+      pageIcon={<VscAccount />}
+      handleEdit={handleEdit}
+      isDisable={isDisable}
+      checked={isEdit}
+      setChecked={setIsEdit}
+      showEditIcon={true}
+    >
+      <div className="flex_center">
+        {isLoggedIn && currentUser ? (
+          <form className="h-75 p-5">
+            <div className="d-flex justify-content-between">
+              <h2 className="fw-bold mb-5 text-uppercase">profile !</h2>
             </div>
-            <div className="mb-3">
-              <label className="text-left">Email</label>
-              <br />
-              <input
-                type="text"
-                disabled={!isEdit}
-                value={currentUser?.email}
-                onChange={handleChange}
-                spellCheck="false"
-                name="email"
-                className="px-3 text-lowercase"
-              />
-            </div>
-            <div className="mb-3">
-              <label className="text-left">Phone</label>
-              <br />
-              <input
-                type="text"
-                disabled={!isEdit}
-                value={currentUser?.phone}
-                onChange={handleChange}
-                spellCheck="false"
-                name="phone"
-                className="px-3 text-capitalize"
-              />
-            </div>
-
-
-          </div>
-        ) : null}
-        <div className="w-100 d-flex justify-content-end gap-4">
-          <CustomTooltip msg="edit">
-            <BiSolidMessageSquareEdit
-              color="#0d6efd"
-              fontSize={"25px"}
-              className="cursor"
-              onClick={handleEdit}
+            <CustomInput
+              mb={5}
+              label="Username"
+              name="username"
+              handleChange={handleChange}
+              value={currentUser?.username}
+              isDisable={isDisable}
             />
-          </CustomTooltip>
-
-          {isEdit ? (
-            <CustomTooltip msg="submit" style={{
-              position: "absolute",
-              top: "20px",
-              right: "80px",
-            }}>
-              <FaCheck
-                color="green"
-                fontSize={"25px"}
-                onClick={() => handleEditUser()}
-                className="cursor"
-              /></CustomTooltip>
-          ) : null}
-        </div>
-      </Container>
-    </div>
+            <CustomInput
+              name="email"
+              label="Email"
+              mb={5}
+              type="text"
+              value={currentUser?.email}
+              handleChange={handleChange}
+              isDisable={isDisable}
+            />
+            <CustomInput
+              name="phone"
+              label="Phone"
+              mb={5}
+              type="text"
+              value={currentUser?.phone}
+              handleChange={handleChange}
+              isDisable={isDisable}
+            />
+            {/* disable false means user can edit */}
+            {isDisable ? null : isLoading ? (
+              <Button
+                variant="primary"
+                className="px-5 py-2 rounded-5 fw-bold box_shadow mb-4"
+              >
+                <Spinner
+                  variant="light"
+                  animation="border"
+                  role="status"
+                  size="sm"
+                ></Spinner>
+              </Button>
+            ) : (
+              <Button
+                type="submit"
+                className="px-5 py-2 rounded-5 fw-bold box_shadow mb-4"
+                onClick={handleEditUser}
+              >
+                Save Changes
+              </Button>
+            )}
+          </form>
+        ) : null}
+      </div>
+    </BasicFormLayout>
   );
 };
 
