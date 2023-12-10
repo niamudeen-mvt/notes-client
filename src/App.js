@@ -9,10 +9,12 @@ import Logout from "./pages/Logout";
 import NotesPage from "./pages/Notes";
 import NoteProvider from "./context/noteContext";
 import ThemeContainer from "./components/shared/ThemeContainer";
+import Header from "./layout/header/Header";
 
 const App = () => {
   return (
     <BrowserRouter>
+      <Header />
       <ThemeContainer>
         <NoteProvider>
           <Routes>

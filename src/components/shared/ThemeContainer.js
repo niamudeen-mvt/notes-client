@@ -1,30 +1,28 @@
 import React from "react";
 import { config } from "../../config";
-import Header from "../../layout/header/Header";
-import { useAuth } from "../../context/authContext";
+// import { useAuth } from "../../context/authContext";
 
 const ThemeContainer = ({ children, center = false }) => {
-  const { isLoggedIn } = useAuth();
+  // const { isLoggedIn } = useAuth();
+  // const themeObj = {
+  //   background: isLoggedIn
+  //     ? "transparent"
+  //     : `linear-gradient(to right,${config.theme.main_clr} 50% , white 50%)`,
+  // };
   const themeObj = {
-    background: isLoggedIn
-      ? "transparent"
-      : `linear-gradient(to right,${config.theme.main_clr} 50% , white 50%)`,
+    background: `linear-gradient(to right,${config.theme.main_clr} 50% , white 50%)`,
   };
 
   return (
-    <>
-      <header>
-        <Header />
-      </header>
-      <section className="w-100 position-absolute top-0" style={{ zIndex: -1 }}>
-        <div
-          className={`min-vh-100 h-auto py-5 ${center ? "flex_center" : ""}`}
-          style={themeObj}
-        >
-          {children}
-        </div>
-      </section>
-    </>
+    <section className="w-100" style={{ zIndex: -1 }}>
+      {/* <section className="w-100 position-absolute top-0" style={{ zIndex: -1 }}> */}
+      <div
+        className={`min-vh-100 h-auto py-5 ${center ? "flex_center" : ""}`}
+        style={themeObj}
+      >
+        {children}
+      </div>
+    </section>
   );
 };
 

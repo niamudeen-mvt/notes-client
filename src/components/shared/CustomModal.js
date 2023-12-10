@@ -10,6 +10,7 @@ const CustomModal = ({
   contentType,
   handleClose,
   showFooter,
+  showSpinner,
 }) => {
   return (
     <>
@@ -20,11 +21,32 @@ const CustomModal = ({
         <Modal.Body>{children}</Modal.Body>
         {showFooter ? (
           <Modal.Footer>
-            <Button variant="secondary" onClick={handleClose}>
+            <Button
+              variant="secondary"
+              onClick={handleClose}
+              className="px-5 py-3"
+            >
               Close
             </Button>
-            {contentType === "MORE" ? null : (
-              <Button variant="primary" onClick={handleSubmit}>
+            {contentType === "MORE" ? null : showSpinner ? (
+              <Button
+                variant="primary"
+                onClick={handleSubmit}
+                className="px-5 py-3"
+              >
+                <Spinner
+                  variant="light"
+                  animation="border"
+                  role="status"
+                  size="sm"
+                ></Spinner>
+              </Button>
+            ) : (
+              <Button
+                variant="primary"
+                onClick={handleSubmit}
+                className="px-5 py-3"
+              >
                 Save Changes
               </Button>
             )}

@@ -3,7 +3,7 @@ import { Button, OverlayTrigger, Tooltip } from "react-bootstrap";
 
 const CustomTooltip = ({
   children,
-  placement = "bottom",
+  placement = "right",
   msg = "Tooltip on",
 }) => {
   return (

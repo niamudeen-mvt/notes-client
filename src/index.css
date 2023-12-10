@@ -90,22 +90,18 @@ input:focus-visible {
 .custom_navbar {
   background-color: transparent;
 }
-.note_card {
-  overflow: hidden;
-}
-.note_card .note_card_overlay {
-  opacity: 0;
-  transition: all 0.5s ease-in-out;
-  right: -100%; /* Set initial position to the right */
-  background-color: #3e64ff;
-}
-
-.note_card:hover .note_card_overlay {
-  opacity: 1;
-  right: 0%; /* Move the overlay to the left on hover */
-}
 
 .common_container {
   height: 100vh;
   width: 100%;
+}
+
+.container {
+  max-width: 1140px !important;
+}
+
+/* DROPDOWN TOGGLE NOTCH */
+.dropdown-toggle::after {
+  content: "";
+  display: none !important;
 }

@@ -1,26 +1,25 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { Col, Container, Row } from "react-bootstrap";
+import { Col, Container, Dropdown, Row } from "react-bootstrap";
 // import { CiImageOn } from "react-icons/ci";
 import { MdDelete } from "react-icons/md";
-import { BiSolidMessageSquareEdit } from "react-icons/bi";
 import {
   addNotes,
   deleteImgById,
   deleteNotesById,
-  editNotesById,
   getNotes,
 } from "../services/api/notes";
 import { sendNotification } from "../utils/notifications";
 import { useNotes } from "../context/noteContext";
 import FileUploader from "../components/shared/FileUploader";
 import ImagePreviewModal from "../components/modal/ImagePreviewModal";
-import CustomButton from "../components/shared/CustomButton";
 import CustomModal from "../components/shared/CustomModal";
 import CustomTooltip from "../components/CustomTooltip";
 import CustomLoader from "../components/shared/CustomLoader";
-import { IoIosLink } from "react-icons/io";
-import { config } from "../config";
 import { FaPlus } from "react-icons/fa6";
+import { BsThreeDotsVertical } from "react-icons/bs";
+import { FiEdit, FiEye } from "react-icons/fi";
+import { AiOutlineDelete } from "react-icons/ai";
+import { formattedDate, formattedTime } from "../utils/helper";
 
 const NotesPage = () => {
   const [notes, setNotes] = useState([]);
@@ -42,11 +41,11 @@ const NotesPage = () => {
   const [selectedNote, setSelectedNote] = useState({});
   const [imgUrl, setImgUrl] = useState();
 
-  console.log(note, "note");
-  console.log(contentType, "contentType");
-  console.log(selectedNote, "selectedNote");
-  console.log(notes, "notes");
-  console.log(selectedNote?.images?.length, "selectedNote?.images?.length");
+  // console.log(note, "note");
+  // console.log(contentType, "contentType");
+  // console.log(selectedNote, "selectedNote");
+  // console.log(notes, "notes");
+  // console.log(selectedNote?.images?.length, "selectedNote?.images?.length");
 
   const fileInputRef = useRef();
 
@@ -88,6 +87,8 @@ const NotesPage = () => {
   const handleAddNotes = async (e) => {
     e.preventDefault();
 
+    setIsLoading(true);
+
     if (note.message && note.title) {
       const fd = new FormData();
 
@@ -113,6 +114,8 @@ const NotesPage = () => {
     } else {
       sendNotification("warning", "Please enter your note");
     }
+
+    setIsLoading(false);
   };
 
   const handleDelteNote = async (id) => {
@@ -150,6 +153,7 @@ const NotesPage = () => {
   };
 
   const handleEditNote = async (index) => {
+    setIsLoading(true);
     const id = note?._id;
     if (id && note.message) {
       if (note.message && note.title) {
@@ -193,6 +197,7 @@ const NotesPage = () => {
         index: index,
       });
     }
+    setIsLoading(false);
   };
 
   const handleClose = () => {
@@ -223,18 +228,18 @@ const NotesPage = () => {
     event.preventDefault();
     event.stopPropagation();
 
+    setIsLoading(true);
+
     if (selectedNote?._id && imgId) {
       let res = await deleteImgById({
         noteId: selectedNote._id,
         imgId: imgId,
       });
       if (res?.status === 200) {
-        // setRefresh(!refresh);
-        // setShowModal(true);
+        setRefresh(!refresh);
         const tempList = selectedNote.images.filter(
           (file) => file._id !== imgId
         );
-        console.log(tempList, "tempList");
         setSelectedNote({
           ...selectedNote,
           images: tempList,
@@ -244,95 +249,108 @@ const NotesPage = () => {
         sendNotification("warning", res?.response?.data?.message);
       }
     }
+
+    setIsLoading(false);
   };
 
-  // CSS
-
-  // const notesColors = ["#e1f5fe", "#fff9c4", "#ffcdd2", "#ff8a80"];
-
-  // const generateRandomColors = () => {
-  //   return notesColors[Math.floor(Math.random() * notesColors.length)];
-  // };
-
-  const formattedDate = (dateTime) => {
-    const dateFormatter = new Intl.DateTimeFormat("en-US", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    });
-    return dateFormatter.format(dateTime);
+  const iconStyles = {
+    color: "black",
+    cursor: "pointer",
+    fontSize: "18px",
   };
-
-  const formattedTime = (dateTime) => {
-    const timeFormatter = new Intl.DateTimeFormat("en-US", {
-      hour: "numeric",
-      minute: "numeric",
-      hour12: true,
-    });
-    return timeFormatter.format(dateTime);
-  };
-
   if (isLoading) return <CustomLoader />;
   return (
-    <>
-      <section className="py-5" style={{ minHeight: "75vh" }}>
-        <Container>
-          <Row>
-            {notes?.length
-              ? notes.map((note, index) => {
-                  const dateTime = new Date(note.updatedAt);
-                  return (
-                    <Col
-                      className="flex_center  mb-5"
-                      xs={12}
-                      md={6}
-                      lg={4}
-                      xl={3}
+    <Container className=" min-vh-100 z-1">
+      <section>
+        <Row>
+          {notes?.length
+            ? notes.map((note, index) => {
+                const dateTime = new Date(note.updatedAt);
+                return (
+                  <Col className="flex_center  mb-5" xs={12} md={6} lg={4}>
+                    <div
+                      style={{
+                        width: "300px",
+                        height: "470px",
+                        boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px",
+                        // backgroundColor: generateRandomColors(),
+                      }}
+                      className="p-5 rounded-5 position-relative cursor  flex-column bg-white"
                     >
-                      <div
-                        style={{
-                          width: "300px",
-                          height: "470px",
-                          boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px",
-                          // backgroundColor: generateRandomColors(),
-                        }}
-                        className="p-5 rounded-5 position-relative cursor note_card flex-column"
-                      >
-                        <p className="">{formattedDate(dateTime)}</p>
-                        <h4 className="fw-medium">{note.title}</h4>
-                        <hr />
-                        <p className="mb-5">{note.message.substring(0, 200)}</p>
-                        <p className="">{formattedTime(dateTime)}</p>
+                      <p className="">{formattedDate(dateTime)}</p>
+                      <div className="d-flex justify-content-between align-items-center">
+                        <h5 className="fw-medium">
+                          {note.title.substring(0, 15)}
+                        </h5>
+                        <Dropdown>
+                          <Dropdown.Toggle
+                            variant="light"
+                            id="dropdown-basic"
+                            style={{
+                              backgroundColor: "transparent",
+                              border: "none",
+                            }}
+                          >
+                            <BsThreeDotsVertical />
+                          </Dropdown.Toggle>
 
-                        <div className="position-absolute top-0 w-100  h-100 note_card_overlay flex_center gap-3">
-                          <CustomTooltip msg="Details">
-                            <IoIosLink
-                              fontSize={"25px"}
+                          <Dropdown.Menu>
+                            <Dropdown.Item
+                              className="d-flex align-items-center  gap-2 fs-6 "
                               onClick={() => handleSeeNoteDetails(index)}
-                            />
-                          </CustomTooltip>
-                          <CustomTooltip msg="edit">
-                            <BiSolidMessageSquareEdit
-                              fontSize={"25px"}
+                            >
+                              <FiEye style={iconStyles} />
+                              <span>View</span>
+                            </Dropdown.Item>
+                            <Dropdown.Item
+                              className="d-flex align-items-center  gap-2 fs-6 "
                               onClick={() => handleEdit(index)}
-                              className="cursor d-block"
-                            />
-                          </CustomTooltip>
-                          <CustomTooltip msg="delete">
-                            <MdDelete
-                              fontSize={"25px"}
+                            >
+                              <FiEdit
+                                style={iconStyles}
+                                className="cursor d-block"
+                              />
+                              <span>Edit</span>
+                            </Dropdown.Item>
+                            <Dropdown.Item
+                              className="d-flex align-items-center gap-2 fs-6 "
                               onClick={() => handleDelteNote(note._id)}
-                              className="cursor"
-                            />
-                          </CustomTooltip>
-                        </div>
+                            >
+                              <AiOutlineDelete
+                                style={{ ...iconStyles, fontSize: "20px" }}
+                              />
+                              <span>Delete</span>
+                            </Dropdown.Item>
+                          </Dropdown.Menu>
+                        </Dropdown>
                       </div>
-                    </Col>
-                  );
-                })
-              : null}
-          </Row>
-        </Container>
+                      <hr />
+                      <p className="mb-3">
+                        {note.message.substring(0, 180)}
+                        {note.message.length > 180 ? (
+                          <span>{`  `}...more</span>
+                        ) : null}
+                      </p>
+                      <p className="">{formattedTime(dateTime)}</p>
+                    </div>
+                  </Col>
+                );
+              })
+            : null}
+        </Row>
+
+        {/* ADD NOTES BUTTON */}
+        <div className="d-flex justify-content-end ">
+          <div
+            className="rounded-circle bg-primary p-4 "
+            style={{
+              cursor: "pointer",
+            }}
+            onClick={handleOpenModal}
+          >
+            <FaPlus size={24} color="white" />
+          </div>
+        </div>
 
         {/* ADD NOTES MODEL */}
         <CustomModal
@@ -477,7 +495,7 @@ const NotesPage = () => {
                 <div>
                   <form>
                     <div className="mb-3">
-                      <label className="fw-bold px-2 mb-3">Title</label>
+                      <label className="fw-bold px-2 ">Title</label>
                       <input
                         type="text"
                         name="title"
@@ -524,17 +542,7 @@ const NotesPage = () => {
           />
         ) : null}
       </section>
-      <Container>
-        <div className="d-flex justify-content-end">
-          <div
-            className="rounded-circle bg-primary p-4"
-            style={{ cursor: "pointer" }}
-          >
-            <FaPlus size={24} color="white" onClick={handleOpenModal} />
-          </div>
-        </div>
-      </Container>
-    </>
+    </Container>
   );
 };
 
