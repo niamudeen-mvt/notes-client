@@ -35,7 +35,6 @@ api.interceptors.response.use(
 
     if (error.response && error.response.status === 401 && !isRefreshing) {
       isRefreshing = true;
-      sendNotification("warning", "token expire");
       try {
         const res = await refreshToken({
           refresh_token: getRefreshToken(),

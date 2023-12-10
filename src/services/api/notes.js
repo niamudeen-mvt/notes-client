@@ -61,12 +61,3 @@ export const editNote = async (body, id) => {
     return error;
   }
 };
-
-export const delteNoteFolder = async () => {
-  try {
-    let response = await api.delete(DELETE_NOTE_FOLDER);
-    return response;
-  } catch (error) {
-    return error;
-  }
-};

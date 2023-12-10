@@ -15,7 +15,6 @@ export const AuthProvider = ({ children }) => {
   const isLoggedIn = !!token;
 
   const userLogout = async () => {
-    await delteNoteFolder();
     setToken("");
     removeAccessToken();
   };
