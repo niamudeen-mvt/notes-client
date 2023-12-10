@@ -1,4 +1,3 @@
-import { jwtDecode } from "jwt-decode";
 import { config } from "../config";
 import { daysOfWeek } from "./constants";
 
@@ -14,26 +13,6 @@ export const getAccessToken = () => {
 
 export const removeAccessToken = () => {
   return localStorage.removeItem(config.ACCESS_TOKEN_KEY);
-};
-
-export const isTokenExpired = (token) => {
-  if (!token) {
-    // If the token is not provided, consider it as expired
-    return true;
-  }
-
-  try {
-    const decodedToken = jwtDecode(token);
-    const expirationTime = decodedToken.exp * 1000;
-
-    const currentTime = Date.now();
-
-    return currentTime >= expirationTime;
-  } catch (error) {
-    // Handle decoding errors, consider the token as expired
-    console.error("Error decoding token:", error);
-    return true;
-  }
 };
 
 // Refresh token
