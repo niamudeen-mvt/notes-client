@@ -1,42 +1,42 @@
-import React, { createContext, useState, useContext, useEffect } from "react";
-import { getAccessToken, getUserID, removeAccessToken } from "../utils/helper";
-import { delteNoteFolder } from "../services/api/notes";
-import axios from "axios";
+import React, { createContext, useState, useContext, useEffect } from 'react';
+import { getAccessToken, removeAccessToken } from '../utils/helper';
 
 const AuthContext = createContext();
 
 export const useAuth = () => {
-  return useContext(AuthContext);
+    return useContext(AuthContext);
 };
 
 export const AuthProvider = ({ children }) => {
-  const [token, setToken] = useState(getAccessToken());
+    const [token, setToken] = useState(getAccessToken());
 
-  const isLoggedIn = !!token;
+    const isLoggedIn = !!token;
 
-  const userLogout = async () => {
-    setToken("");
-    removeAccessToken();
-  };
-
-  useEffect(() => {
-    const updateTokenFromLocalStorage = () => {
-      const newToken = getAccessToken();
-      setToken(newToken);
+    const userLogout = async () => {
+        setToken('');
+        removeAccessToken();
     };
 
-    window.addEventListener("storage", updateTokenFromLocalStorage);
+    useEffect(() => {
+        const updateTokenFromLocalStorage = () => {
+            const newToken = getAccessToken();
+            setToken(newToken);
+        };
 
-    return () => {
-      window.removeEventListener("storage", updateTokenFromLocalStorage);
-    };
-  }, []);
+        window.addEventListener('storage', updateTokenFromLocalStorage);
 
-  return (
-    <AuthContext.Provider value={{ isLoggedIn, userLogout, token, setToken }}>
-      {children}
-    </AuthContext.Provider>
-  );
+        return () => {
+            window.removeEventListener('storage', updateTokenFromLocalStorage);
+        };
+    }, []);
+
+    return (
+        <AuthContext.Provider
+            value={{ isLoggedIn, userLogout, token, setToken }}
+        >
+            {children}
+        </AuthContext.Provider>
+    );
 };
 
 export default AuthProvider;
