@@ -106,16 +106,18 @@ const NotesPage = () => {
                 setShowModal(false);
                 setNote({ message: '' });
                 setRefresh(!refresh);
+                setIsLoading(false);
             } else {
                 sendNotification('warning', res?.response?.data?.message);
                 setShowModal(false);
                 setNote({ message: '' });
-                setRefresh(!refresh);
+                // setRefresh(!refresh);
+                setIsLoading(false);
             }
         } else {
             sendNotification('warning', 'please enter note');
+            setIsLoading(false);
         }
-        setIsLoading(false);
     };
 
     // VIEW NOTE DETAILS =============
@@ -220,7 +222,7 @@ const NotesPage = () => {
             if (res?.status === 200) {
                 // setRefresh(!refresh);
                 const tempList = selectedNote.images.filter(
-                    (file) => file._id !== imgId,
+                    (file) => file._id !== imgId
                 );
                 setSelectedNote({
                     ...selectedNote,
@@ -274,7 +276,7 @@ const NotesPage = () => {
                                               <h5 className="fw-medium">
                                                   {note?.title?.substring(
                                                       0,
-                                                      15,
+                                                      15
                                                   )}
                                               </h5>
                                               <Dropdown>
@@ -295,7 +297,7 @@ const NotesPage = () => {
                                                           className="d-flex align-items-center  gap-2 fs-6 "
                                                           onClick={() =>
                                                               handleSeeNoteDetails(
-                                                                  index,
+                                                                  index
                                                               )
                                                           }
                                                       >
@@ -320,7 +322,7 @@ const NotesPage = () => {
                                                           className="d-flex align-items-center gap-2 fs-6 "
                                                           onClick={() =>
                                                               handleDelteNote(
-                                                                  note._id,
+                                                                  note._id
                                                               )
                                                           }
                                                       >
@@ -389,8 +391,8 @@ const NotesPage = () => {
                         contentType.key === 'NOTE'
                             ? handleAddNotes
                             : contentType.key === 'EDIT_NOTE'
-                              ? handleEditNote
-                              : handleAddNotes
+                            ? handleEditNote
+                            : handleAddNotes
                     }
                 >
                     {/* NOTE CONTENT ============*/}
@@ -490,10 +492,10 @@ const NotesPage = () => {
                                                                           className="h-75 cursor position-relative"
                                                                           onClick={() => {
                                                                               setImgUrl(
-                                                                                  file.image,
+                                                                                  file.image
                                                                               );
                                                                               setShowImgModal(
-                                                                                  true,
+                                                                                  true
                                                                               );
                                                                           }}
                                                                       >
@@ -517,11 +519,11 @@ const NotesPage = () => {
                                                                                           '25px'
                                                                                       }
                                                                                       onClick={(
-                                                                                          event,
+                                                                                          event
                                                                                       ) =>
                                                                                           handleRemoveImg(
                                                                                               event,
-                                                                                              file._id,
+                                                                                              file._id
                                                                                           )
                                                                                       }
                                                                                       className="cursor"
@@ -532,7 +534,7 @@ const NotesPage = () => {
                                                                       </div>
                                                                   </Col>
                                                               );
-                                                          },
+                                                          }
                                                       )
                                                     : null}
                                             </Row>

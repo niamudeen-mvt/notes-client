@@ -1,5 +1,5 @@
 // ================== DEVELOPMENT URL =================
-// export const BASE_URL = "http://localhost:5000/api/v1";
+// export const BASE_URL = 'http://localhost:7000/api/v1';
 
 // =================== PRODUCTION URL ================
 export const BASE_URL = 'https://real-blue-cheetah-hat.cyclic.app/api/v1';
