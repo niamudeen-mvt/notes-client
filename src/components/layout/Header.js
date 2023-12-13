@@ -7,7 +7,7 @@ import { FiEdit2 } from 'react-icons/fi';
 import useWindowSize from '../../hooks/useWindowSize';
 
 const Header = () => {
-    const { isLoggedIn } = useAuth();
+    const { isLoggedIn, userLogout } = useAuth();
     const windowObj = useWindowSize();
     const route = useLocation().pathname;
 
@@ -16,7 +16,6 @@ const Header = () => {
             windowObj.width > 768 ? '50%' : '100%'
         }, white 50%)`,
     };
-    console.log(windowObj.width > 768);
 
     return (
         <Navbar expand="lg" sticky="top" style={themeObj}>
@@ -40,6 +39,12 @@ const Header = () => {
                         {isLoggedIn ? (
                             <div className="py-4 d-flex gap-4">
                                 <CommonLink
+                                    text="Home"
+                                    url="/"
+                                    route={route}
+                                    width={windowObj.width}
+                                />
+                                <CommonLink
                                     text="Notes"
                                     url="/notes"
                                     route={route}
@@ -51,12 +56,30 @@ const Header = () => {
                                     route={route}
                                     width={windowObj.width}
                                 />
-                                <CommonLink
+                                {/* <CommonLink
                                     text="Logout"
                                     url="/logout"
                                     route={route}
                                     width={windowObj.width}
-                                />
+                                /> */}
+                                <Link
+                                    to="/"
+                                    className={`position-relative py-3 ${
+                                        route === '/logout'
+                                            ? `active_nav_link   ${
+                                                  windowObj.width > 768 &&
+                                                  windowObj.width < 1000
+                                                      ? 'text-black '
+                                                      : windowObj.width > 1000
+                                                      ? 'text-primary '
+                                                      : 'text-white '
+                                              }`
+                                            : 'nav_link text-dark fw-normal opacity-100'
+                                    }`}
+                                    onClick={userLogout}
+                                >
+                                    Logout
+                                </Link>
                             </div>
                         ) : (
                             <div className="py-4 d-flex gap-4">
@@ -99,8 +122,8 @@ const CommonLink = ({ text, route, url, width }) => {
                           width > 768 && width < 1000
                               ? 'text-black '
                               : width > 1000
-                                ? 'text-primary '
-                                : 'text-white '
+                              ? 'text-primary '
+                              : 'text-white '
                       }`
                     : 'nav_link text-dark fw-normal opacity-100'
             }`}

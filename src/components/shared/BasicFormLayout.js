@@ -28,11 +28,9 @@ export const BasicFormLayout = ({
             windowSize.width > 1200
                 ? '50%'
                 : windowSize.width < 1200 && windowSize.width > 768
-                  ? '75%'
-                  : '90%',
+                ? '75%'
+                : '90%',
     };
-
-    console.log(windowSize);
 
     return (
         <div className="mx-auto" style={basicLayoutStyles}>
