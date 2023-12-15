@@ -33,9 +33,9 @@ export const BasicFormLayout = ({
     };
 
     return (
-        <div className="mx-auto" style={basicLayoutStyles}>
+        <div className="mx-auto " style={basicLayoutStyles}>
             <div
-                className="w-100"
+                className="w-100 "
                 style={{
                     boxShadow: config.theme.form_box_shadow,
                 }}

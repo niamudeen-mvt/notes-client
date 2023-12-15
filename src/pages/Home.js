@@ -21,9 +21,14 @@ const Home = () => {
                     className={`mb-3 fw-bolder text-capitalize  d-flex  gap-4 text-white
           `}
                     style={{
-                        fontSize: '40px',
+                        fontSize:
+                            windowSize.width < 576
+                                ? '35px'
+                                : windowSize.width > 576
+                                ? '40px'
+                                : '',
                         position: 'relative',
-                        left: '-10px',
+                        left: '-5px',
                     }}
                 >
                     Welcome to Notes

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { Container, Nav, Navbar } from 'react-bootstrap';
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/authContext';
@@ -10,11 +10,18 @@ const Header = () => {
     const { isLoggedIn, userLogout } = useAuth();
     const windowObj = useWindowSize();
     const route = useLocation().pathname;
+    const navbarRef = useRef(null);
 
     const themeObj = {
         background: `linear-gradient(to right,${config.theme.main_clr} ${
             windowObj.width > 768 ? '50%' : '100%'
         }, white 50%)`,
+    };
+
+    const handleNavLinkClick = () => {
+        if (navbarRef.current) {
+            navbarRef.current.classList.remove('show'); // Remove the 'show' class from the Navbar collapse
+        }
     };
 
     return (
@@ -30,38 +37,42 @@ const Header = () => {
                     {config.PROJECT_NAME}
                 </Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
-                <Navbar.Collapse id="basic-navbar-nav">
+                <Navbar.Collapse id="basic-navbar-nav" ref={navbarRef}>
                     <Nav
                         className={` ${
-                            windowObj.width > 992 ? 'ms-auto' : 'flex_center'
+                            windowObj.width > 992
+                                ? 'ms-auto'
+                                : 'min-vh-100 w-100 flex_center bg-primary mt-2'
                         }`}
                     >
                         {isLoggedIn ? (
-                            <div className="py-4 d-flex gap-4">
+                            <div
+                                className={`py-4 d-flex gap-4 ${
+                                    windowObj.width > 992 ? '' : 'flex-column'
+                                }`}
+                            >
                                 <CommonLink
+                                    handleNavLinkClick={handleNavLinkClick}
                                     text="Home"
                                     url="/"
                                     route={route}
                                     width={windowObj.width}
                                 />
                                 <CommonLink
+                                    handleNavLinkClick={handleNavLinkClick}
                                     text="Notes"
                                     url="/notes"
                                     route={route}
                                     width={windowObj.width}
                                 />
                                 <CommonLink
+                                    handleNavLinkClick={handleNavLinkClick}
                                     text="Profile"
                                     url="/profile"
                                     route={route}
                                     width={windowObj.width}
                                 />
-                                {/* <CommonLink
-                                    text="Logout"
-                                    url="/logout"
-                                    route={route}
-                                    width={windowObj.width}
-                                /> */}
+
                                 <Link
                                     to="/"
                                     className={`position-relative py-3 ${
@@ -82,20 +93,27 @@ const Header = () => {
                                 </Link>
                             </div>
                         ) : (
-                            <div className="py-4 d-flex gap-4">
+                            <div
+                                className={`py-4 d-flex gap-4 ${
+                                    windowObj.width > 992 ? '' : 'flex-column'
+                                }`}
+                            >
                                 <CommonLink
+                                    handleNavLinkClick={handleNavLinkClick}
                                     text="Home"
                                     url="/"
                                     route={route}
                                     width={windowObj.width}
                                 />
                                 <CommonLink
+                                    handleNavLinkClick={handleNavLinkClick}
                                     text="Signup"
                                     url="/signup"
                                     route={route}
                                     width={windowObj.width}
                                 />
                                 <CommonLink
+                                    handleNavLinkClick={handleNavLinkClick}
                                     text="Login"
                                     url="/login"
                                     route={route}
@@ -112,7 +130,7 @@ const Header = () => {
 
 export default Header;
 
-const CommonLink = ({ text, route, url, width }) => {
+const CommonLink = ({ text, route, url, width, handleNavLinkClick }) => {
     return (
         <Link
             to={url}
@@ -127,6 +145,7 @@ const CommonLink = ({ text, route, url, width }) => {
                       }`
                     : 'nav_link text-dark fw-normal opacity-100'
             }`}
+            onClick={handleNavLinkClick}
         >
             {text}
         </Link>

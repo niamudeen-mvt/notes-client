@@ -93,3 +93,14 @@ input:focus-visible {
 .nav_link:hover::before {
     width: 90%;
 }
+
+.gradient-text {
+    background-image: linear-gradient(
+        to right,
+        #fff 50%,
+        #3e64ff 50%
+    ); /* Change colors as needed */
+    -webkit-background-clip: text; /* For Safari */
+    background-clip: text;
+    color: transparent;
+}

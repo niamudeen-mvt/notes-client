@@ -246,7 +246,7 @@ const NotesPage = () => {
     if (isLoading) return <CustomLoader />;
 
     return (
-        <Container className=" min-vh-100 z-1">
+        <Container className="min-vh-100 z-1">
             <section>
                 {/* RENDERING NOTES ======================= */}
                 <Row>
@@ -369,6 +369,7 @@ const NotesPage = () => {
                         position: 'fixed',
                         right: windowSize.width < 768 ? '10%' : '375px',
                         top: '80%',
+                        boxShadow: 'rgba(0, 0, 0, 0.24) 0px 3px 8px',
                     }}
                     onClick={handleOpenModal}
                 >
