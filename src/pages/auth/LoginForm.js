@@ -19,8 +19,8 @@ const LoginForm = () => {
     const { setToken } = useAuth();
 
     const [user, setUser] = useState({
-        email: 'test@gmail.com',
-        password: '123',
+        email: '',
+        password: '',
     });
     const [errors, setErrors] = useState({});
     const [isLoading, setIsLoading] = useState(false);
