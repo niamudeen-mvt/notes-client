@@ -39,15 +39,19 @@ const Header = () => {
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav" ref={navbarRef}>
                     <Nav
-                        className={` ${
+                        className={`${
                             windowObj.width > 992
                                 ? 'ms-auto'
-                                : 'min-vh-100 w-100 flex_center bg-primary mt-2'
+                                : 'w-100 flex_center bg-primary mt-2'
                         }`}
+                        style={{
+                            minHeight: windowObj.width > 992 ? 0 : '70vh',
+                            boxShadow: '0px 4px 6px -1px rgba(0, 0, 0, 0.24)',
+                        }}
                     >
                         {isLoggedIn ? (
                             <div
-                                className={`py-4 d-flex gap-4 ${
+                                className={`py-4 d-flex gap-2 ${
                                     windowObj.width > 992 ? '' : 'flex-column'
                                 }`}
                             >
@@ -94,7 +98,7 @@ const Header = () => {
                             </div>
                         ) : (
                             <div
-                                className={`py-4 d-flex gap-4 ${
+                                className={`py-4 d-flex gap-2 ${
                                     windowObj.width > 992 ? '' : 'flex-column'
                                 }`}
                             >
