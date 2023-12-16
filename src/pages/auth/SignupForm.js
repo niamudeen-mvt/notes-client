@@ -41,6 +41,8 @@ const SignupForm = () => {
                 sendNotification('success', res?.data?.message);
                 navigate('/login');
             } else {
+                console.log(res);
+                sendNotification('warning', res?.response?.data?.message);
                 setErrors(errorListtoObj(res?.response?.data?.errors));
             }
         } else {
