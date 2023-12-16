@@ -16,6 +16,7 @@ const Header = () => {
         background: `linear-gradient(to right,${config.theme.main_clr} ${
             windowObj.width > 768 ? '50%' : '100%'
         }, white 50%)`,
+        padding: windowObj.width < 998 ? '25px 0' : '0',
     };
 
     const handleNavLinkClick = () => {
@@ -39,25 +40,21 @@ const Header = () => {
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav" ref={navbarRef}>
                     <Nav
-                        className={`${
+                        className={` ${
                             windowObj.width > 992
                                 ? 'ms-auto'
                                 : 'w-100 flex_center bg-primary mt-2'
                         }`}
                         style={{
-                            minHeight: windowObj.width > 992 ? 0 : '70vh',
-                            boxShadow:
-                                windowObj.width > 992
-                                    ? ''
-                                    : '0px 4px 6px -1px rgba(0, 0, 0, 0.24)',
+                            minHeight: windowObj.width > 992 ? 0 : '85vh',
                         }}
                     >
                         {isLoggedIn ? (
                             <div
-                                className={`py-4 d-flex  ${
+                                className={`py-4 d-flex text-center ${
                                     windowObj.width > 992
                                         ? 'gap-4'
-                                        : 'flex-column'
+                                        : 'flex-column '
                                 }`}
                             >
                                 <CommonLink
@@ -103,7 +100,7 @@ const Header = () => {
                             </div>
                         ) : (
                             <div
-                                className={`py-4 d-flex ${
+                                className={`py-4 d-flex text-center  ${
                                     windowObj.width > 992
                                         ? 'gap-4'
                                         : 'flex-column'
