@@ -26,3 +26,5 @@ export const config = {
 
 export const PUBLIC_ROUTES = ['/signup', '/login'];
 export const PRIVATE_ROUTES = ['/notes', '/profile'];
+
+// testing
