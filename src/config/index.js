@@ -1,8 +1,11 @@
 // ================== DEVELOPMENT URL =================
 // export const BASE_URL = 'http://localhost:7000/api/v1';
 
-// =================== PRODUCTION URL ================
-export const BASE_URL = 'https://real-blue-cheetah-hat.cyclic.app/api/v1';
+// render production url
+export const BASE_URL = 'https://notes-backend-jmyj.onrender.com/api/v1';
+
+// =================== PRODUCTION URL CYCLIC SUSPENDED ================
+// export const BASE_URL = 'https://real-blue-cheetah-hat.cyclic.app/api/v1';
 
 // CONFIGURATION ========
 

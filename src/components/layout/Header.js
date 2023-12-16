@@ -46,13 +46,18 @@ const Header = () => {
                         }`}
                         style={{
                             minHeight: windowObj.width > 992 ? 0 : '70vh',
-                            boxShadow: '0px 4px 6px -1px rgba(0, 0, 0, 0.24)',
+                            boxShadow:
+                                windowObj.width > 992
+                                    ? ''
+                                    : '0px 4px 6px -1px rgba(0, 0, 0, 0.24)',
                         }}
                     >
                         {isLoggedIn ? (
                             <div
-                                className={`py-4 d-flex gap-2 ${
-                                    windowObj.width > 992 ? '' : 'flex-column'
+                                className={`py-4 d-flex  ${
+                                    windowObj.width > 992
+                                        ? 'gap-4'
+                                        : 'flex-column'
                                 }`}
                             >
                                 <CommonLink
@@ -98,8 +103,10 @@ const Header = () => {
                             </div>
                         ) : (
                             <div
-                                className={`py-4 d-flex gap-2 ${
-                                    windowObj.width > 992 ? '' : 'flex-column'
+                                className={`py-4 d-flex ${
+                                    windowObj.width > 992
+                                        ? 'gap-4'
+                                        : 'flex-column'
                                 }`}
                             >
                                 <CommonLink
