@@ -60,7 +60,7 @@ export const errorListtoObj = (errorsList) => {
 
         const combinedObject = uniqueObjects.reduce(
             (result, obj) => ({ ...result, ...obj }),
-            {},
+            {}
         );
 
         return combinedObject;
