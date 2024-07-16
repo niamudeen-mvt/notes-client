@@ -59,13 +59,6 @@ const Header = () => {
                             >
                                 <CommonLink
                                     handleNavLinkClick={handleNavLinkClick}
-                                    text="Home"
-                                    url="/"
-                                    route={route}
-                                    width={windowObj.width}
-                                />
-                                <CommonLink
-                                    handleNavLinkClick={handleNavLinkClick}
                                     text="Notes"
                                     url="/notes"
                                     route={route}
